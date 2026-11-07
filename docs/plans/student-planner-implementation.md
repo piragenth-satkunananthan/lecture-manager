@@ -7,35 +7,36 @@
 ## Progress
 
 - Stage 1 (project and test foundation) is complete: `npm run build` passes and `npm test` passes all 6 config tests on Node.js 24.22.2.
-- Ollama is installed and has local candidate models. Docker is running, but no Webtop container is present. No live WhatsApp group/session or Zoom test meeting has been configured for this implementation yet.
-- The next work is the local extraction pilot; WhatsApp and Zoom live acceptance remain separate gates and will not be inferred from unit tests.
+- The user changed the approved AI provider from local Ollama to the Gemini API and accepted free-tier data handling. This changes the design's earlier local-only AI decision; the approved design now records the change. The planner uses structured output, requests `store=false`, sends one selected post with URL/passcode redaction, and does not fall back to a local model.
+- The Gemini adapter, config changes, synthetic fixture pilot, and focused tests are implemented. `npm test` passes all 13 tests. A live Gemini API fixture pilot is still pending because `GEMINI_API_KEY` is not configured in the process environment; no `.env` file was read.
+- No live WhatsApp group/session or Zoom test meeting has been configured. Docker is running, but no Webtop container is present. Live WhatsApp and Zoom acceptance remain separate gates and will not be inferred from unit tests.
 
 ## Baseline
 
-- The approved design is the only product specification. The repository has no application source, package manifest, or tests yet.
+- The approved design is the product specification. The repository has no application source, package manifest, or tests yet. User-requested design changes are reflected in the approved design and recorded in this plan.
 - The working tree was clean on `main`. No repository `AGENTS.md`, `SPEC.md`, `ROADMAP.md`, or `TASKS.md` was found. The README describes a blueprint only.
-- The environment has Node.js 24.22.2, npm 12.2.2, Docker 29.9.3, and the Ollama executable. The existing `.env` is ignored and will not be read or changed as part of this plan.
+- The environment has Node.js 24.22.2, npm 12.2.2, and Docker 29.9.3. The existing `.env` is ignored and will not be read or changed as part of this plan.
 - Implementation is split into reviewable stages. Each code stage adds focused tests and runs the build and relevant tests before the next stage.
 
 ## Implementation stages
 
 ### 1. Project and test foundation
 
-Create the Node 24 TypeScript project, strict compiler settings, build/test scripts, runtime configuration validation, `.env.example`, and generated/private-data exclusions. Add config tests for defaults, missing required values, malformed URLs, and invalid storage/runtime limits. Do not read or overwrite `.env`.
+Create the Node 24 TypeScript project, strict compiler settings, build/test scripts, runtime configuration validation, `.env.example`, and generated/private-data exclusions. Add config tests for defaults, missing required values, and invalid storage/runtime limits. Do not read or overwrite `.env`.
 
-**Exit checks:** `npm run build` passes; `npm test` passes; config tests prove `Asia/Colombo` defaults, required settings fail clearly, and invalid paths, URLs, and numeric limits are rejected.
+**Exit checks:** `npm run build` passes; `npm test` passes; config tests prove `Asia/Colombo` defaults, required settings fail clearly, and invalid paths, timezones, and numeric limits are rejected.
 
-### 2. Feasibility pilots (must pass before planner core)
+### 2. Extraction, intake, and capture pilots (must pass before planner core)
 
-Build only the small adapters needed to evaluate the approved pilot: Baileys against the separate test group (try whatsapp-web.js only if Baileys fails), structured local Ollama extraction against synthetic fixtures, and the Ubuntu Webtop Zoom workflow in a host-controlled test meeting. Keep live-group intake and unattended live recording disabled. Record expected fixture values, resource ceilings, reconnect/catch-up outcomes, permission/admission checks, saved media quality, host-end detection, and low-space stop results.
+Run the Gemini structured-output adapter against synthetic fixtures and require exact expected values, including unresolved ambiguous cases. Verify that requests omit sender/group IDs, actual URLs, and passcodes, set `store=false`, and fail safely when the API is unavailable or over quota. Pilot Baileys against the separate test group (try whatsapp-web.js only if Baileys fails) and the Ubuntu Webtop Zoom workflow in a host-controlled test meeting. Keep live-group intake and unattended live recording disabled. Record reconnect/catch-up outcomes, permission/admission checks, saved media quality, host-end detection, and low-space stop results.
 
-**Exit checks:** all fixture expectations pass with zero incorrect or ambiguous auto-confirmations; intake recovers every eligible pilot post without loss or duplicate planner items; local inference stays within recorded limits without OOM; the permitted test meeting saves usable screen/audio, detects host end within 30 seconds, and finalizes at the low-space stop. No live automation until its policy/permission gate is recorded.
+**Exit checks:** all fixture expectations pass with zero incorrect or ambiguous auto-confirmations; Gemini requests contain only the selected post with the documented redactions and disabled server-side storage; API failure and quota behavior retain work for retry; intake recovers every eligible pilot post without loss or duplicate planner items; the permitted test meeting saves usable screen/audio, detects host end within 30 seconds, and finalizes at the low-space stop. No live automation until its policy/permission gate is recorded.
 
-**External prerequisites:** a test-group identity and linked-device login, a local Ollama model, a host-controlled Zoom test meeting and link, and a running Ubuntu Webtop environment. Unit tests can use fakes, but they do not replace these live pilot checks.
+**External prerequisites:** a Gemini API key and available quota, a test-group identity and linked-device login, a host-controlled Zoom test meeting and link, and a running Ubuntu Webtop environment. Unit tests can use fakes, but they do not replace these live pilot checks.
 
 ### 3. Planner core
 
-After Stage 2 passes, add SQLite migrations and source identity, local extraction validation, pending clarification handling, item lifecycle and edit/cancel matching, overdue review, Sri Lanka date rules, and persistent deduplicated reminders. Add synthetic fixtures with exact expected structured values.
+After Stage 2 passes, add SQLite migrations and source identity, Gemini extraction validation, pending clarification handling, item lifecycle and edit/cancel matching, overdue review, Sri Lanka date rules, and persistent deduplicated reminders. Add synthetic fixtures with exact expected structured values.
 
 **Exit checks:** component tests cover schema/migrations, message idempotency, ambiguous and incorrect extraction, user-correction precedence, unique cancellation matching, overdue reminder suppression, timezone defaults, reminder deduplication, and restart recovery.
 

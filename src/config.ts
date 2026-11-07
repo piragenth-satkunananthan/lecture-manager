@@ -6,8 +6,8 @@ export interface AppConfig {
   timeZone: string;
   databasePath: string;
   recordingPath: string;
-  ollamaUrl: URL;
-  ollamaModel: string;
+  geminiApiKey: string;
+  geminiModel: string;
   whatsappGroupIds: string[];
   lecturerIds: string[];
   smtpHost: string;
@@ -57,19 +57,6 @@ function ids(env: NodeJS.ProcessEnv, name: string): string[] {
   return [...new Set((env[name] ?? "").split(",").map((value) => value.trim()).filter(Boolean))];
 }
 
-function httpUrl(env: NodeJS.ProcessEnv, name: string, fallback: string): URL {
-  let url: URL;
-  try {
-    url = new URL(env[name]?.trim() || fallback);
-  } catch {
-    throw new Error(`${name} must be a valid HTTP or HTTPS URL`);
-  }
-  if (url.protocol !== "http:" && url.protocol !== "https:") {
-    throw new Error(`${name} must be a valid HTTP or HTTPS URL`);
-  }
-  return url;
-}
-
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
   const timeZone = env.TIME_ZONE?.trim() || "Asia/Colombo";
   try {
@@ -99,8 +86,8 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     timeZone,
     databasePath,
     recordingPath,
-    ollamaUrl: httpUrl(env, "OLLAMA_URL", "http://127.0.0.1:11434"),
-    ollamaModel: required(env, "OLLAMA_MODEL"),
+    geminiApiKey: required(env, "GEMINI_API_KEY"),
+    geminiModel: env.GEMINI_MODEL?.trim() || "gemini-3.8-flash",
     whatsappGroupIds: ids(env, "WHATSAPP_GROUP_IDS"),
     lecturerIds: ids(env, "LECTURER_IDS"),
     smtpHost: required(env, "SMTP_HOST"),

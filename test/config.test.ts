@@ -5,7 +5,7 @@ import { loadConfig } from "../src/config.js";
 const validEnv: NodeJS.ProcessEnv = {
   DATABASE_PATH: "./storage/planner.sqlite",
   RECORDING_PATH: "./storage/recordings",
-  OLLAMA_MODEL: "local-model",
+  GEMINI_API_KEY: "test-gemini-api-key",
   SMTP_HOST: "smtp.example.test",
   SMTP_FROM: "planner@example.test",
   WEBTOP_AGENT_TOKEN: "a-random-token-for-local-tests-0123456789",
@@ -19,6 +19,7 @@ test("loads design defaults and numeric limits", () => {
   assert.equal(config.diskPausePercent, 80);
   assert.equal(config.minimumFreeDiskGiB, 10);
   assert.equal(config.maximumRecordingHours, 4);
+  assert.equal(config.geminiModel, "gemini-3.8-flash");
 });
 
 test("requires database and recording paths", () => {
@@ -29,12 +30,16 @@ test("requires database and recording paths", () => {
   assert.throws(() => loadConfig({ ...validEnv, DATABASE_PATH: "bad\0path" }), /non-root filesystem path/);
 });
 
-test("rejects invalid URL, timezone, and numeric limits", () => {
-  assert.throws(() => loadConfig({ ...validEnv, OLLAMA_URL: "file:///tmp/model" }), /OLLAMA_URL/);
+test("rejects invalid timezone and numeric limits", () => {
   assert.throws(() => loadConfig({ ...validEnv, TIME_ZONE: "Mars/Olympus" }), /TIME_ZONE/);
   assert.throws(() => loadConfig({ ...validEnv, PORT: "65536" }), /PORT/);
   assert.throws(() => loadConfig({ ...validEnv, DISK_PAUSE_PERCENT: "100" }), /DISK_PAUSE_PERCENT/);
   assert.throws(() => loadConfig({ ...validEnv, MIN_FREE_DISK_GIB: "0" }), /MIN_FREE_DISK_GIB/);
+});
+
+test("requires a Gemini API key and accepts a selected model", () => {
+  assert.throws(() => loadConfig({ ...validEnv, GEMINI_API_KEY: " " }), /GEMINI_API_KEY is required/);
+  assert.equal(loadConfig({ ...validEnv, GEMINI_MODEL: "gemini-3.8-flash" }).geminiModel, "gemini-3.8-flash");
 });
 
 test("normalizes and deduplicates configured IDs", () => {

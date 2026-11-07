@@ -1,0 +1,86 @@
+[
+  {
+    "id": "assignment-explicit-date-and-time",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "Data Structures assignment 2: submit by 10 November 2026 at 5:00 PM.",
+    "expected": [
+      {
+        "kind": "assignment",
+        "due_date": "2026-11-10",
+        "due_time": "17:00",
+        "ambiguous_fields": []
+      }
+    ]
+  },
+  {
+    "id": "assignment-date-only-next-year",
+    "sentAt": "2026-12-28T09:00:00+05:30",
+    "text": "Database assignment 3 is due on 5 January.",
+    "expected": [
+      {
+        "kind": "assignment",
+        "due_date": "2027-01-05",
+        "due_time": null,
+        "ambiguous_fields": []
+      }
+    ]
+  },
+  {
+    "id": "class-without-time",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "Next online lecture is on 8 November 2026. Join at https://us02web.zoom.us/j/00000000001?pwd=synthetic",
+    "expected": [
+      {
+        "kind": "class",
+        "class_date": "2026-11-08",
+        "class_time": null,
+        "zoom_url": "https://us02web.zoom.us/j/00000000001?pwd=synthetic",
+        "ambiguous_fields": ["class_time"]
+      }
+    ]
+  },
+  {
+    "id": "assignment-explicit-correction",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "Assignment deadline: 10 November 2026. Correction: the deadline is 12 November 2026.",
+    "expected": [
+      {
+        "kind": "assignment",
+        "due_date": "2026-11-12",
+        "ambiguous_fields": []
+      }
+    ]
+  },
+  {
+    "id": "unresolved-assignment-date-conflict",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "The assignment is due on either 10 November 2026 or 12 November 2026. The lecturer has not confirmed which date is correct.",
+    "expected": [
+      {
+        "kind": "assignment",
+        "due_date": null,
+        "ambiguous_fields": ["due_date"]
+      }
+    ]
+  },
+  {
+    "id": "class-with-time-and-link",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "Computer Networks Zoom lecture: 8 November 2026 at 9:30 AM Sri Lanka time. Join https://us02web.zoom.us/j/00000000002?pwd=synthetic",
+    "expected": [
+      {
+        "kind": "class",
+        "class_date": "2026-11-08",
+        "class_time": "09:30",
+        "zoom_url": "https://us02web.zoom.us/j/00000000002?pwd=synthetic",
+        "ambiguous_fields": []
+      }
+    ]
+  },
+  {
+    "id": "unrelated-message",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "I uploaded the reading notes from yesterday. Thanks.",
+    "expected": []
+  }
+]
