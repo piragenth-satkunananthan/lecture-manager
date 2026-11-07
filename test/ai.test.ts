@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 import type { GoogleGenAI } from "@google/genai";
 import {
@@ -49,6 +50,26 @@ function fakeGenerate(value: unknown, onRequest?: (request: GeminiRequest) => vo
     return JSON.stringify(value);
   };
 }
+
+test("Gemini pilot fixtures specify every extracted field and keep impossible dates unresolved", async () => {
+  const fixtures = JSON.parse(await readFile("test/fixtures/lecturer-posts.json", "utf8")) as Array<{
+    id: string;
+    expected: ExtractedAnnouncement["items"];
+  }>;
+  const fields = [
+    "kind", "title", "details", "due_date", "due_time", "class_date", "class_time", "zoom_url", "ambiguous_fields",
+  ].sort();
+
+  for (const fixture of fixtures) {
+    for (const item of fixture.expected) {
+      assert.deepEqual(Object.keys(item).sort(), fields, `${fixture.id} has a partial expected item`);
+    }
+  }
+
+  const impossibleDate = fixtures.find(({ id }) => id === "assignment-impossible-date")?.expected[0];
+  assert.equal(impossibleDate?.due_date, null);
+  assert.deepEqual(impossibleDate?.ambiguous_fields, ["due_date"]);
+});
 
 test("sends only selected message content and local Zoom-link indexes to Gemini", async () => {
   let request: GeminiRequest | undefined;

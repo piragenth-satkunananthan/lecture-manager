@@ -6,8 +6,13 @@
     "expected": [
       {
         "kind": "assignment",
+        "title": "Data Structures assignment 2",
+        "details": null,
         "due_date": "2026-11-10",
         "due_time": "17:00",
+        "class_date": null,
+        "class_time": null,
+        "zoom_url": null,
         "ambiguous_fields": []
       }
     ]
@@ -19,8 +24,13 @@
     "expected": [
       {
         "kind": "assignment",
+        "title": "Database assignment 3",
+        "details": null,
         "due_date": "2027-01-05",
         "due_time": null,
+        "class_date": null,
+        "class_time": null,
+        "zoom_url": null,
         "ambiguous_fields": []
       }
     ]
@@ -32,6 +42,10 @@
     "expected": [
       {
         "kind": "class",
+        "title": "Online lecture",
+        "details": null,
+        "due_date": null,
+        "due_time": null,
         "class_date": "2026-11-08",
         "class_time": null,
         "zoom_url": "https://us02web.zoom.us/j/00000000001?pwd=synthetic",
@@ -46,7 +60,13 @@
     "expected": [
       {
         "kind": "assignment",
+        "title": "Assignment",
+        "details": null,
         "due_date": "2026-11-12",
+        "due_time": null,
+        "class_date": null,
+        "class_time": null,
+        "zoom_url": null,
         "ambiguous_fields": []
       }
     ]
@@ -58,7 +78,13 @@
     "expected": [
       {
         "kind": "assignment",
+        "title": "Assignment",
+        "details": null,
         "due_date": null,
+        "due_time": null,
+        "class_date": null,
+        "class_time": null,
+        "zoom_url": null,
         "ambiguous_fields": ["due_date"]
       }
     ]
@@ -70,10 +96,32 @@
     "expected": [
       {
         "kind": "class",
+        "title": "Computer Networks Zoom lecture",
+        "details": null,
+        "due_date": null,
+        "due_time": null,
         "class_date": "2026-11-08",
         "class_time": "09:30",
         "zoom_url": "https://us02web.zoom.us/j/00000000002?pwd=synthetic",
         "ambiguous_fields": []
+      }
+    ]
+  },
+  {
+    "id": "assignment-impossible-date",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "Operating Systems assignment is due on 30 February 2026.",
+    "expected": [
+      {
+        "kind": "assignment",
+        "title": "Operating Systems assignment",
+        "details": null,
+        "due_date": null,
+        "due_time": null,
+        "class_date": null,
+        "class_time": null,
+        "zoom_url": null,
+        "ambiguous_fields": ["due_date"]
       }
     ]
   },

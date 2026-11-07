@@ -5,7 +5,7 @@ interface Fixture {
   id: string;
   sentAt: string;
   text: string;
-  expected: Array<Record<string, unknown>>;
+  expected: ExtractedAnnouncement["items"];
 }
 
 const fixtures = JSON.parse(await readFile("test/fixtures/lecturer-posts.json", "utf8")) as Fixture[];
@@ -26,7 +26,7 @@ let failures = 0;
 for (const fixture of selectedFixtures) {
   try {
     const actual = await extract({ text: fixture.text, sentAt: new Date(fixture.sentAt) });
-    const expected = fixture.expected as ExtractedAnnouncement["items"];
+    const expected = fixture.expected;
     if (actual.items.length !== expected.length) {
       console.error(`${fixture.id}: expected ${expected.length} item(s), received ${actual.items.length}`);
       failures++;

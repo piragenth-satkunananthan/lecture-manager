@@ -4,68 +4,90 @@
 **Approved design:** [`docs/designs/student-planner.md`](../designs/student-planner.md)  
 **Plan date:** 2026-11-07
 
-## Progress
+## Recovered handoff
 
-- Stage 1 (project and test foundation) is complete: `npm run build` passes and `npm test` passes all 6 config tests on Node.js 24.22.2.
-- The user changed the approved AI provider from local Ollama to the Gemini API and accepted free-tier data handling. This changes the design's earlier local-only AI decision; the approved design now records the change. The planner uses structured output, requests `store=false`, sends one selected post with URL/passcode redaction, and does not fall back to a local model.
-- The Gemini adapter, config changes, synthetic fixture pilot, and focused tests are implemented. `npm test` passes all 14 tests. A single live fixture passed once; the full API pilot then hit two request timeouts and two HTTP 503 responses before the remaining fixtures ran. The API gate remains open. The key was supplied through an environment file for the pilot; it was not printed or committed, and `.env` was not read.
-- No live WhatsApp group/session or Zoom test meeting has been configured. Docker is running, but no Webtop container is present. Live WhatsApp and Zoom acceptance remain separate gates and will not be inferred from unit tests.
+- The EGM artifacts are stored in the project root; the resolved design is under `docs/designs/` and the implementation plan is under `docs/plans/`.
+- No repository `AGENTS.md`, `SPEC.md`, `ROADMAP.md`, or `TASKS.md` was found. The user-provided project instructions apply.
+- The design file still labels itself `Proposed`, while this plan calls it approved and the user confirms it is the approved design. Treat its architecture and requirements as fixed; do not rewrite them during implementation.
+- The resolution report marks findings 1-8 and 10-14 `PROPOSE FIX`, finding 9 `ESCALATE` with no edit because the author had approved the detailed plan, and finding 15 `DECLINE` as editorial. Those dispositions are recorded in `goldfish_review_report.md`; the resolved design includes the accepted changes.
+- The user-approved AI choice is Gemini API on the free tier, with `store=false` and no local-model fallback. The design records that Google may use free-tier content to improve products.
+- The earlier plan records one Gemini fixture passing, followed by two request timeouts and two HTTP 503 responses before the remaining fixtures ran. The API pilot remains open; no raw run log was found to recheck those results.
+- No live WhatsApp test group/session or host-controlled Zoom meeting is configured in the project record. No live intake or unattended recording is enabled.
+- `README.md` still says there is no source code or test command; that conflicts with the current repository and must be corrected during the operations-documentation milestone.
 
-## Baseline
+## Current project state
 
-- The approved design is the product specification. The repository has no application source, package manifest, or tests yet. User-requested design changes are reflected in the approved design and recorded in this plan.
-- The working tree was clean on `main`. No repository `AGENTS.md`, `SPEC.md`, `ROADMAP.md`, or `TASKS.md` was found. The README describes a blueprint only.
-- The environment has Node.js 24.22.2, npm 12.2.2, and Docker 29.9.3. The existing `.env` is ignored and will not be read or changed as part of this plan.
-- Implementation is split into reviewable stages. Each code stage adds focused tests and runs the build and relevant tests before the next stage.
+- The Node 24 TypeScript foundation, configuration validation, Gemini extraction adapter, synthetic fixtures, and their local tests are committed.
+- The working tree contains an in-progress Baileys pilot and WhatsApp post-selection tests, plus its dependency changes. Preserve and finish this work rather than replacing it.
+- The local test command is `npm test`; it runs the strict TypeScript build and Node test suite. Current milestone work must pass it before being marked complete.
+- Current verification on Node 24.22.2: `npm test` passes all 19 tests, including complete Gemini fixture shape and impossible-date expectations.
+- The current build/test suite does not prove Gemini API quality, WhatsApp reconnect recovery, or Zoom admission and capture. Those require separate external pilots.
 
-## Implementation stages
+## Approved constraints
 
-### 1. Project and test foundation
+- Keep the planner calendar in SQLite and use `Asia/Colombo`; date-only assignments are due at 11:59 PM.
+- Accept only new posts from configured groups and trusted lecturers. Pilot Baileys first; try `whatsapp-web.js` only if Baileys fails. Do not enable live-group intake before the current-policy and account-risk gate.
+- Send one selected post to Gemini with URLs replaced by local indexes, passcodes removed, group/sender IDs omitted, and `store=false`. Do not add a local-model fallback.
+- Ask about missing or conflicting details instead of guessing. Preserve source identity, user corrections, cancellation matching, duplicate review, and the `overdue_review` behavior defined in the design.
+- Keep Zoom capture disabled unless permission and admission can be verified for that class. Never bypass blocked Zoom controls. Keep Webtop private and separately authenticated.
+- Keep recordings private and user-deletable. Stop active capture below 10 GiB free, cap it at four hours, and do not automatically delete older recordings.
+- Email delivery is at-least-once. Backups exclude credentials and video files.
 
-Create the Node 24 TypeScript project, strict compiler settings, build/test scripts, runtime configuration validation, `.env.example`, and generated/private-data exclusions. Add config tests for defaults, missing required values, and invalid storage/runtime limits. Do not read or overwrite `.env`.
+## Milestones
 
-**Exit checks:** `npm run build` passes; `npm test` passes; config tests prove `Asia/Colombo` defaults, required settings fail clearly, and invalid paths, timezones, and numeric limits are rejected.
+### Milestone 0: Project and test foundation — complete
 
-### 2. Extraction, intake, and capture pilots (must pass before planner core)
+Node 24, strict TypeScript, build/test scripts, configuration validation, safe environment example, and private-data exclusions are in place.
 
-Run the Gemini structured-output adapter against synthetic fixtures and require exact expected values, including unresolved ambiguous cases. Verify that requests omit sender/group IDs, actual URLs, and passcodes, set `store=false`, and fail safely when the API is unavailable or over quota. Pilot Baileys against the separate test group (try whatsapp-web.js only if Baileys fails) and the Ubuntu Webtop Zoom workflow in a host-controlled test meeting. Keep live-group intake and unattended live recording disabled. Record reconnect/catch-up outcomes, permission/admission checks, saved media quality, host-end detection, and low-space stop results.
+**Exit checks:** `npm test` passes; config tests cover defaults, required values, invalid paths, time zones, and numeric limits.
 
-**Exit checks:** all fixture expectations pass with zero incorrect or ambiguous auto-confirmations; Gemini requests contain only the selected post with the documented redactions and disabled server-side storage; API failure and quota behavior retain work for retry; intake recovers every eligible pilot post without loss or duplicate planner items; the permitted test meeting saves usable screen/audio, detects host end within 30 seconds, and finalizes at the low-space stop. No live automation until its policy/permission gate is recorded.
+### Milestone 1: Feasibility pilot — in progress
 
-**External prerequisites:** a Gemini API key and available quota, a test-group identity and linked-device login, a host-controlled Zoom test meeting and link, and a running Ubuntu Webtop environment. Unit tests can use fakes, but they do not replace these live pilot checks.
+Complete each pilot gate before building the planner core:
 
-### 3. Planner core
+1. **Gemini contract and synthetic fixtures:** compare every returned field with a complete expected fixture; cover clear, corrected, conflicting, missing, and impossible date/time cases. Verify request redaction, URL indexing, `store=false`, malformed output rejection, and safe API failure handling.
+2. **Gemini API run:** use only synthetic fixtures. Require every fixture to match exactly, record quota and failure behavior, and retain failed work for retry. The previous run did not complete; rerun only when the API key and free-tier quota are available.
+3. **WhatsApp test-group run:** after recording the current policy check and account-risk decision, use one separate test group to verify trusted-sender filtering, new posts, reconnect/catch-up, edits, duplicates, and process restart without loss or duplicate planner items. If Baileys fails, test `whatsapp-web.js` in the same group. Do not use a live subject group.
+4. **Zoom test-meeting run:** in a host-controlled meeting, verify permission, login, admission, five-minute early join, the 20-minute opening wait, usable saved screen/audio, host-end stop within 30 seconds, four-hour cap, low-space finalization, and restart behavior. Keep capture disabled if any permission or admission check fails.
 
-After Stage 2 passes, add SQLite migrations and source identity, Gemini extraction validation, pending clarification handling, item lifecycle and edit/cancel matching, overdue review, Sri Lanka date rules, and persistent deduplicated reminders. Add synthetic fixtures with exact expected structured values.
+**Current evidence:** local Gemini and WhatsApp unit coverage is available. The live Gemini run is incomplete; no test-group run or Zoom meeting result is recorded. The current WhatsApp pilot keeps deduplication in memory, so it cannot by itself prove no loss or duplication across process restart.
 
-**Exit checks:** component tests cover schema/migrations, message idempotency, ambiguous and incorrect extraction, user-correction precedence, unique cancellation matching, overdue reminder suppression, timezone defaults, reminder deduplication, and restart recovery.
+**Exit checks:** every synthetic fixture matches exactly with zero incorrect or ambiguous items auto-confirmed; Gemini requests meet the redaction and storage requirements; API failure retains work; every eligible test post survives disconnect/restart without loss or duplication; untrusted posts are ignored; the saved Zoom sample has usable screen/audio and passes the host-end and low-space checks. Keep live intake and unattended capture disabled until their separate policy, permission, and pilot gates pass.
 
-### 4. Planner UI, access, and email
+### Milestone 2: Planner core — after Milestone 1 passes
 
-Add the password-protected responsive planner, clarification and correction actions, event provenance, recording metadata views, authenticated worker API boundary, and SMTP notices. Preserve the private-LAN/VPN requirement and do not expose Webtop publicly.
+1. Add SQLite migrations and stable source identity; enforce unique source-message IDs and reminder keys.
+2. Implement item extraction, clarification, correction precedence, cancellation matching, duplicate review, raw-text deletion, and `pending`, `confirmed`, `cancelled`, and `overdue_review` states.
+3. Add Sri Lanka date handling and persistent reminder scheduling, including overdue suppression and the documented at-least-once retry behavior.
 
-**Exit checks:** API/UI tests cover authentication, input validation, pending questions, corrections, provenance after source-text deletion, recording deletion, sender-safe email content, and at-least-once retry behavior. Build and all prior tests pass.
+**Exit checks:** tests cover migrations, idempotent delivery, ambiguous and incorrect extraction, unique cancellation matching, user-correction precedence, date-only deadlines, overdue suppression, reminder deduplication, and restart recovery.
 
-### 5. Zoom scheduler and Webtop worker
+### Milestone 3: User access and alerts
 
-Add persistent non-overlapping Zoom jobs, the claim/heartbeat/status lease protocol, confirmed-permission/admission gates, 5-minute early join, 20-minute wait, screen/audio capture, host-end detection, four-hour cap, 10 GiB free-space stop, private storage, and failure email. Do not bypass blocked Zoom controls.
+Build the authenticated planner API and responsive browser calendar, pending-question and correction flows, source provenance, intake health, recording metadata views, and SMTP notices. Serve planner access over authenticated HTTPS on the private LAN; remote use requires the user's VPN. Do not expose Webtop publicly.
 
-**Exit checks:** unit tests cover every job transition, lease expiry before/after capture begins, permission/admission rejection, one-job concurrency, wait/cap/end behavior, low-space finalization, and restart/file reconciliation. Repeat the host-controlled live Zoom pilot before enabling unattended capture.
+**Decision gate:** resolve TLS termination and certificate provisioning before exposing the planner or API. Do not silently add a proxy or change the service boundary.
 
-### 6. Deployment, backup, and integrated recovery
+**Exit checks:** tests cover authentication, input validation, pending questions, corrections, provenance after raw-text deletion, recording deletion, sender-safe notices, and SMTP retry status. Build and prior tests pass.
 
-Add Compose deployment, private Webtop access, resource limits, daily encrypted SQLite online backup with seven daily and four weekly copies, restore steps, and operations documentation. Exclude credentials and video files from backups; document that expired snapshots may retain deleted database content until expiry.
+### Milestone 4: Zoom worker
 
-**Exit checks:** build and all tests pass; a private one-group/test-meeting pilot survives restart and intake outage; restore recovers planner items, reminders, and recording metadata; HTTPS/authentication, disk behavior, alerting, and secret-free logs are manually verified. Keep live automation disabled for any gate that fails.
+After the Zoom pilot passes, add the non-overlapping scheduler, permission/admission gate, planner-owned job states and lease protocol, and the separate Ubuntu Webtop worker. Enforce the five-minute early join, 20-minute wait, host-end detection, four-hour cap, 10 GiB stop, private recordings, and failure email. The worker must not access the container engine socket or start a second concurrent capture.
 
-## Design gaps to resolve before affected stages
+**Decision gate:** define the user-facing per-class permission confirmation before scheduling live jobs. The worker fails closed until that mechanism and the host/account checks are implemented.
 
-1. The design requires authenticated HTTPS for the planner and Webtop but does not specify TLS termination or certificate provisioning. Resolve this before Stage 4 deployment/API exposure; do not silently add a proxy or change the service boundary.
-2. The design requires backups on storage separate from the live database but does not specify the actual backup destination. Resolve the deployment path before Stage 6; keep it configurable rather than assuming a host path.
-3. The design requires permission confirmed for each class but does not specify the user-facing confirmation mechanism. Resolve this before enabling Stage 5 scheduling; until then, the worker must fail closed.
+**Exit checks:** tests cover job transitions, lease expiry before/after recording starts, permission/admission rejection, one-job concurrency, wait/end/cap/low-space behavior, restart recovery, and saved-file reconciliation. Repeat the host-controlled pilot before enabling unattended capture.
 
-## Scope and rollback
+### Milestone 5: Private pilot, deployment, and recovery
 
-- Implement only the approved design and its explicit acceptance criteria. Keep live WhatsApp intake and unattended live recording disabled until the documented gates pass.
-- Keep each stage in a separate local commit after its checks pass. If a stage fails, leave the previous commit intact and revert only that stage's files.
-- Never place real group messages, names, meeting links, passcodes, or session credentials in fixtures, tests, logs, or Git.
+Add Compose deployment, private Webtop access, resource limits, operational documentation, and a one-group/test-meeting integrated pilot. Add a daily encrypted SQLite online backup on storage separate from the live database; retain seven daily and four weekly copies; exclude credentials and video files. Document and test restore while stopped, verify planner items/reminders/recording metadata before restart, and state that video files are not recoverable from these backups.
+
+**Decision gate:** select the separate backup destination before implementing backups; do not assume a host path.
+
+**Exit checks:** build and all tests pass; restart and intake outage recovery work; restore recovers planner state and recording metadata; HTTPS/authentication, disk behavior, alerting, secret-free logs, and private Webtop access are manually verified. Keep any live automation disabled when its gate fails.
+
+## Rollback and data handling
+
+- Make one milestone change at a time and keep the last passing commit intact; revert only files from a failed milestone.
+- Never put real group messages, names, meeting links, passcodes, or session credentials in fixtures, tests, logs, or Git. Do not read or overwrite `.env` as part of the implementation.
+- Do not mark a pilot complete from unit tests alone. Record the external result and its date before enabling that path.
