@@ -8,7 +8,7 @@
 
 ## Overview
 
-The Student Planner is intended to help one student keep up with classes and assignments announced across separate subject WhatsApp groups. It turns lecturer posts into a shared calendar with reminders and aims to join and screen/audio-record Zoom classes on the user's server. The student should be able to check the planner from an Android phone or Arch Linux desktop. Unattended Zoom joining, admission, and detecting when the host ends a meeting still need to be proven in a test meeting before recording can be treated as dependable.
+The Student Planner tracks classes and assignments announced in the student's subject WhatsApp groups. It adds lecturer posts to its planner-owned calendar, sends reminders, and is designed to join Zoom classes and record the screen and audio on the user's server. The calendar is available from Android and Arch Linux browsers. Unattended joining, admission, and host-end detection must pass a test meeting before live recording is enabled.
 
 ## The Problem
 
@@ -36,7 +36,7 @@ Lecturers post assignment instructions and Zoom links in subject WhatsApp groups
 * **WhatsApp reliability**: Does the Baileys pilot receive new posts, reconnect, and recover after server downtime reliably enough for one live group? If it fails, does whatsapp-web.js pass the same pilot?
 * **Local AI capacity**: Can the user's server run Ollama within its available memory and CPU while producing valid assignment and class details? The approved design queues posts rather than sending them to a hosted model if local inference is unavailable.
 * **Unattended Zoom capture**: Can the Webtop account join and be admitted unattended, capture usable screen and audio, and expose a reliable host-ended state to the worker? This must pass a host-controlled meeting before live recording is enabled.
-* **Late assignments**: How should the planner handle a lecturer post received after the stated deadline or a deadline that is already past?
+* **Late assignments**: If an assignment arrives after its due time, create it as `overdue_review`, send no scheduled deadline reminders, and ask the student whether to keep it for reference or archive it.
 
 ## Critical User Journeys (CUJs)
 
@@ -60,25 +60,26 @@ Lecturers post assignment instructions and Zoom links in subject WhatsApp groups
 
 ## Technical Plan (Architecture)
 
-The service runs on the user's server and owns the planner calendar. A calendar view in the service makes the assignments and classes available from the user's Android phone and Arch Linux desktop. Each calendar item keeps a reference to the source WhatsApp message so the student can check where its details came from.
+The service runs on the user's server and owns the planner calendar. A calendar view in the service makes the assignments and classes available from the user's Android phone and Arch Linux desktop. Both devices use a browser to reach the planner over authenticated HTTPS on the private LAN; remote access requires the user's VPN into that network. Each calendar item keeps a reference to the source WhatsApp message so the student can check where its details came from.
 
 ### Message intake and planning
 
-* A WhatsApp intake client watches only new posts in configured subject groups from trusted lecturer senders. The one-group pilot tests Baileys first and tests whatsapp-web.js only if Baileys fails; the live service uses one client.
+* A WhatsApp intake client watches only new posts in configured subject groups from trusted lecturer senders. The one-group pilot tests Baileys first and tests whatsapp-web.js only if Baileys fails; the live service uses one client. Before enabling live-group intake, the owner checks the current WhatsApp terms and the selected client's current policy, records the check date and account-risk decision, and uses manual forwarding if automated access is not acceptable. If the account is restricted, stop automated intake and alert the user.
 * Local Ollama extraction identifies assignment instructions, due dates, Zoom links, and class times from each relevant post. It does not import unrelated group history or send message text to a hosted model.
-* Clear information becomes a planner item. If required details are missing or ambiguous, the item stays pending until the student answers or cancels it; the service does not create a scheduled class from a guessed time. Raw message text is retained only while clarification is pending, then the structured item and source reference remain.
+* Clear information becomes a planner item. If required details are missing or ambiguous, the item stays pending until the student answers or cancels it; the service does not create a scheduled class from a guessed time. Raw message text is retained only while clarification is pending. After deletion, retain only the group, message ID, sender, timestamp, and an original-message link if WhatsApp provides one. The planner displays this as provenance; it does not reproduce the deleted message body.
 * The planner calendar stores the source item and its reminder state. Assignment and class reminders use the Sri Lanka time rules in the Goals section and remain deduplicated when the service restarts or a post is received again.
 
 ### Zoom scheduling and capture
 
-* The Zoom scheduler watches confirmed class items and starts the candidate Ubuntu Webtop desktop workflow five minutes before class.
+* The Zoom scheduler watches confirmed class items for which permission is confirmed and starts the candidate Ubuntu Webtop desktop workflow five minutes before class.
 * The Zoom client waits up to 20 minutes for the meeting to open. Once admitted, a screen and audio capture process saves the recording privately on the server.
-* The capture must stop when the host ends the meeting. The Webtop worker will check the visible Zoom UI for the ended-meeting state and enforce a four-hour cap from recording start if that signal is missed. A host-controlled test must prove joining, admission, usable capture, end detection, and a valid saved recording. If any step fails, unattended recording stays disabled and the service reports the failure.
+* Start capture only when the worker can verify admission through the configured account and host settings and permission for that class is confirmed. Do not bypass blocked controls. If permission or admission cannot be confirmed, do not capture; report the failure and keep unattended recording disabled for that class.
+* The capture must stop when the host ends the meeting. The Webtop worker checks the visible Zoom UI for the ended-meeting state and enforces a four-hour cap from recording start if that signal is missed. During capture, check free space at least every 15 seconds and stop and finalize the recording if free space falls below 10 GiB. Send an alert and test this stop condition in the Zoom pilot. If any required step fails, unattended recording stays disabled and the service reports the failure.
 
 ### Notifications and data flow
 
-* The service sends scheduled reminders and shows clarification questions in the planner with an email notice. Email is the independent path for service and recording failures so a lost WhatsApp session cannot suppress every alert.
-* Recordings stay on the user's server and can be deleted by the user. At 80% disk use, the service pauses new recordings and sends an email alert instead of deleting older recordings automatically.
+* The service sends scheduled reminders and shows clarification questions in the planner with an email notice. Email is the independent path for service and recording failures so email notices remain available when WhatsApp intake is disconnected, provided SMTP is working.
+* Recordings stay on the user's server and can be deleted by the user. At 80% disk use, the service pauses new recordings; during an active capture it also stops and finalizes the file if free space falls below 10 GiB. It sends an email alert instead of deleting older recordings automatically.
 * WhatsApp and Zoom session credentials stay out of routine logs. Intake health, pending questions, reminder results, Zoom join and recording outcomes, and available disk space are tracked without logging message text, meeting links, or passcodes.
 
 ```mermaid
@@ -130,10 +131,10 @@ flowchart TD
 
 ## Non-Functional Requirements
 
-* **Privacy and security**: Read only new posts from configured groups and trusted lecturer senders. Keep source text only while clarification is pending, run extraction locally, protect WhatsApp/Zoom credentials and backups, and keep message bodies, links, and passcodes out of routine logs and email subjects. Password-protect the planner and keep Webtop private; do not mount the container engine socket into the application.
-* **Reliability**: Persist message, event, reminder, Zoom job, and recording states so restarts do not silently lose work. Use unique message and reminder keys, retry pending email deliveries, and send operational alerts through email independently of WhatsApp.
-* **Storage and runtime limits**: Stop an individual recording after four hours if no host-ended signal arrives. At 80% disk use, pause new recordings and preserve existing files until the user deletes them. Verify local Ollama resource use before enabling automatic extraction.
-* **Rollout**: Use a separate WhatsApp test group and host-controlled Zoom meeting first. Do not enable live-group intake or unattended recording until the corresponding pilot passes.
+* **Privacy and security**: Read only new posts from configured groups and trusted lecturer senders. Keep source text only while clarification is pending, run extraction locally, protect WhatsApp/Zoom credentials and backups, and keep message bodies, links, and passcodes out of routine logs and email subjects. Require authenticated HTTPS for planner access. Expose the Webtop interface only on the same private network used by the user's devices, require its own interactive authentication separate from the planner-to-agent token, and restrict terminal and passwordless-sudo access to the user. Do not expose Webtop publicly or mount the container engine socket into the application.
+* **Reliability**: Persist message, event, reminder, Zoom job, and recording states so restarts do not silently lose work. Use unique message and reminder keys. Email delivery is at-least-once: a duplicate notice is possible if SMTP accepts a message and the service stops before recording delivery. Persist each attempt and expose delivery status in the planner; do not promise exactly-once SMTP delivery. Send operational alerts through email independently of WhatsApp.
+* **Storage and runtime limits**: Stop an individual recording after four hours if no host-ended signal arrives. At 80% disk use, pause new recordings; during active capture, check at least every 15 seconds and stop and finalize the file below 10 GiB free. Preserve existing recordings until the user deletes them. Set container CPU and memory limits for local Ollama and verify the model stays within them before enabling automatic extraction.
+* **Rollout**: Use a separate WhatsApp test group and host-controlled Zoom meeting first. Before live-group intake, record the current WhatsApp policy check and account-risk decision. Do not enable live-group intake or unattended recording until the corresponding pilot and authorization checks pass.
 
 ## Additional Resources
 
@@ -149,15 +150,15 @@ flowchart TD
 
 The repository has no application source or dependencies, so implementation starts as a small single-user web service. Use Node.js 24 LTS with TypeScript, Fastify for the web service, SQLite for planner data, and a plain responsive browser interface. Baileys is the first WhatsApp client to test because its stable Node package supports TypeScript and works without a browser; its project documentation requires Node.js 20 or later. If Baileys fails the one-group pilot, test whatsapp-web.js before selecting one client for live intake. The Node.js release table lists version 24 as LTS. [Node.js release schedule](https://nodejs.org/en/about/previous-releases), [Baileys installation](https://github.com/WhiskeySockets/docs/blob/main/installation.mdx), [Baileys project](https://github.com/WhiskeySockets/Baileys)
 
-The planner owns its calendar in SQLite. AI extraction runs locally through Ollama; if the local model is unavailable, retain the message for review and alert the user rather than sending group content to a hosted model. Use email for operational failures and clarification notices, and an in-app queue for questions. The Zoom worker runs in a separate Ubuntu Webtop container and communicates with the planner over a private authenticated connection; it has no access to the container engine socket.
+The planner owns its calendar in SQLite. AI extraction runs locally through Ollama; if the local model is unavailable, retain the message for review and alert the user rather than sending group content to a hosted model. Use email for operational failures and clarification notices, and an in-app queue for questions. The Zoom worker runs in a separate Ubuntu Webtop container and communicates with the planner over a private authenticated connection; it has no access to the container engine socket. The Android phone and Arch Linux desktop reach the planner through authenticated HTTPS on the private LAN; access from outside that LAN requires the user's VPN.
 
 ### Implementation stages
 
-1. **Feasibility pilot**: Connect Baileys to the separate test group, then test reconnection, new posts, edits, duplicates, and restarts. Check that the local Ollama model runs within the server's resource limits and extracts representative synthetic posts correctly. Test the Webtop Zoom workflow in a host-controlled test meeting: login, unattended join, admission, screen/audio capture, the 20-minute opening wait, host-end detection, restart behavior, and saved-file verification. If Baileys fails, try whatsapp-web.js in the same test group. Do not connect a live subject group or enable unattended recording until its path passes.
-2. **Planner core**: Build the SQLite store, local message extraction, clarification queue, planner-owned calendar, and persistent reminders. Use `Asia/Colombo`; date-only assignments are due at 11:59 PM, and reminder times follow the Goals section. Deduplicate delivery retries by source message identity; if an identical post arrives under a new identity, hold it for duplicate review. Edits update the existing item, cancellations stop its reminders, and user-edited fields are preserved. Keep raw message text only while clarification is pending.
-3. **User access and alerts**: Serve a password-protected responsive calendar on the private network. Show pending questions, intake health, class status, and recording links; let the user answer clarifications and delete recordings. Send reminders and clarification notices by email as well as showing them in the planner; never send messages to class groups.
-4. **Zoom worker**: After the feasibility pilot passes, let the scheduler submit one job at a time to the Webtop agent. It opens the confirmed meeting five minutes before start, waits up to 20 minutes, and starts FFmpeg screen/audio capture after admission. Detect the ended-meeting state from the visible Zoom UI and stop capture then; stop at a four-hour hard limit if that signal is missed, and send an alert. Save recordings under `/data/recordings`; pause new recordings at 80% disk use and alert rather than deleting files automatically.
-5. **Private pilot and recovery**: Run one subject group and the test meeting through a server restart and an intake outage. Check reminder deduplication, message catch-up, recording recovery, email alerts, private Webtop access, and backup restore before enabling other groups.
+1. **Feasibility pilot**: Connect Baileys to the separate test group, then test reconnection, new posts, edits, duplicates, and restarts. Each synthetic fixture records its expected structured fields and normalized values. Extraction passes only when every required field matches its fixture; missing, ambiguous, contradictory, or incorrect dates and times remain pending, with zero incorrect items auto-confirmed. The intake pilot passes only when every eligible test post is recovered after disconnect and restart without a lost or duplicated planner item, and untrusted senders and groups are ignored. Set CPU and memory limits for the local model; record those limits and confirm the model stays within them without an out-of-memory termination. Test the Webtop Zoom workflow in a host-controlled meeting: verify permission, login, join, admission, screen and audio capture, the 20-minute opening wait, host-end detection within 30 seconds, the low-space stop, restart behavior, and saved-file verification. A reviewer must confirm both screen and audio are usable in a saved sample. If Baileys fails, try whatsapp-web.js in the same test group. Do not connect a live subject group or enable unattended recording until its corresponding pilot and authorization checks pass.
+2. **Planner core**: Build the SQLite store, local message extraction, clarification queue, planner-owned calendar, and persistent reminders. Use `Asia/Colombo`; date-only assignments are due at 11:59 PM, and reminder times follow the Goals section. Store a stable source identity as group ID, message ID, sender ID, and sent timestamp. Planner items have `pending`, `confirmed`, `cancelled`, or `overdue_review` status and retain their source identity. A quoted or replied-to message identifies the item changed or cancelled; without that reference, apply a correction or cancellation only when exactly one open item in that group matches the stated subject and date, otherwise ask the student. A user's corrected field takes precedence over later message edits until the user clears that correction. Repeated delivery of the same message ID is idempotent; identical content under a new ID remains in duplicate review. Keep raw message text only while clarification is pending. If an assignment arrives after its due time, create it as `overdue_review`, send no scheduled deadline reminders, and ask the student whether to keep it for reference or archive it.
+3. **User access and alerts**: Serve a password-protected responsive calendar over authenticated HTTPS on the private network. Android and Arch Linux browsers access it on the private LAN; remote access requires the user's VPN. Show pending questions, intake health, class status, source provenance, and recording links; let the user answer clarifications and delete recordings. Send reminders and clarification notices by email as well as showing them in the planner; never send messages to class groups.
+4. **Zoom worker**: After the feasibility pilot passes, let the scheduler submit one job at a time to the Webtop agent only for a class with confirmed permission. The worker verifies admission through the configured account and host settings and does not bypass blocked controls. It opens the confirmed meeting five minutes before start, waits up to 20 minutes, and starts FFmpeg screen and audio capture after admission. Detect the ended-meeting state from the visible Zoom UI and stop capture then; stop at a four-hour hard limit if that signal is missed. Check free space at least every 15 seconds and stop and finalize capture below 10 GiB free. Save recordings under `/data/recordings`, alert on stop or failure, and do not delete older recordings automatically.
+5. **Private pilot and recovery**: Run one subject group and the test meeting through a server restart and an intake outage. Check reminder deduplication, message catch-up, recording recovery, email alerts, private Webtop access, and backup restore before enabling other groups. Create a daily encrypted SQLite online backup, including planner state and recording metadata, on storage separate from the live database; retain seven daily and four weekly copies. Exclude WhatsApp/Zoom credentials and recording video files. Restore by stopping the service, restoring a selected snapshot, and verifying planner items, reminders, and metadata before restart. The pilot must restore a snapshot and confirm these records. Document that video files are not recoverable from this backup and that expired snapshots may contain data deleted from the live database until their retention period ends.
 
 ### Target Files to Create or Modify
 
@@ -184,7 +185,7 @@ The planner owns its calendar in SQLite. AI extraction runs locally through Olla
 #### 5. `.env.example` (Create)
 
 * **Type / Scope**: Safe configuration example.
-* **Proposed Changes**: Document the planner login, private bind address, subject group and lecturer IDs, timezone, local Ollama URL/model, SMTP settings, internal Webtop token, recording path, 80% storage threshold, and four-hour recording cap. Use placeholders only.
+* **Proposed Changes**: Document the planner login, private bind address, subject group and lecturer IDs, timezone, local Ollama URL/model and resource limits, SMTP settings, internal Webtop token, recording path, 80% storage threshold, 10 GiB active-recording free-space floor, and four-hour recording cap. Use placeholders only.
 
 #### 6. `compose.yaml` (Create)
 
@@ -199,12 +200,12 @@ The planner owns its calendar in SQLite. AI extraction runs locally through Olla
 #### 8. `src/db.ts` (Create)
 
 * **Type / Scope**: SQLite storage and migrations.
-* **Proposed Changes**: Create tables for source messages, planner items, pending clarifications, reminder deliveries, Zoom jobs, and recording metadata. Enforce unique source-message IDs and unique reminder keys so replay and restart do not create duplicates.
+* **Proposed Changes**: Create tables for source messages, planner items, pending clarifications, reminder deliveries, Zoom jobs, and recording metadata. Store source group ID, message ID, sender ID, and sent timestamp; planner items store their source identity, kind, status, due or class-start time, and user-corrected fields. Use `pending`, `confirmed`, `cancelled`, and `overdue_review` item states. Enforce unique source-message IDs and unique reminder keys so replay and restart do not create duplicates.
 
 #### 9. `src/whatsapp.ts` (Create)
 
 * **Type / Scope**: WhatsApp linked-device intake.
-* **Proposed Changes**: Connect the selected client, accept only new posts from configured subject groups and lecturer IDs, persist the last-seen message reference, expose connection health, and reconnect without logging message bodies or session credentials. Pilot Baileys first; use whatsapp-web.js only if the pilot fails.
+* **Proposed Changes**: Connect the selected client, accept only new posts from configured subject groups and lecturer IDs, persist the last-seen message reference, expose connection health, and reconnect without logging message bodies or session credentials. Before live intake, record the date of the current WhatsApp policy check and the user's account-risk decision; stop and alert if the account is restricted. Pilot Baileys first; use whatsapp-web.js only if the pilot fails.
 
 #### 10. `src/ai.ts` (Create)
 
@@ -214,12 +215,12 @@ The planner owns its calendar in SQLite. AI extraction runs locally through Olla
 #### 11. `src/planner.ts` (Create)
 
 * **Type / Scope**: Assignment and class lifecycle.
-* **Proposed Changes**: Create and update planner items with source references, statuses, user corrections, and cancellation handling. Deduplicate delivery retries by source message ID and hold identical reposts under new IDs for user review. Convert clear date-only deadlines to 11:59 PM Sri Lanka time; leave unclear items pending.
+* **Proposed Changes**: Create and update planner items with source identity, statuses, user corrections, and cancellation handling. Match changes through a quoted/replied-to message, or update only a unique open item matching group, subject, and date; otherwise ask the user. Preserve user-corrected fields until cleared. Deduplicate delivery retries by source message ID and hold identical reposts under new IDs for user review. Convert clear date-only deadlines to 11:59 PM Sri Lanka time; leave unclear items pending and overdue assignments in `overdue_review` without scheduled reminders.
 
 #### 12. `src/reminders.ts` (Create)
 
 * **Type / Scope**: Persistent reminder scheduler.
-* **Proposed Changes**: Create assignment reminders for 9:00 AM the day before and due date, and class reminders for 9:00 AM the day before and one hour before. Insert a unique pending delivery before sending, mark it delivered only after SMTP succeeds, and retry pending deliveries after restart; suppress reminders for canceled or unresolved items.
+* **Proposed Changes**: Create assignment reminders for 9:00 AM the day before and due date, and class reminders for 9:00 AM the day before and one hour before. Insert a unique pending delivery before sending, mark it delivered only after SMTP succeeds, and retry pending deliveries after restart; suppress reminders for canceled, unresolved, or `overdue_review` items. Email delivery is at-least-once: duplicate notices are possible if SMTP accepts a message before the service records delivery. Persist attempts and expose delivery status; do not promise exactly-once delivery.
 
 #### 13. `src/notifications.ts` (Create)
 
@@ -229,27 +230,27 @@ The planner owns its calendar in SQLite. AI extraction runs locally through Olla
 #### 14. `src/zoom.ts` (Create)
 
 * **Type / Scope**: Zoom job scheduler and state tracking.
-* **Proposed Changes**: Schedule confirmed non-overlapping classes, request a Webtop job five minutes before start, enforce the 20-minute wait, record job state, and alert when the agent fails or reaches the four-hour cap.
+* **Proposed Changes**: Schedule confirmed non-overlapping classes with confirmed permission, request a Webtop job five minutes before start, enforce the 20-minute wait, record job state, and alert when the agent fails, cannot verify admission, reaches the four-hour cap, or stops for low disk space.
 
 #### 15. `src/server.ts` (Create)
 
 * **Type / Scope**: Fastify API and application startup.
-* **Proposed Changes**: Serve the password-protected browser UI and planner API, accept Webtop agent status over the authenticated private network, and start intake, reminders, and Zoom scheduling from persisted database state.
+* **Proposed Changes**: Serve the password-protected browser UI over HTTPS on the private network and accept Webtop agent status over a separate authenticated private connection. The agent claims one job through `POST /agent/jobs/claim`, which returns job ID, planner item ID, meeting link, scheduled start, and lease expiry. It renews a 60-second lease every 20 seconds through `POST /agent/jobs/{job_id}/heartbeat` and reports state through `POST /agent/jobs/{job_id}/status`. Job states are `queued`, `claimed`, `joining`, `waiting`, `recording`, `completed`, `failed`, and `expired`. Requeue an expired lease only if recording has not begun; if it expires after recording starts, mark the job failed for review and reconcile its saved-file state before another capture. Start intake, reminders, and Zoom scheduling from persisted database state.
 
 #### 16. `web/index.html`, `web/app.js`, and `web/style.css` (Create)
 
 * **Type / Scope**: Responsive planner interface.
-* **Proposed Changes**: Provide calendar and upcoming-item views, a pending-clarification queue with answer forms, manual correction/cancellation, recording links and deletion, and health/failure status for Android and desktop browsers.
+* **Proposed Changes**: Provide calendar and upcoming-item views, a pending-clarification queue with answer forms, manual correction/cancellation, source provenance showing group, message ID, sender, timestamp, and an original-message link if available, recording links and deletion, and health/failure status for Android and desktop browsers. Do not display deleted source text as recoverable.
 
 #### 17. `webtop/Dockerfile` (Create)
 
 * **Type / Scope**: Ubuntu Webtop image.
-* **Proposed Changes**: Extend the Ubuntu Webtop image with the Zoom desktop client, Node.js agent runtime, FFmpeg, `xdotool`, and Tesseract for reading the visible meeting-ended state. Keep the Webtop UI private.
+* **Proposed Changes**: Extend the Ubuntu Webtop image with the Zoom desktop client, Node.js agent runtime, FFmpeg, `xdotool`, and Tesseract for reading the visible meeting-ended state. Keep the Webtop UI on the private network, protect it with separate interactive authentication over HTTPS, and restrict terminal and passwordless-sudo access to the user.
 
 #### 18. `webtop/agent.ts`, `webtop/zoom-ui.ts`, and `webtop/capture.ts` (Create)
 
 * **Type / Scope**: Isolated desktop automation and recording worker.
-* **Proposed Changes**: Poll the planner for one authorized job, open the meeting in the Zoom desktop, report admission state, capture X11 video and PulseAudio audio with FFmpeg, detect the tested end-of-meeting UI state, and stop at the four-hour cap. Report saved-file status to the planner; never accept a second concurrent job.
+* **Proposed Changes**: Claim one leased, authorized job from the planner; verify admission through the configured account and host settings without bypassing blocked controls; open the Zoom meeting; capture X11 video and PulseAudio audio with FFmpeg; detect the tested end-of-meeting UI state; and stop at the four-hour cap or below 10 GiB free space, finalizing the file. Report job state and saved-file status to the planner; never accept a second concurrent job.
 
 #### 19. `webtop/root/etc/services.d/zoom-agent/run` (Create)
 
@@ -259,26 +260,26 @@ The planner owns its calendar in SQLite. AI extraction runs locally through Olla
 #### 20. `test/whatsapp.test.ts`, `test/extraction.test.ts`, `test/planner.test.ts`, `test/reminders.test.ts`, and `test/zoom.test.ts` (Create)
 
 * **Type / Scope**: Automated unit tests.
-* **Proposed Changes**: Cover group/sender filtering, invalid or ambiguous extraction, Sri Lanka date defaults, edit/cancel/duplicate handling, reminder idempotency, Zoom wait/end/cap state transitions, and restart recovery using fake messages and a fake Webtop agent.
+* **Proposed Changes**: Cover group/sender filtering, exact expected extraction fields and values, invalid or ambiguous extraction, confidently wrong dates, Sri Lanka date defaults, edit/cancel/duplicate handling, `overdue_review` reminder suppression, at-least-once email retry behavior, Zoom permission/admission and wait/end/cap/low-space state transitions, and restart recovery using fake messages and a fake Webtop agent. Require zero incorrect or ambiguous fixture items to be auto-confirmed.
 
 #### 21. `test/fixtures/lecturer-posts.json` (Create)
 
 * **Type / Scope**: Sanitized extraction examples.
-* **Proposed Changes**: Store synthetic posts for clear and ambiguous assignment dates, class links with and without times, edits, cancellations, and duplicate messages. Do not put real class messages, links, or names in the repository.
+* **Proposed Changes**: Store synthetic posts and expected structured values for clear and ambiguous assignment dates, confidently wrong dates, class links with and without times, edits, cancellations, and duplicate messages. Do not put real class messages, links, or names in the repository.
 
 #### 22. `README.md` (Modify)
 
 * **Type / Scope**: User setup and operations guide.
-* **Proposed Changes**: Document deployment, linking the WhatsApp account, configuring trusted groups and senders, setting SMTP and local AI, private Webtop access, storage behavior, backup/restore, test-group rollout, and recovery after session loss.
+* **Proposed Changes**: Document deployment, the current WhatsApp policy and account-risk gate, linking the WhatsApp account, configuring trusted groups and senders, setting SMTP and local AI, authenticated HTTPS and VPN access, separate Webtop authentication, storage behavior, backup contents/retention/restore and video-file exclusion, test-group acceptance criteria, and recovery after session loss.
 
 ### Verification Plan
 
 * **Build**: `npm run build` succeeds on Node.js 24 LTS.
 * **Automated checks**: `npm test` passes the unit tests for extraction validation, timezone defaults, source deduplication, reminder idempotency, and Zoom worker state transitions.
-* **WhatsApp and AI pilot**: In a separate test group, verify permitted senders, link and assignment extraction, edits, duplicates, disconnect/reconnect, and restart catch-up. Confirm the local model stays within server resource limits and unrelated groups and senders are ignored.
-* **Zoom pilot**: In a host-controlled test meeting, prove unattended login/join/admission, the 20-minute wait and leave behavior, clear screen/audio, host-ended detection, four-hour cutoff signaling, saved-file verification, and restart behavior. Keep the Webtop UI private.
-* **Data handling**: Verify raw text is removed after clarification, credentials and links do not appear in routine logs, recordings remain private and user-deletable, disk threshold pauses new recordings, and backup restore preserves planner state.
-* **Release gate**: Enable one live subject group only after the WhatsApp and Zoom pilots pass. If host-end detection or audio capture fails, keep unattended recording disabled and report the limitation.
+* **WhatsApp and AI pilot**: Each synthetic fixture has expected structured fields and normalized values. Require every required field to match, with missing, ambiguous, contradictory, or incorrect dates/times left pending and zero incorrect items auto-confirmed. In a separate test group, verify permitted senders, link and assignment extraction, edits, duplicates, and recovery of every eligible post after disconnect/restart without lost or duplicated planner items. Confirm untrusted groups/senders are ignored and the local model stays within recorded CPU/memory limits without an out-of-memory termination.
+* **Zoom pilot**: In a host-controlled test meeting with confirmed permission, verify admission through the configured account and host settings, the 20-minute wait and leave behavior, a saved sample with usable screen and audio, host-ended detection within 30 seconds, the low-space stop, four-hour cutoff signaling, saved-file verification, and restart behavior. Keep the Webtop UI private.
+* **Data handling**: Verify raw text is removed after clarification, source provenance remains without reproducing deleted text, credentials and links do not appear in routine logs, recordings remain private and user-deletable, low-space capture finalizes safely, and a daily encrypted SQLite backup restores planner state and recording metadata. Verify retention and that video files are excluded from backups.
+* **Release gate**: Enable live WhatsApp intake only after recording the current policy check and account-risk decision and passing its pilot. Enable unattended recording only after confirming class permission and passing the Zoom pilot. If a check, host-end detection, admission, or audio capture fails, keep the affected automation disabled and report the limitation.
 
 --------------------------------------------------------------------------------
 
