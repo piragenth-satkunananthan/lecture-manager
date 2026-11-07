@@ -46,8 +46,14 @@ for (const fixture of selectedFixtures) {
       console.log(`${fixture.id}: pass`);
     }
   } catch (error) {
-    const name = error instanceof Error ? error.name : "unknown error";
-    console.error(`${fixture.id}: Gemini extraction failed (${name})`);
+    const errorRecord = typeof error === "object" && error !== null
+      ? error as { status?: unknown; code?: unknown; cause?: { code?: unknown } }
+      : undefined;
+    const detail = typeof errorRecord?.status === "number" ? String(errorRecord.status)
+      : typeof errorRecord?.code === "string" ? errorRecord.code
+        : typeof errorRecord?.cause?.code === "string" ? errorRecord.cause.code
+          : error instanceof Error ? error.name : "unknown error";
+    console.error(`${fixture.id}: Gemini extraction failed (${detail})`);
     failures++;
   }
 }

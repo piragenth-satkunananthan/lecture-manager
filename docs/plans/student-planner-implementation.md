@@ -8,7 +8,7 @@
 
 - Stage 1 (project and test foundation) is complete: `npm run build` passes and `npm test` passes all 6 config tests on Node.js 24.22.2.
 - The user changed the approved AI provider from local Ollama to the Gemini API and accepted free-tier data handling. This changes the design's earlier local-only AI decision; the approved design now records the change. The planner uses structured output, requests `store=false`, sends one selected post with URL/passcode redaction, and does not fall back to a local model.
-- The Gemini adapter, config changes, synthetic fixture pilot, and focused tests are implemented. `npm test` passes all 13 tests. A live Gemini API fixture pilot is still pending because `GEMINI_API_KEY` is not configured in the process environment; no `.env` file was read.
+- The Gemini adapter, config changes, synthetic fixture pilot, and focused tests are implemented. `npm test` passes all 14 tests. A single live fixture passed once; the full API pilot then hit two request timeouts and two HTTP 503 responses before the remaining fixtures ran. The API gate remains open. The key was supplied through an environment file for the pilot; it was not printed or committed, and `.env` was not read.
 - No live WhatsApp group/session or Zoom test meeting has been configured. Docker is running, but no Webtop container is present. Live WhatsApp and Zoom acceptance remain separate gates and will not be inferred from unit tests.
 
 ## Baseline

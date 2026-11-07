@@ -174,10 +174,12 @@ test("reattaches the selected source Zoom URL locally and preserves unresolved c
 
 test("uses Gemini structured output with server-side interaction storage disabled", async () => {
   let sent: Record<string, unknown> | undefined;
+  let sentOptions: Record<string, unknown> | undefined;
   const client = {
     interactions: {
-      create: async (parameters: Record<string, unknown>) => {
+      create: async (parameters: Record<string, unknown>, options?: unknown) => {
         sent = parameters;
+        sentOptions = options as Record<string, unknown>;
         return { output_text: JSON.stringify({ items: [] }) };
       },
     },
@@ -194,6 +196,9 @@ test("uses Gemini structured output with server-side interaction storage disable
   assert.equal(sent?.model, "gemini-3.8-flash");
   assert.equal(sent?.store, false);
   assert.equal(sent?.system_instruction, "extract facts");
+  assert.deepEqual(sent?.generation_config, { thinking_level: "low" });
+  assert.equal(sentOptions?.timeout_ms, 60_000);
+  assert.deepEqual(sentOptions?.retries, { strategy: "none" });
   assert.deepEqual(sent?.response_format, {
     type: "text",
     mime_type: "application/json",

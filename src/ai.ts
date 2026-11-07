@@ -161,8 +161,9 @@ export function createGeminiGenerate(client: Pick<GoogleGenAI, "interactions">):
       input,
       system_instruction,
       response_format: { type: "text", mime_type: "application/json", schema },
+      generation_config: { thinking_level: "low" },
       store: false,
-    });
+    }, { timeout_ms: 60_000, retries: { strategy: "none" } });
     if (!interaction.output_text) throw new Error("Gemini returned no structured response");
     return interaction.output_text;
   };
