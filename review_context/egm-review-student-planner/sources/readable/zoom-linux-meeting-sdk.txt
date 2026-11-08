@@ -1,0 +1,148 @@
+__[Now Available: Zoom AI Services Summarizer & Translator APIs.](/docs/ai-services/)
+
+__
+
+__[](/)
+
+Docs __
+
+[APIs](/docs/api/)[MCP](/docs/mcp/)[Blog](/blog/)[Changelog](/changelog/)[Agent Skills __](https://github.com/zoom/skills)
+
+[Help](/support/) __
+
+Docs __
+
+[APIs](/docs/api/)[MCP](/docs/mcp/)[Blog](/blog/)[Changelog](/changelog/)[Agent Skills __](https://github.com/zoom/skills)[Help](/support/)
+
+Theme __
+
+Meeting SDK
+
+  * [Introduction](/docs/meeting-sdk/)
+
+  * [Get credentials](/docs/meeting-sdk/get-credentials/)
+
+  * Authorize __
+
+  * [Upgrade guide](/docs/meeting-sdk/minimum-version/)
+
+  * [SDK key migration](/docs/meeting-sdk/sdk-key-migration/)
+
+  * Key concepts __
+
+  * API references __
+
+  * [Changelog](/changelog/meeting-sdk/)
+
+* * *
+
+Platforms
+
+Android
+
+iOS
+
+macOS
+
+Web
+
+Windows
+
+Electron
+
+Linux
+
+Unreal
+
+React Native
+
+  * [Overview](/docs/meeting-sdk/linux/)
+
+  * Get started __
+
+  * [Integrate with your app](/docs/meeting-sdk/linux/integrate/)
+
+  * Start, join, and leave meetings __
+
+  * [Choose your UI](/docs/meeting-sdk/linux/choose-ui/)
+
+  * Use the default UI __
+
+  * Use the custom UI __
+
+  * [Get service quality](/docs/meeting-sdk/linux/service-quality/)
+
+  * Resources __
+
+  * [Release notes](/changelog/meeting-sdk/linux/)
+
+  * [SDK reference](https://marketplacefront.zoom.us/sdk/meeting/linux/index.html) __
+
+__
+
+  1. [__](/)
+  2. __
+  3. [Meeting SDK](/docs/meeting-sdk/)
+  4.  __
+  5. Linux __
+
+# Zoom Meeting SDK for Linux
+
+ __Copy for LLM
+
+[ View as Markdown](/docs/meeting-sdk/linux.md)
+
+**Meeting SDK usage policy**
+
+The Meeting SDK is designed for human use cases and does not support bots or AI notetakers. To build an AI notetaker application or access realtime media, use [Zoom RTMS (Real-time media streams)](/docs/rtms/).
+
+The Zoom Meeting Software Development Kit (SDK) for Linux lets you integrate
+the Zoom meeting and webinar experience with your app. The Meeting SDK for
+Linux is structured as a command-line interface (CLI) based application. The
+Meeting SDK for Linux supports meeting services only, and does not currently
+support messaging.
+
+The Meeting SDK for Linux naturally supports over a dozen major languages. Some core features are described in this developer doc, and additional features are described in the [Meeting SDK reference guides  __](https://marketplacefront.zoom.us/sdk/meeting/linux/index.html).
+
+Use the [Meeting APIs](/docs/api/meetings/) to get data from current, past, or future meetings to enhance the SDK's meeting experience. To use specific API endpoints with your SDK app, choose the endpoints' scopes on your app configuration page.
+
+We enforce a required minimum version of the Meeting SDK. See our [SDK minimum version policy](/docs/meeting-sdk/minimum-version/) for details.
+
+The Meeting SDK follows the Zoom license model. See [Zoom Meetings  __](https://www.zoom.com/en/products/virtual-meetings/),[Zoom Webinars  __](https://www.zoom.com/en/products/webinars/), and the[Zoom ISV Partner Program  __](https://www.zoom.com/en/isv/)for details.
+
+Running the Meeting SDK for Linux in a cross-architecture emulated environment
+can cause significant performance degradation and unreliable behavior.
+QEMU/Rosetta emulation is not a supported or dependable way to run the Meeting
+SDK for Linux. Any emulated environment should match the host architecture.
+
+In the next section, we'll walk you through setting up a development environment for Meeting SDK for Linux platform, and give you some [hands-on experience](/docs/meeting-sdk/linux/get-started/download/).
+
+[NextDownload and install](/docs/meeting-sdk/linux/get-started/download/)
+
+### Resources
+
+  * [API References](/docs/api/)
+  * [SDK References](/docs/sdk-references/)
+  * [Read llms.txt](/llms.txt)
+
+### Updates
+
+  * [Changelog](/changelog/)
+  * [Developer blog](/blog/)
+
+### Community
+
+  * [MVP program](/mvp/)
+  * [Github __](https://github.com/zoom)
+  * [Developer forum __](https://devforum.zoom.us)
+  * [YouTube __](https://www.youtube.com/@ZoomDevelopers)
+
+### Support
+
+  * [Premier Developer Support](/support/)
+  * [Zoom Support __](https://support.zoom.us)
+
+Copyright © 2026 Zoom Communications, Inc. All rights reserved.
+
+[Terms __](https://zoom.us/terms)·[Privacy Policy __](https://zoom.us/privacy)·[API Terms of Use __](https://explore.zoom.us/docs/en-us/zoom_api_license_and_tou.html)·[Marketplace Developer Agreement __](https://explore.zoom.us/en/marketplace-developer-agreement/)·Do Not Sell My Personal Information·Cookie Preferences
+

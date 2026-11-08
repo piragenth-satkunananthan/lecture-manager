@@ -1,0 +1,411 @@
+Skip to content
+
+[](/)[](/workspaces/default)
+
+Alpha
+
+Search`⌘``K`
+
+[Dashboard](/workspaces/default)
+
+[Models](/models)[Benchmarks](/benchmarks)[Chat](/chat)[Chat](/chat)[Rankings](/rankings)[Apps](/apps)[Ori](/ori)[Pricing](/pricing)[Docs](/docs/quickstart)
+
+  * [Models ](/models)
+  * [Rankings ](/rankings)
+  * [Ori ](/ori)
+
+[Docs](/docs/quickstart)[Chat](/chat)[Chat](/chat)[Pricing](/pricing)
+
+Sign Up
+
+[Talk to sales](/enterprise/form?ref=nav)Sign inSign up
+
+Sign Up
+
+## Footer
+
+[](/)
+
+© 2026 OpenRouter, Inc
+
+### Product
+
+  * [Chat](/chat)
+  * [Rankings](/rankings)
+  * [Benchmarks](/benchmarks)
+  * [Apps](/apps)
+  * [Discover](/discover)
+  * [Models](/models)
+  * [Ori](/ori)
+  * [Collections](/collections)
+  * [Providers](/providers)
+  * [Tools](/tools)
+  * [Pricing](/pricing)
+  * [Business](/business)
+  * [Enterprise](/enterprise)
+  * [Labs](/labs)
+
+### Company
+
+  * [About](/about)
+  * [Blog](/blog)
+  * [Customers](/customers)
+  * [CareersHiring](/careers)
+  * [Privacy](/privacy)
+  * [Terms of Service](/terms)
+  * [Trust Center](https://trust.openrouter.ai/)
+  * [Support](/support)
+  * [Works With OR](/works-with-openrouter)
+  * [Data](/data)
+  * [Brand](/brand)
+
+### Developer
+
+  * [Documentation](/docs)
+  * [API Reference](/docs/api_reference/overview)
+  * [Developer Platform](/developers)
+  * [Status](https://status.openrouter.ai)
+  * [AI Site Map](/for-ai)
+
+### Connect
+
+  * [Discord](https://discord.gg/fVyRaUDgxW)
+  * [GitHub](https://github.com/OpenRouterTeam)
+  * [LinkedIn](https://www.linkedin.com/company/104068329)
+  * [X](https://twitter.com/openrouter)
+  * [YouTube](https://www.youtube.com/@OpenRouterAI)
+
+Sign Up
+
+Sign up
+
+Sign Up
+
+# Google: Gemma 4 31B (free)
+
+[google](/google)/gemma-4-31b-it:free
+
+[Model weights](https://huggingface.co/google/gemma-4-31B-it)
+
+[Compare](/compare/google/gemma-4-31b-it:free)APITry this model
+
+Gemma 4 31B Instruct is Google DeepMind's 30.7B dense multimodal model
+supporting text and image input with text output. Features a 256K token
+context window, configurable thinking/reasoning mode, native function calling,
+and multilingual support across 140+ languages. Strong on coding, reasoning,
+and document understanding tasks. Apache 2.0 license.
+
+Modalities
+
+Price
+
+Free
+
+Context
+
+262K
+
+Released
+
+Apr 2, 2026
+
+Google: Gemma 4 31B (free)
+
+[Compare](/compare/google/gemma-4-31b-it:free)APITry this model
+
+ProvidersPerformanceUptimeBenchmarksAppsActivityFAQExplore
+
+Providers
+
+## Providers
+
+Different companies host the same model. OpenRouter routes your request to one
+of them based on the routing mode you pick — Balanced (price + speed), Nitro
+(fastest), or Floor (cheapest).
+
+## Performance
+
+Throughput is how fast the model writes (tokens per second — higher is
+better). Latency is total round-trip time (lower is better). TTFT is time-to-
+first-token — how long before you see anything appear (lower is better).
+
+## Uptime
+
+Uptime is the percentage of the past 3 days that at least one provider was
+responding to requests. Availability is the percentage of time that inference
+was successfully served. OpenRouter continuously monitors and uses the next-
+best provider when one returns an error.
+
+## Benchmarks
+
+Scores on standardized evaluations and this model’s own outputs on shared
+benchmark prompts. Higher percentages are better — and each rank shows where
+this model lands among the models evaluated on that source.
+
+Benchmark score summary for Google: Gemma 4 31B (free) (Artificial Analysis
+and Vals AI)Source| Benchmark| Score  
+---|---|---  
+Artificial Analysis| Gemma 4 31B (Reasoning) Intelligence Index| 4.4  
+Artificial Analysis| Gemma 4 31B (Reasoning) Coding Index| 43.4  
+Artificial Analysis| Gemma 4 31B (Reasoning) Agentic Index| 4.2  
+Artificial Analysis| Gemma 4 31B (Reasoning) GPQA Diamond| 85.7%  
+Artificial Analysis| Gemma 4 31B (Reasoning) HLE| 23.6%  
+Artificial Analysis| Gemma 4 31B (Reasoning) IFBench| 75.6%  
+Artificial Analysis| Gemma 4 31B (Reasoning) τ²-Bench Telecom| 59.9%  
+Artificial Analysis| Gemma 4 31B (Reasoning) AA-LCR| 69.7%  
+Artificial Analysis| Gemma 4 31B (Reasoning) τ-Bench Banking| 14.8%  
+Artificial Analysis| Gemma 4 31B (Reasoning) GDPval-AA| 6.3%  
+Artificial Analysis| Gemma 4 31B (Reasoning) CritPt| 1.4%  
+Artificial Analysis| Gemma 4 31B (Reasoning) SciCode| 45.5%  
+Artificial Analysis| Gemma 4 31B (Reasoning) Terminal-Bench Hard| 36.4%  
+Artificial Analysis| Gemma 4 31B (Reasoning) Terminal-Bench 4.0| 0.0%  
+Artificial Analysis| Gemma 4 31B (Reasoning) Terminal-Bench 2.1| 43.4%  
+Artificial Analysis| Gemma 4 31B (Reasoning) AA-Omniscience Accuracy| 19.9%  
+Artificial Analysis| Gemma 4 31B (Reasoning) AA-Omniscience Non-Hallucination
+Rate| 14.5%  
+Artificial Analysis| Gemma 4 31B (Non-reasoning) Coding Index| 33.2  
+Artificial Analysis| Gemma 4 31B (Non-reasoning) GPQA Diamond| 76.3%  
+Artificial Analysis| Gemma 4 31B (Non-reasoning) HLE| 11.8%  
+Artificial Analysis| Gemma 4 31B (Non-reasoning) IFBench| 53.5%  
+Artificial Analysis| Gemma 4 31B (Non-reasoning) τ²-Bench Telecom| 65.5%  
+Artificial Analysis| Gemma 4 31B (Non-reasoning) AA-LCR| 46.7%  
+Artificial Analysis| Gemma 4 31B (Non-reasoning) τ-Bench Banking| 8.9%  
+Artificial Analysis| Gemma 4 31B (Non-reasoning) GDPval-AA| 2.7%  
+Artificial Analysis| Gemma 4 31B (Non-reasoning) CritPt| 0.0%  
+Artificial Analysis| Gemma 4 31B (Non-reasoning) Terminal-Bench Hard| 30.3%  
+Artificial Analysis| Gemma 4 31B (Non-reasoning) Terminal-Bench 2.1| 29.2%  
+Vals AI| Gemma 4 31B IT CaseLaw v2| 52.6%  
+Vals AI| Gemma 4 31B IT Finance Agent v1.1| 50.8%  
+Vals AI| Gemma 4 31B IT MortgageTax| 61.4%  
+Vals AI| Gemma 4 31B IT SAGE| 82.8%  
+Vals AI| Gemma 4 31B IT Terminal-Bench 2.0| 39.3%  
+  
+## Apps
+
+Public apps that send the most traffic to this model. Good signal for what
+real production workloads look like — and a hint at which use cases this model
+is best suited for.
+
+## Activity
+
+Token volume and request traffic to this model over time.
+
+## API
+
+Drop-in code to call this model. OpenRouter's API is OpenAI-compatible — most
+SDKs work by just swapping the base URL. The only thing that changes between
+models is the model slug below.
+
+Not currently available through EU in-region routing. [In-region routing docs](/docs/guides/features/in-region-routing)
+
+## Explore more models
+
+[Free AI Models on OpenRouterCollection](/collections/free-models)[AI Models with Vision: Multimodal LLMs for Image UnderstandingCollection](/collections/vision-models)[AI Model RankingsRanking](/rankings)
+
+FreeFree variant
+
+Latency / throughput
+
+P50P75P90P95P99
+
+Provider| Input /M| Output /M| Latency| Throughput| Uptime  
+---|---|---|---|---|---  
+Google AI Studio| Free| Free| 1.19s| 32 tok/s| 100.00%  
+  
+FreeFree variantFilters
+
+ProviderInput / Output /M
+
+ThroughputUptime
+
+  * Google AI Studio
+
+Input Free / Output Free
+
+Throughput 32 tok/sUptime 100.00%
+
+Throughput
+
+32tok/s
+
+P50, best across providers
+
+Latency
+
+1.19s
+
+P50, best provider
+
+1WLocation
+
+All locations
+
+1 week
+
+AutoExacto benchmarks
+
+GPQA DiamondTAU-
+BenchPrimeIntellect84.1%\--DeepInfra84.9%77.8%SambaNova85.1%76.6%DeepInfra84.9%76.2%SiliconFlow86.0%74.4%ModelRun84.7%75.2%
+
++11 more providers
+
+Uptime (3d)The model was reachable. Request routed to a provider.
+
+100.00%
+
+Availability (3d)The model returned inference from any provider. Errors and
+empty responses count against it.
+
+99.07%
+
+### Availability over the last 3 days
+
+Last 72 hours
+
+Availability 99.07%
+
+3 Days Ago2 Days AgoYesterdayNow
+
+### Availability over the last 24 hours
+
+OpenRouter Availability
+
+98.72%
+
+When an error occurs in an upstream provider, we can recover by routing to another healthy provider, if your request filters allow it. You can access per-provider uptime data programmatically through the [Endpoints API](/docs/api/api-reference/endpoints/list-endpoints). Learn more about our [load balancing and provider routing options](/docs/provider-routing).
+
+1.
+
+[Janitor AI ](/apps/janitor-ai)
+
+Janitor AI is a chatbot platform where users create and chat with custom AI
+characters for interactive roleplay, storytelling, and immersive fiction.
+
+157Mtokens
+
+2.
+
+[Hermes Agent ](/apps/hermes-agent)
+
+Hermes Agent is an open-source, self-improving AI agent by Nous Research that
+runs persistently with memory across sessions, and builds reusable skills from
+experience. It comes with 40+ built-in tools, including web search, browser
+automation, and vision, plus scheduled automations and subagents.
+
+81.6Mtokens
+
+3.
+
+[AI Applyd ](/apps/url/https%3A%2F%2Faiapplyd.com%2F)
+
+new
+
+78.7Mtokens
+
+4.
+
+[GetMattered ](/apps/url/https%3A%2F%2Fgetmattered.com%2F)
+
+new
+
+70.3Mtokens
+
+5.
+
+[OpenClaw ](/apps/openclaw)
+
+OpenClaw is an open-source AI agent that connects to your messaging apps and
+takes real actions on your behalf, from running commands and browsing the web
+to managing files and sending emails.
+
+63.3Mtokens
+
+Rest of OpenRouter
+
+51.5M
+
+Top 5 Apps
+
+10.3M
+
+## Frequently asked questions
+
+### What is Gemma 4 31B (free)?
+
+Gemma 4 31B Instruct is Google DeepMind's 30.7B dense multimodal model
+supporting text and image input with text output. Features a 256K token
+context window, configurable thinking/reasoning mode, native function calling,
+and multilingual support across 140+ languages. Strong on coding, reasoning,
+and document understanding tasks. Apache 2.0 license.
+
+### Is Gemma 4 31B (free) free?
+
+Yes. The pricing shown on this page for Gemma 4 31B (free) is zero, so you are not charged for prompt or completion tokens. Free endpoints are rate limited — see the [rate limit docs](/docs/api-reference/limits).
+
+### What is the context length of Gemma 4 31B (free)?
+
+Gemma 4 31B (free) has a 262,144 token context window. It supports up to
+32,768 completion tokens.
+
+### Does Gemma 4 31B (free) support tool calling and structured outputs?
+
+Yes. Gemma 4 31B (free) accepts `tools` and `tool_choice` for function
+calling. It supports `response_format` for JSON output, without JSON-schema
+enforcement.
+
+### What inputs and outputs does Gemma 4 31B (free) support?
+
+Gemma 4 31B (free) accepts images, text, and video as input and returns text.
+
+### What other text models does Google have?
+
+[Gemini Omni 1.2 Flash](/google/gemini-omni-1.2-flash), [Gemini Omni 1.1 Flash](/google/gemini-omni-1.1-flash), [Gemini 4 Argon](/google/gemini-4-argon) and 28 more are other text models from Google.
+
+### When was Gemma 4 31B (free) released?
+
+Gemma 4 31B (free) was released on April 2, 2026.
+
+## More models from [Google](/google)
+
+[Gemini Omni 1.2 FlashGemini Omni 1.2 Flash is Google's native multimodal video generation and editing model, the successor to Gemini Omni 1.1 Flash. It generates clips up to 15 seconds long with native audio in 16:9 or 9:16, from 360p drafts up to 4K, and supports text-to-video, image-to-video, first and last frame interpolation, subject and video references with improved reference management, and editing or extending an uploaded video. Multi-turn editing and extension of a prior generation is supported through `previous_job_id`. Note: video generation is only supported through the Video Generation API. See the guide: https://openrouter.ai/docs/guides/overview/multimodal/video-generationText131K context$1.50 / $9](/google/gemini-omni-1.2-flash)
+
+[Gemini Omni 1.1 FlashGemini Omni 1.1 Flash is Google's native multimodal video generation and editing model, the generally available successor to Gemini Omni Flash Preview. It is suited for text-to-video, image-to-video, first and last frame interpolation, subject and video references (up to three reference clips), and editing or extending an uploaded video, and generates clips from 360p drafts up to 4K with native audio in 16:9 or 9:16. Multi-turn editing and extension of a prior generation is supported through `previous_job_id`, up to 40 seconds of total video. Note: video generation is only supported through the Video Generation API. See the guide: https://openrouter.ai/docs/guides/overview/multimodal/video-generationText131K context$1.50 / $9](/google/gemini-omni-1.1-flash)
+
+[Gemini 4 ArgonGemini 4 Argon is Google's flagship reasoning model, built for complex software engineering, deep mathematical and scientific problem solving, and autonomous multi-step agents. Google trained it to keep context across long, multi-step tasks and to turn long documents mixing text, tables, charts and images into a single grounded output. It leads the Vals Index across finance, legal, coding and tax work, and supports long decode of up to 1M output tokens in a single response.Text1.0M context$2 / $10](/google/gemini-4-argon)
+
+[Gemini 4 Argon (batch)Gemini 4 Argon is Google's flagship reasoning model, built for complex software engineering, deep mathematical and scientific problem solving, and autonomous multi-step agents. Google trained it to keep context across long, multi-step tasks and to turn long documents mixing text, tables, charts and images into a single grounded output. It leads the Vals Index across finance, legal, coding and tax work, and supports long decode of up to 1M output tokens in a single response.Text1.0M context$1 / $5](/google/gemini-4-argon:batch)
+
+[Nano Banana 2.1Nano Banana 2.1 (Gemini Nano Banana 2.1) is Google's image generation and editing model on the Flash tier, succeeding Nano Banana 2 and Nano Banana Pro. It improves product recontextualization, mask- and ink-based editing, and factual accuracy, and renders photorealistic skin tones, detailed materials, lighting, and coherent backgrounds. It accepts text and image inputs, returns images with optional text, and supports 1K, 2K, and 4K output plus extended aspect ratios via the image_config API Parameter.Image66K context$1.50 / $30](/google/gemini-nano-banana-2.1)
+
+[Gemini 3.5 TranscribeGemini 3.5 Transcribe is a speech-to-text model from Google. It is suited for synchronous transcription that needs word-level timestamps or speaker diarization, with support for up to eight speakers. Audio can be up to one hour, or 30 minutes when timestamps or diarization are enabled.Transcription$2 / $12](/google/gemini-3.5-transcribe)
+
+[Gemini 3.8 Flash Lite TTSGemini 3.8 Flash Lite TTS is a text-to-speech model from Google and the fast, high-throughput member of the 3.8 TTS family alongside Gemini 3.8 Flash TTS. It is suited for conversational voice-agent pipelines, high-volume read-aloud, and voice replication workloads where latency and cost matter more than maximum expressiveness. It accepts the same speech configuration as Gemini 3.1 Flash TTS Preview, including the 30 prebuilt studio voices, and supports Google's Voice Design and Voice Replication through `voice_...` identifiers.Speech$0.50 / $6](/google/gemini-3.8-flash-lite-tts)
+
+[Gemini 3.8 Flash TTSGemini 3.8 Flash TTS is a text-to-speech model from Google and the successor to Gemini 3.1 Flash TTS Preview. It is the creative tier of the 3.8 TTS family, suited for narration, character work, and multi-speaker dialogue where voice fidelity, acting nuance, and regional dialect coverage matter more than latency. It accepts the same speech configuration as its predecessor, including the 30 prebuilt studio voices, and supports Google's Voice Design (custom voices from a text description) and Voice Replication (voices cloned from a short sample) through `voice_...` identifiers.Speech$0.50 / $9](/google/gemini-3.8-flash-tts)
+
+[Gemini 3.8 FlashGemini 3.8 Flash is Google's most intelligent Flash model with significant gains from 3.7 Flash across software engineering, agentic tasks, and multi-step reasoning.Text1.0M context$0.75 / $3.75](/google/gemini-3.8-flash)
+
+[Gemini 3.8 Flash (batch)Gemini 3.8 Flash is Google's most intelligent Flash model with significant gains from 3.7 Flash across software engineering, agentic tasks, and multi-step reasoning.Text1.0M context$0.375 / $1.875](/google/gemini-3.8-flash:batch)
+
+[Gemini 3.7 FlashGemini 3.7 Flash is a multimodal model from Google for fast agentic workflows, coding, and complex multi-step reasoning. It is designed for tasks that require responsive performance and reliable multi-step problem solving.Text1.0M context$0.75 / $3.75](/google/gemini-3.7-flash)
+
+[Gemini 3.7 Flash (batch)Gemini 3.7 Flash is a multimodal model from Google for fast agentic workflows, coding, and complex multi-step reasoning. It is designed for tasks that require responsive performance and reliable multi-step problem solving.Text1.0M context$0.375 / $1.875](/google/gemini-3.7-flash:batch)
+
+[Gemini 3.6 FlashGemini 3.6 Flash is a high-efficiency model from Google for coding, agentic workflows, and web and app development. It is designed to produce polished outputs with fewer unnecessary edits and less hedging, while reducing token use and the number of model calls needed to complete a task.Text1.0M context$0.75 / $3.75](/google/gemini-3.6-flash)
+
+[Gemini 3.6 Flash (batch)Gemini 3.6 Flash is a high-efficiency model from Google for coding, agentic workflows, and web and app development. It is designed to produce polished outputs with fewer unnecessary edits and less hedging, while reducing token use and the number of model calls needed to complete a task.Text1.0M context$0.375 / $1.875](/google/gemini-3.6-flash:batch)
+
+[Gemini 3.5 Flash LiteGemini 3.5 Flash Lite is a high-efficiency model from Google with upgraded agentic capabilities. It is suited for subagents that execute focused tasks within complex, multi-agent workflows.Text1.0M context$0.30 / $2.50](/google/gemini-3.5-flash-lite)
+
+[Gemini 3.5 Flash Lite (batch)Gemini 3.5 Flash Lite is a high-efficiency model from Google with upgraded agentic capabilities. It is suited for subagents that execute focused tasks within complex, multi-agent workflows.Text1.0M context$0.15 / $1.25](/google/gemini-3.5-flash-lite:batch)
+
+[Nano Banana 2 LiteNano Banana 2 Lite (Gemini 3.1 Flash Lite Image) is Google's fastest, most cost-efficient Gemini image model, built for high-velocity developer pipelines and rapid-fire visual exploration. It delivers text-to-image generation in roughly 4 seconds — about 2.7× faster than Gemini 3.1 Flash Image — while keeping the character consistency, precise editing, and real-world knowledge of the Nano Banana family. A single drop-in API handles text-to-image, image editing, and multi-image composition. As a multimodal model it also returns text alongside images. Outputs are generated at 1K resolution across 14 aspect ratios and carry an invisible SynthID watermark so they can be identified as AI-generated. Positioned as the best balance of quality and speed in the Nano Banana 2 line, it lets you generate thousands of images at a fraction of the cost of heavier production models — ideal for prototyping, real-time apps, and visual workflows at scale.Image66K context$0.25 / $30](/google/gemini-3.1-flash-lite-image)
+
+[Nano Banana 2Gemini 3.1 Flash Image, a.k.a. "Nano Banana 2," is Google’s latest state of the art image generation and editing model, delivering Pro-level visual quality at Flash speed. It combines advanced contextual understanding with fast, cost-efficient inference, making complex image generation and iterative edits significantly more accessible. Aspect ratios can be controlled with the image_config API ParameterImage131K context$0.50 / $60](/google/gemini-3.1-flash-image)
+
+[Nano Banana ProNano Banana Pro is Google’s most advanced image-generation and editing model, built on Gemini 3 Pro. It extends the original Nano Banana with significantly improved multimodal reasoning, real-world grounding, and high-fidelity visual synthesis. The model generates context-rich graphics, from infographics and diagrams to cinematic composites, and can incorporate real-time information via Search grounding. It offers industry-leading text rendering in images (including long passages and multilingual layouts), consistent multi-image blending, and accurate identity preservation across up to five subjects. Nano Banana Pro adds fine-grained creative controls such as localized edits, lighting and focus adjustments, camera transformations, and support for 2K/4K outputs and flexible aspect ratios. It is designed for professional-grade design, product visualization, storyboarding, and complex multi-element compositions while remaining efficient for general image creation workflows.Image131K context$2 / $120](/google/gemini-3-pro-image)
+
+[Gemini Embedding 2Gemini Embedding 2 is Google's first multimodal embedding model. We currently support mapping text and images into a unified vector space for semantic search and retrieval-augmented generation (RAG). It supports input context up to 8,192 tokens and flexible output dimensions from 128 to 3,072 (recommended: 768, 1536, or 3,072). Designed for cross-modal similarity — you can embed a text query and retrieve the most relevant images, or vice versa — making it well-suited for multimodal search, recommendation, and document understanding pipelines.Embeddings$0.20/M tokens](/google/gemini-embedding-2)
+
+Previous slideNext slide
+

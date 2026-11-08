@@ -1,0 +1,152 @@
+Skip to content
+
+[](/en)
+
+[Learn](https://nodejs.org/learn)[About](/en/about)[Download](/en/download)[Blog](/en/blog)[Docs](https://nodejs.org/docs/latest/api/)[Beta Docs](https://beta.docs.nodejs.org/)[Contribute](https://github.com/nodejs/node/blob/main/CONTRIBUTING.md)
+
+Start typing...
+
+⌘ K
+
+[](https://github.com/nodejs/node)
+
+Change pageNode.js Releases
+
+Change pageNode.js Releases
+
+About Node.js
+
+[About Node.js®](/en/about)[Node.js Releases](/en/about/previous-releases)[Security Reporting](/en/about/security-reporting)[Project Governance](/en/about/governance)[Partners & Supporters](/en/about/partners)[Branding of Node.js](/en/about/branding)[End-of-Life (EOL)](/en/about/eol)
+
+Get Involved
+
+[Get Involved](/en/about/get-involved)[Collaboration Summit](/en/about/get-involved/collab-summit)[Upcoming Events](/en/about/get-involved/events)[Contribute to Node.js](https://github.com/nodejs/node/blob/main/CONTRIBUTING.md)[Code of Conduct](https://github.com/nodejs/admin/blob/main/CODE_OF_CONDUCT.md)
+
+About Node.js
+
+  * [About Node.js®](/en/about)
+  * [Node.js Releases](/en/about/previous-releases)
+  * [Security Reporting](/en/about/security-reporting)
+  * [Project Governance](/en/about/governance)
+  * [Partners & Supporters](/en/about/partners)
+  * [Branding of Node.js](/en/about/branding)
+  * [End-of-Life (EOL)](/en/about/eol)
+
+Get Involved
+
+  * [Get Involved](/en/about/get-involved)
+  * [Collaboration Summit](/en/about/get-involved/collab-summit)
+  * [Upcoming Events](/en/about/get-involved/events)
+  * [Contribute to Node.js](https://github.com/nodejs/node/blob/main/CONTRIBUTING.md)
+  * [Code of Conduct](https://github.com/nodejs/admin/blob/main/CODE_OF_CONDUCT.md)
+
+# Node.js Releases
+
+Commercial support for versions past the Maintenance LTS phase is available through our [OpenJS Ecosystem Sustainability Program partners](/en/about/eol)
+
+Major Node.js versions enter _Current_ release status for six months, which
+gives library authors time to add support for them. Historically (up to
+Node.js 26), odd-numbered releases (9, 11, etc.) become unsupported after six
+months, and even-numbered releases (10, 12, etc.) move to _Active LTS_ status
+and are ready for general use. Starting with Node.js 27, the release cycle
+will be annual and every major version will move to _LTS_ status after its
+six-month _Current_ phase (and six additional months of _Alpha_ phase). _LTS_
+release status is "long-term support", which typically guarantees that
+critical bugs will be fixed for a total of 30 months. Production applications
+should only use _Active LTS_ or _Maintenance LTS_ releases.
+
+## Release Schedule
+
+Full details regarding the Node.js release schedule are available [on GitHub](https://github.com/nodejs/release#release-schedule).
+
+## Looking for the latest release of a version branch?
+
+Node.js| Codename| First released| Last updated| Status|  
+---|---|---|---|---|---  
+[v27](/en/download/archive/v27.0.0-alpha.0.0.0)| -| Oct 29, 2026| Oct 29, 2026| Alpha| Details  
+[v26](/en/download/archive/v26.13.0)| Lithium| May 05, 2026| Oct 28, 2026| LTS| Details  
+[v25](/en/download/archive/v25.9.0)| -| Oct 15, 2025| Mar 31, 2026| EOL| Details  
+[v24](/en/download/archive/v24.22.2)| Krypton| May 06, 2025| Oct 27, 2026| LTS| Details  
+[v23](/en/download/archive/v23.11.1)| -| Oct 16, 2024| May 14, 2025| EOL| Details  
+[v22](/en/download/archive/v22.23.4)| Jod| Apr 24, 2024| Oct 20, 2026| LTS| Details  
+[v21](/en/download/archive/v21.7.3)| -| Oct 17, 2023| Apr 10, 2024| EOL| Details  
+[v20](/en/download/archive/v20.20.2)| Iron| Apr 17, 2023| Mar 24, 2026| EOL| Details  
+[v19](/en/download/archive/v19.9.0)| -| Oct 17, 2022| Apr 10, 2023| EOL| Details  
+[v18](/en/download/archive/v18.20.8)| Hydrogen| Apr 18, 2022| Mar 27, 2025| EOL| Details  
+[v17](/en/download/archive/v17.9.1)| -| Oct 19, 2021| Jun 01, 2022| EOL| Details  
+[v16](/en/download/archive/v16.20.2)| Gallium| Apr 20, 2021| Aug 08, 2023| EOL| Details  
+[v15](/en/download/archive/v15.14.0)| -| Oct 20, 2020| Apr 06, 2021| EOL| Details  
+[v14](/en/download/archive/v14.21.3)| Fermium| Apr 21, 2020| Feb 16, 2023| EOL| Details  
+[v13](/en/download/archive/v13.14.0)| -| Oct 22, 2019| Apr 29, 2020| EOL| Details  
+[v12](/en/download/archive/v12.22.12)| Erbium| Apr 23, 2019| Apr 05, 2022| EOL| Details  
+[v11](/en/download/archive/v11.15.0)| -| Oct 23, 2018| Apr 30, 2019| EOL| Details  
+[v10](/en/download/archive/v10.24.1)| Dubnium| Apr 24, 2018| Apr 06, 2021| EOL| Details  
+[v9](/en/download/archive/v9.11.2)| -| Oct 31, 2017| Jun 12, 2018| EOL| Details  
+[v8](/en/download/archive/v8.17.0)| Carbon| May 30, 2017| Dec 17, 2019| EOL| Details  
+[v7](/en/download/archive/v7.10.1)| -| Oct 25, 2016| Jul 11, 2017| EOL| Details  
+[v6](/en/download/archive/v6.17.1)| Boron| Apr 26, 2016| Apr 03, 2019| EOL| Details  
+[v5](/en/download/archive/v5.12.0)| -| Oct 29, 2015| Jun 23, 2016| EOL| Details  
+[v4](/en/download/archive/v4.9.1)| Argon| Sep 08, 2015| Mar 29, 2018| EOL| Details  
+[v0](/en/download/archive/v0.12.18)| -| Feb 06, 2015| Feb 22, 2017| EOL| Details  
+  
+## Recommended and community installation methods
+
+The Node.js website provides several non-interactive installation methods on
+the Downloads page, including command-line interfaces (CLIs), operating system
+(OS) package managers (e.g., `brew`), and Node.js version managers (e.g.,
+`nvm`).
+
+To highlight and promote community contributions, the Node.js project
+introduced a revised Downloads page categorizing installation methods as
+either “Recommended” or “Community.” This provides users with increased
+flexibility and choice, while keeping a short, curated list for those who want
+a straightforward starting point.
+
+Anyone can propose a new installation method for the Downloads page. While the
+Node.js project makes the final call on what gets listed, proposals are
+evaluated against the criteria below.
+
+“Recommended” methods are selected for their reliability and close alignment
+with official releases, and meet the following criteria (in addition to all
+“Community” criteria):
+
+  * “Recommended” methods make new Node.js releases available simultaneously with the official release.
+  * “Recommended” methods use the official Node.js binaries without alteration, only building from source when pre-built binaries are not available.
+  * “Recommended” methods allow developers to install and use multiple versions of Node.js on a system concurrently.
+  * “Recommended” methods have a close relationship with the Node.js project, including direct communication channels.
+
+“Community” methods are additional installation methods also available on the
+Downloads page, and meet the following criteria:
+
+  * “Community” methods must support all currently supported, non-End-of-Life (EOL) Node.js versions.
+  * “Community” methods must function on at least one officially supported Operating System (OS), and must not be limited to a subset of OS distributions or versions.
+  * “Community” methods must be free to use and open source, must not be sold as a commercial product, and must not be a paid service.
+
+Reading Time
+
+    2 min
+Contribute
+
+    [Edit this page](https://github.com/nodejs/nodejs.org/blob/main/apps/site/pages/en/about/previous-releases.mdx)
+Table of Contents
+
+    
+
+  1. Release Schedule
+  2. Looking for the latest release of a version branch?
+  3. Recommended and community installation methods
+
+  1. [Navigate to Home](/en)
+  2. About Node.js
+  3. [Node.js Releases](/en/about/previous-releases)
+
+[v26.13.0Latest LTS](/blog/release/v26.13.0)[v27.0.0-alpha.0.0.0Latest Alpha](/blog/release/v27.0.0-alpha.0.0.0)
+
+[](https://github.com/nodejs/node)[](https://discord.gg/nodejs)[](https://bsky.app/profile/nodejs.org)[](https://twitter.com/nodejs)[](https://slack-invite.openjsf.org/)[](https://www.linkedin.com/company/node-js)
+
+Copyright [OpenJS Foundation](https://openjsf.org/) and Node.js contributors. All rights reserved. The [OpenJS Foundation](https://openjsf.org/) has registered trademarks and uses trademarks. For a list of trademarks of the [OpenJS Foundation](https://openjsf.org/), please see our [Trademark Policy](https://trademark-policy.openjsf.org/) and [Trademark List](https://trademark-list.openjsf.org/). Trademarks and logos not indicated on the [list of OpenJS Foundation trademarks](https://trademark-list.openjsf.org/) are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them.
+
+[OpenJS Foundation](https://openjsf.org/)[AI Coding Assistants Policy](https://ai-coding-assistants-policy.openjsf.org/)[Bylaws](https://bylaws.openjsf.org/)[Code of Conduct](https://code-of-conduct.openjsf.org/)[Cookie Policy](https://www.linuxfoundation.org/cookies/)[Privacy Policy](https://privacy-policy.openjsf.org/)[Security Policy](https://github.com/nodejs/node/security/policy)[Terms of Use](https://terms-of-use.openjsf.org/)[Trademark List](https://trademark-list.openjsf.org/)[Trademark Policy](https://trademark-policy.openjsf.org/)
+
+[](https://social.lfx.dev/@nodejs)
+

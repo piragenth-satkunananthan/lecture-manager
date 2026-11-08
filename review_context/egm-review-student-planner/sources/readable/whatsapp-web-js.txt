@@ -1,0 +1,433 @@
+Skip to content
+
+## Navigation Menu
+
+[](/)
+
+[Sign in](/login?return_to=https%3A%2F%2Fgithub.com%2Fwwebjs%2Fwhatsapp-web.js%2F)
+
+  * Products
+
+    * Platform
+      * [GitHubRepository hosting, code review, and collaboration](https://github.com/platform)
+      * [CopilotAI coding agent for tasks, projects, and automated work](https://github.com/features/copilot)
+
+    * Build & Ship
+      * [ActionsCI/CD and automation](https://github.com/features/actions)
+      * [Code QualityQuality analysis, fixes, and enforcement](https://github.com/features/code-quality)
+      * [CodespacesCloud development environments](https://github.com/features/codespaces)
+
+    * Secure
+      * [Code SecurityVulnerability detection and remediation](https://github.com/security/advanced-security/code-security)
+      * [Secret ProtectionSecret scanning and leak prevention](https://github.com/security/advanced-security/secret-protection)
+
+[All Features](https://github.com/features)
+
+  * Developers
+
+    * Learn
+      * [Documentation](https://docs.github.com/en)
+      * [Training](https://learn.github.com/skills)
+      * [Certifications](https://learn.github.com/credentials)
+
+    * Build
+      * [Build with Copilot](https://github.com/features/ai)
+      * [Customize Copilot](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-copilot-overview)
+      * [Integrations](https://github.com/marketplace)
+
+    * Explore
+      * [Trending repos](https://github.com/trending)
+      * [GitHub Sponsors](https://github.com/open-source/sponsors)
+      * [Developer articles](https://github.com/resources/articles)
+
+    * Changelog
+      * [ChangelogYour source for the latest features, improvements, and fixes across GitHub products, all in one place.](https://github.blog/changelog/)
+
+  * Businesses
+
+    * By Stage
+      * [Enterprises](https://github.com/enterprise)
+      * [Team](https://github.com/team)
+      * [Startups](https://github.com/enterprise/startups)
+      * [Nonprofits](https://github.com/solutions/industry/nonprofits)
+
+    * By Industry
+      * [Healthcare](https://github.com/solutions/industry/healthcare)
+      * [Financial services](https://github.com/solutions/industry/financial-services)
+      * [Manufacturing](https://github.com/solutions/industry/manufacturing)
+      * [Government](https://github.com/solutions/industry/government)
+      * [See all industries](https://github.com/solutions/industry)
+
+    * Evaluate GitHub
+      * [Why GitHub](https://github.com/why-github)
+      * [Customer Stories](https://github.com/customer-stories)
+      * [Business insights](https://github.com/solutions/executive-insights)
+      * [Trust Center](https://github.com/trust-center)
+
+    * Add-ons
+      * [GitHub Advanced SecurityEnterprise-grade code security](https://github.com/security/advanced-security)
+      * [Copilot for businessEnterprise-grade AI features](https://github.com/features/copilot/copilot-business)
+      * [Premium SupportEnterprise-grade 24/7 support](https://github.com/enterprise/premium-support)
+
+  * Resources
+
+    * Learn & Connect
+      * [Documentation](https://docs.github.com/en)
+      * [Resource center](https://github.com/resources)
+      * [Blog](https://github.blog/)
+      * [Events & webinars](https://github.com/resources/events)
+      * [Community Forum](https://github.com/orgs/community/discussions)
+      * [Customer Stories](https://github.com/customer-stories)
+      * [Integrations](https://github.com/marketplace)
+
+    * Support
+      * [Customer support](https://help.github.com/)
+      * [Training](https://learn.github.com/skills)
+      * [GitHub Status](https://www.githubstatus.com/)
+
+    * Company
+      * [About](https://github.com/about)
+      * [Partners](https://github.com/partners)
+      * [Changelog](https://github.blog/changelog/)
+
+    * GitHub Universe
+      * [GitHub UniverseThe event for developers, by developers — talks, workshops, and what’s next for GitHub.](https://githubuniverse.com/)
+
+  * [Pricing](https://github.com/pricing)
+
+Search`/`
+
+[Sign in](/login?return_to=https%3A%2F%2Fgithub.com%2Fwwebjs%2Fwhatsapp-web.js%2F)
+
+[Sign up](/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F%3Crepo-name%3E&source=header-repo&source_repo=wwebjs%2Fwhatsapp-web.js)
+
+Appearance settings
+
+You signed in with another tab or window. [Reload]() to refresh your session. You signed out in another tab or window. [Reload]() to refresh your session. You switched accounts on another tab or window. [Reload]() to refresh your session. Dismiss alert
+
+{{ message }}
+
+  1. [wwebjs](/wwebjs)
+  2. [whatsapp-web.js](/wwebjs/whatsapp-web.js)
+
+## Repository navigation
+
+  *   * [Code](/wwebjs/whatsapp-web.js)
+  * [Issues58 (58)](/wwebjs/whatsapp-web.js/issues)
+  * [Pull requests70 (70)](/wwebjs/whatsapp-web.js/pulls)
+  * [Actions](/wwebjs/whatsapp-web.js/actions)
+  * [Security and quality](/wwebjs/whatsapp-web.js/security)
+  * [Insights](/wwebjs/whatsapp-web.js/pulse)
+
+More items
+
+[](/wwebjs/whatsapp-web.js)
+
+**[whatsapp-web.js](/wwebjs/whatsapp-web.js)**
+
+Public
+
+  * Sponsor
+  * [Notifications](/login?return_to=%2Fwwebjs%2Fwhatsapp-web.js)You must be signed in to change notification settings
+  * [Fork5.2k (5.2k)](/login?return_to=%2Fwwebjs%2Fwhatsapp-web.js)
+  * [Star22.9k (22.9k)](/login?return_to=%2Fwwebjs%2Fwhatsapp-web.js)You must be signed in to star a repository
+
+## About
+
+A WhatsApp client library for NodeJS that connects through the WhatsApp Web
+browser app
+
+[wwebjs.dev](https://wwebjs.dev)
+
+### Topics
+
+[api](/topics/api)[bot](/topics/bot)[bot-api](/topics/bot-api)[hacktoberfest](/topics/hacktoberfest)[whatsapp](/topics/whatsapp)[whatsapp-api](/topics/whatsapp-api)[whatsapp-bot](/topics/whatsapp-bot)[whatsapp-web](/topics/whatsapp-web)[whatsapp-web-api](/topics/whatsapp-web-api)
+
+### Resources
+
+Readme
+
+Apache-2.0 license
+
+### Code of conduct
+
+[Code of conduct](/wwebjs/whatsapp-web.js#coc-ov-file)
+
+### Contributing
+
+Contributing
+
+[Activity](/wwebjs/whatsapp-web.js/activity)
+
+[Custom properties](/wwebjs/whatsapp-web.js/custom-properties)
+
+### Stars
+
+**22.9k** stars
+
+### Watchers
+
+**362** watching
+
+### Forks
+
+[**5.2k** forks](/wwebjs/whatsapp-web.js/forks)
+
+[Report repository](/contact/report-content?content_url=https%3A%2F%2Fgithub.com%2Fwwebjs%2Fwhatsapp-web.js&report=wwebjs+%28user%29)
+
+main
+
+[Branches](/wwebjs/whatsapp-web.js/branches)[Tags](/wwebjs/whatsapp-web.js/tags)
+
+[](/wwebjs/whatsapp-web.js/branches)[](/wwebjs/whatsapp-web.js/tags)
+
+Go to file
+
+Code
+
+Open more actions menu
+
+## Latest commit
+
+## History
+
+[901 Commits](/wwebjs/whatsapp-web.js/commits/main/)
+
+[](/wwebjs/whatsapp-web.js/commits/main/)901 Commits
+
+## Folders and files
+
+Name| Name| Last commit message| Last commit date  
+---|---|---|---  
+[.github](/wwebjs/whatsapp-web.js/tree/main/.github ".github")| [.github](/wwebjs/whatsapp-web.js/tree/main/.github ".github")|  |   
+[.husky](/wwebjs/whatsapp-web.js/tree/main/.husky ".husky")| [.husky](/wwebjs/whatsapp-web.js/tree/main/.husky ".husky")|  |   
+[docs](/wwebjs/whatsapp-web.js/tree/main/docs "docs")| [docs](/wwebjs/whatsapp-web.js/tree/main/docs "docs")|  |   
+[src](/wwebjs/whatsapp-web.js/tree/main/src "src")| [src](/wwebjs/whatsapp-web.js/tree/main/src "src")|  |   
+[tests](/wwebjs/whatsapp-web.js/tree/main/tests "tests")| [tests](/wwebjs/whatsapp-web.js/tree/main/tests "tests")|  |   
+[tools](/wwebjs/whatsapp-web.js/tree/main/tools "tools")| [tools](/wwebjs/whatsapp-web.js/tree/main/tools "tools")|  |   
+[.editorconfig](/wwebjs/whatsapp-web.js/blob/main/.editorconfig ".editorconfig")| [.editorconfig](/wwebjs/whatsapp-web.js/blob/main/.editorconfig ".editorconfig")|  |   
+[.env.example](/wwebjs/whatsapp-web.js/blob/main/.env.example ".env.example")| [.env.example](/wwebjs/whatsapp-web.js/blob/main/.env.example ".env.example")|  |   
+[.gitattributes](/wwebjs/whatsapp-web.js/blob/main/.gitattributes ".gitattributes")| [.gitattributes](/wwebjs/whatsapp-web.js/blob/main/.gitattributes ".gitattributes")|  |   
+[.gitignore](/wwebjs/whatsapp-web.js/blob/main/.gitignore ".gitignore")| [.gitignore](/wwebjs/whatsapp-web.js/blob/main/.gitignore ".gitignore")|  |   
+[.jsdoc.json](/wwebjs/whatsapp-web.js/blob/main/.jsdoc.json ".jsdoc.json")| [.jsdoc.json](/wwebjs/whatsapp-web.js/blob/main/.jsdoc.json ".jsdoc.json")|  |   
+[.lintstagedrc.json](/wwebjs/whatsapp-web.js/blob/main/.lintstagedrc.json ".lintstagedrc.json")| [.lintstagedrc.json](/wwebjs/whatsapp-web.js/blob/main/.lintstagedrc.json ".lintstagedrc.json")|  |   
+[.npmignore](/wwebjs/whatsapp-web.js/blob/main/.npmignore ".npmignore")| [.npmignore](/wwebjs/whatsapp-web.js/blob/main/.npmignore ".npmignore")|  |   
+[.prettierignore](/wwebjs/whatsapp-web.js/blob/main/.prettierignore ".prettierignore")| [.prettierignore](/wwebjs/whatsapp-web.js/blob/main/.prettierignore ".prettierignore")|  |   
+[.prettierrc.json](/wwebjs/whatsapp-web.js/blob/main/.prettierrc.json ".prettierrc.json")| [.prettierrc.json](/wwebjs/whatsapp-web.js/blob/main/.prettierrc.json ".prettierrc.json")|  |   
+[LICENSE](/wwebjs/whatsapp-web.js/blob/main/LICENSE "LICENSE")| [LICENSE](/wwebjs/whatsapp-web.js/blob/main/LICENSE "LICENSE")|  |   
+[README.md](/wwebjs/whatsapp-web.js/blob/main/README.md "README.md")| [README.md](/wwebjs/whatsapp-web.js/blob/main/README.md "README.md")|  |   
+[commitlint.config.js](/wwebjs/whatsapp-web.js/blob/main/commitlint.config.js "commitlint.config.js")| [commitlint.config.js](/wwebjs/whatsapp-web.js/blob/main/commitlint.config.js "commitlint.config.js")|  |   
+[eslint.config.mjs](/wwebjs/whatsapp-web.js/blob/main/eslint.config.mjs "eslint.config.mjs")| [eslint.config.mjs](/wwebjs/whatsapp-web.js/blob/main/eslint.config.mjs "eslint.config.mjs")|  |   
+[example.js](/wwebjs/whatsapp-web.js/blob/main/example.js "example.js")| [example.js](/wwebjs/whatsapp-web.js/blob/main/example.js "example.js")|  |   
+[index.d.ts](/wwebjs/whatsapp-web.js/blob/main/index.d.ts "index.d.ts")| [index.d.ts](/wwebjs/whatsapp-web.js/blob/main/index.d.ts "index.d.ts")|  |   
+[index.js](/wwebjs/whatsapp-web.js/blob/main/index.js "index.js")| [index.js](/wwebjs/whatsapp-web.js/blob/main/index.js "index.js")|  |   
+[package-lock.json](/wwebjs/whatsapp-web.js/blob/main/package-lock.json "package-lock.json")| [package-lock.json](/wwebjs/whatsapp-web.js/blob/main/package-lock.json "package-lock.json")|  |   
+[package.json](/wwebjs/whatsapp-web.js/blob/main/package.json "package.json")| [package.json](/wwebjs/whatsapp-web.js/blob/main/package.json "package.json")|  |   
+[shell.js](/wwebjs/whatsapp-web.js/blob/main/shell.js "shell.js")| [shell.js](/wwebjs/whatsapp-web.js/blob/main/shell.js "shell.js")|  |   
+View all files  
+  
+## Repository files navigation
+
+  *   * README
+  * Code of conduct
+  * Contributing
+  * Apache-2.0 license
+
+More items
+
+[ ](https://wwebjs.dev)
+
+[](https://www.npmjs.com/package/whatsapp-web.js) [](https://www.npmjs.com/package/whatsapp-web.js) [](https://github.com/wwebjs/whatsapp-web.js/graphs/contributors) [](https://depfu.com/github/wwebjs/whatsapp-web.js?project_id=9765) [](https://discord.wwebjs.dev)
+
+## About
+
+whatsapp‑web.js is a powerful [Node.js](https://nodejs.org/en/download/) library that lets you interact with WhatsApp Web, making it easy to build a dynamic WhatsApp API with nearly all features of the web client. It uses [Puppeteer](https://pptr.dev/) to access WhatsApp Web’s internal functions and runs them in a managed browser instance to reduce the risk of being blocked.
+
+## Links
+
+  * [GitHub](https://github.com/wwebjs/whatsapp-web.js)
+  * [Guide](https://guide.wwebjs.dev/guide) ([source](https://github.com/wwebjs/wwebjs.dev/tree/main))
+  * [Documentation](https://docs.wwebjs.dev/) ([source](https://github.com/wwebjs/whatsapp-web.js/tree/main/docs))
+  * [Discord Server](https://discord.wwebjs.dev)
+  * [npm](https://npmjs.org/package/whatsapp-web.js)
+
+## Installation
+
+**Node.js`v18.0.0` or higher, is required.**
+
+    
+    
+    npm install whatsapp-web.js
+    yarn add whatsapp-web.js
+    pnpm add whatsapp-web.js
+
+Having trouble installing? Take a peak at the [Guide](https://guide.wwebjs.dev/guide) for more detailed instructions.
+
+## Example usage
+
+    
+    
+    const { Client } = require('whatsapp-web.js');
+    const qrcode = require('qrcode-terminal');
+    
+    const client = new Client();
+    
+    client.on('qr', (qr) => {
+        qrcode.generate(qr, { small: true });
+    });
+    
+    client.on('ready', () => {
+        console.log('Client is ready!');
+    });
+    
+    client.on('message', (msg) => {
+        if (msg.body == '!ping') {
+            msg.reply('pong');
+        }
+    });
+    
+    client.initialize();
+
+Take a look at [example.js](https://github.com/wwebjs/whatsapp-web.js/blob/main/example.js) for additional examples and use cases.  
+For more details on saving and restoring sessions, check out the [Authentication Strategies](https://wwebjs.dev/guide/creating-your-bot/authentication.html).
+
+## Supported features
+
+Feature | Status  
+---|---  
+Multi Device | ✅  
+Send messages | ✅  
+Receive messages | ✅  
+Send media (images/audio/documents) | ✅  
+Send media (video) | ✅ [(requires Google Chrome)](https://wwebjs.dev/guide/creating-your-bot/handling-attachments.html#caveat-for-sending-videos-and-gifs)  
+Send stickers | ✅  
+Receive media (images/audio/video/documents) | ✅  
+Send contact cards | ✅  
+Send location | ✅  
+Send buttons | ❌ [(DEPRECATED)](https://www.youtube.com/watch?v=hv1R1rLeVVE)  
+Send lists | ❌ [(DEPRECATED)](https://www.youtube.com/watch?v=hv1R1rLeVVE)  
+Receive location | ✅  
+Message replies | ✅  
+Join groups by invite | ✅  
+Get invite for group | ✅  
+Modify group info (subject, description) | ✅  
+Modify group settings (send messages, edit info) | ✅  
+Add group participants | ✅  
+Kick group participants | ✅  
+Promote/demote group participants | ✅  
+Mention users | ✅  
+Mention groups | ✅  
+Mute/unmute chats | ✅  
+Block/unblock contacts | ✅  
+Get contact info | ✅  
+Get profile pictures | ✅  
+Set user status message | ✅  
+React to messages | ✅  
+Create polls | ✅  
+Channels | ✅  
+Vote in polls | ✅  
+Communities | 🔜  
+  
+Something missing? Make an issue and let us know!
+
+## Supporting the project
+
+You can support the maintainer of this project through the links below:
+
+  * [Support via GitHub Sponsors](https://github.com/sponsors/wwebjs)
+  * [Support via PayPal](https://www.paypal.me/psla/)
+
+## Contributing
+
+Feel free to open pull requests; we welcome contributions! However, for significant changes, it's best to open an issue beforehand. Make sure to review our [contribution guidelines](/wwebjs/whatsapp-web.js/blob/main/.github/CONTRIBUTING.md) before creating a pull request. Before creating your own issue or pull request, always check to see if one already exists!
+
+## Disclaimer
+
+This project is not affiliated, associated, authorized, endorsed by, or in any way officially connected with WhatsApp or any of its subsidiaries or its affiliates. The official WhatsApp website can be found at [whatsapp.com](https://whatsapp.com). "WhatsApp" as well as related names, marks, emblems and images are registered trademarks of their respective owners. Also it is not guaranteed you will not be blocked by using this method. WhatsApp does not allow bots or unofficial clients on their platform, so this shouldn't be considered totally safe.
+
+## License
+
+Copyright 2019 Pedro S Lopez
+
+Licensed under the Apache License, Version 2.0 (the "License");  
+you may not use this project except in compliance with the License.  
+You may obtain a copy of the License at
+<https://www.apache.org/licenses/LICENSE-2.0>.
+
+Unless required by applicable law or agreed to in writing, software  
+distributed under the License is distributed on an "AS IS" BASIS,  
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  
+See the License for the specific language governing permissions and  
+limitations under the License.
+
+## About
+
+A WhatsApp client library for NodeJS that connects through the WhatsApp Web
+browser app
+
+[wwebjs.dev](https://wwebjs.dev)
+
+### Topics
+
+[api](/topics/api)[bot](/topics/bot)[bot-api](/topics/bot-api)[hacktoberfest](/topics/hacktoberfest)[whatsapp](/topics/whatsapp)[whatsapp-api](/topics/whatsapp-api)[whatsapp-bot](/topics/whatsapp-bot)[whatsapp-web](/topics/whatsapp-web)[whatsapp-web-api](/topics/whatsapp-web-api)
+
+### Resources
+
+Readme
+
+Apache-2.0 license
+
+### Code of conduct
+
+[Code of conduct](/wwebjs/whatsapp-web.js#coc-ov-file)
+
+### Contributing
+
+Contributing
+
+[Activity](/wwebjs/whatsapp-web.js/activity)
+
+[Custom properties](/wwebjs/whatsapp-web.js/custom-properties)
+
+### Stars
+
+**22.9k** stars
+
+### Watchers
+
+**362** watching
+
+### Forks
+
+[**5.2k** forks](/wwebjs/whatsapp-web.js/forks)
+
+[Report repository](/contact/report-content?content_url=https%3A%2F%2Fgithub.com%2Fwwebjs%2Fwhatsapp-web.js&report=wwebjs+%28user%29)
+
+## Releases
+
+## Sponsor this project
+
+## Used by
+
+## Contributors
+
+## Languages
+
+## Footer
+
+[ ](https://github.com) (C) 2026 GitHub, Inc. 
+
+### Footer navigation
+
+  * [Terms](https://docs.github.com/site-policy/github-terms/github-terms-of-service)
+  * [Privacy](https://docs.github.com/site-policy/privacy-policies/github-privacy-statement)
+  * [Security](https://github.com/security)
+  * [Status](https://www.githubstatus.com/)
+  * [Community](https://github.community/)
+  * [Docs](https://docs.github.com/)
+  * [Contact](https://support.github.com?tags=dotcom-footer)
+  * Manage cookies 
+  * Do not share my personal information 
+
+You can’t perform that action at this time.
+

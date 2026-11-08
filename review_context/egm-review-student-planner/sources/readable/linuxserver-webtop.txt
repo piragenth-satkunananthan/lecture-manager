@@ -1,0 +1,906 @@
+Skip to content
+
+[ ](../.. "LinuxServer.io")
+
+LinuxServer.io
+
+webtop
+
+[ ](javascript:void\(0\) "Share")
+
+Initializing search
+
+[ linuxserver/docker-documentation  ](https://github.com/linuxserver/docker-documentation "Go to repository")
+
+  * [ Introduction ](../..)
+  * [ How to ](../../general/containers-101/)
+  * [ Container Images ](../../images-by-category/)
+  * [ API ](../../API/)
+  * [ Selkies ](../../selkies/)
+  * [ Frequently Asked Questions ](../../FAQ/)
+  * [ Misc ](../../misc/finances/)
+
+[ ](../.. "LinuxServer.io") LinuxServer.io 
+
+[ linuxserver/docker-documentation  ](https://github.com/linuxserver/docker-documentation "Go to repository")
+
+  * [ Introduction  ](../..)
+  * How to  How to 
+    * [ Docker Containers: 101  ](../../general/containers-101/)
+    * [ Container Branding  ](../../general/container-branding/)
+    * [ Customizing LinuxServer Containers  ](../../general/container-customization/)
+    * [ Container Execution  ](../../general/container-execution/)
+    * [ Docker Compose  ](../../general/docker-compose/)
+    * [ How to get support  ](../../general/how-to-get-support/)
+    * [ Running LinuxServer Containers  ](../../general/running-our-containers/)
+    * [ Split dns  ](../../general/split-dns/)
+    * [ SWAG  ](../../general/swag/)
+    * [ Understanding PUID and PGID  ](../../general/understanding-puid-and-pgid/)
+    * [ Updating our containers  ](../../general/updating-our-containers/)
+    * [ Volumes  ](../../general/volumes/)
+  * Container Images  Container Images 
+    * [ Images by Category  ](../../images-by-category/)
+    * Images  Images 
+      * [ adguardhome-sync  ](../docker-adguardhome-sync/)
+      * [ airsonic-advanced  ](../docker-airsonic-advanced/)
+      * [ altus  ](../docker-altus/)
+      * [ apprise-api  ](../docker-apprise-api/)
+      * [ ardour  ](../docker-ardour/)
+      * [ audacity  ](../docker-audacity/)
+      * [ audiosilo  ](../docker-audiosilo/)
+      * [ azahar  ](../docker-azahar/)
+      * [ babybuddy  ](../docker-babybuddy/)
+      * [ bambustudio  ](../docker-bambustudio/)
+      * [ bazarr  ](../docker-bazarr/)
+      * [ beets  ](../docker-beets/)
+      * [ bitcoin-knots  ](../docker-bitcoin-knots/)
+      * [ blade-of-agony  ](../docker-blade-of-agony/)
+      * [ blender  ](../docker-blender/)
+      * [ boinc  ](../docker-boinc/)
+      * [ bookstack  ](../docker-bookstack/)
+      * [ brave  ](../docker-brave/)
+      * [ calibre-web  ](../docker-calibre-web/)
+      * [ calibre  ](../docker-calibre/)
+      * [ calligra  ](../docker-calligra/)
+      * [ changedetection.io  ](../docker-changedetection.io/)
+      * [ chrome  ](../docker-chrome/)
+      * [ chromium  ](../docker-chromium/)
+      * [ ci-debug  ](../docker-ci-debug/)
+      * [ code-server  ](../docker-code-server/)
+      * [ cops  ](../docker-cops/)
+      * [ craft-apps  ](../docker-craft-apps/)
+      * [ cura  ](../docker-cura/)
+      * [ d2-builder  ](../docker-d2-builder/)
+      * [ darktable  ](../docker-darktable/)
+      * [ davos  ](../docker-davos/)
+      * [ ddclient  ](../docker-ddclient/)
+      * [ deluge  ](../docker-deluge/)
+      * [ digikam  ](../docker-digikam/)
+      * [ diskover  ](../docker-diskover/)
+      * [ dogwalk  ](../docker-dogwalk/)
+      * [ dokuwiki  ](../docker-dokuwiki/)
+      * [ dolphin  ](../docker-dolphin/)
+      * [ Docker doplarr  ](../docker-doplarr/)
+      * [ doplarr_rs  ](../docker-doplarr_rs/)
+      * [ dosbox-staging  ](../docker-dosbox-staging/)
+      * [ doublecommander  ](../docker-doublecommander/)
+      * [ duckdns  ](../docker-duckdns/)
+      * [ duckstation  ](../docker-duckstation/)
+      * [ duplicati  ](../docker-duplicati/)
+      * [ eden  ](../docker-eden/)
+      * [ emby  ](../docker-emby/)
+      * [ fail2ban  ](../docker-fail2ban/)
+      * [ faster-whisper  ](../docker-faster-whisper/)
+      * [ ferdium  ](../docker-ferdium/)
+      * [ ffmpeg  ](../docker-ffmpeg/)
+      * [ filezilla  ](../docker-filezilla/)
+      * [ firefox  ](../docker-firefox/)
+      * [ flexget  ](../docker-flexget/)
+      * [ flycast  ](../docker-flycast/)
+      * [ foldingathome  ](../docker-foldingathome/)
+      * [ freecad  ](../docker-freecad/)
+      * [ freshrss  ](../docker-freshrss/)
+      * [ gimp  ](../docker-gimp/)
+      * [ github-desktop  ](../docker-github-desktop/)
+      * [ gitqlient  ](../docker-gitqlient/)
+      * [ grav  ](../docker-grav/)
+      * [ grocy  ](../docker-grocy/)
+      * [ gzdoom  ](../docker-gzdoom/)
+      * [ habridge  ](../docker-habridge/)
+      * [ handbrake  ](../docker-handbrake/)
+      * [ healthchecks  ](../docker-healthchecks/)
+      * [ hedgedoc  ](../docker-hedgedoc/)
+      * [ heimdall  ](../docker-heimdall/)
+      * [ helium  ](../docker-helium/)
+      * [ hishtory-server  ](../docker-hishtory-server/)
+      * [ homeassistant  ](../docker-homeassistant/)
+      * [ htpcmanager  ](../docker-htpcmanager/)
+      * [ inkscape  ](../docker-inkscape/)
+      * [ intellij-idea  ](../docker-intellij-idea/)
+      * [ jackett  ](../docker-jackett/)
+      * [ jellyfin  ](../docker-jellyfin/)
+      * [ joplin  ](../docker-joplin/)
+      * [ kali-linux  ](../docker-kali-linux/)
+      * [ kasm  ](../docker-kasm/)
+      * [ kavita  ](../docker-kavita/)
+      * [ kdenlive  ](../docker-kdenlive/)
+      * [ keepassxc  ](../docker-keepassxc/)
+      * [ kicad  ](../docker-kicad/)
+      * [ kimai  ](../docker-kimai/)
+      * [ kometa  ](../docker-kometa/)
+      * [ krita  ](../docker-krita/)
+      * [ lazylibrarian  ](../docker-lazylibrarian/)
+      * [ ldap-auth  ](../docker-ldap-auth/)
+      * [ libreoffice  ](../docker-libreoffice/)
+      * [ librespeed  ](../docker-librespeed/)
+      * [ librewolf  ](../docker-librewolf/)
+      * [ lidarr  ](../docker-lidarr/)
+      * [ limnoria  ](../docker-limnoria/)
+      * [ lm-studio  ](../docker-lm-studio/)
+      * [ lollypop  ](../docker-lollypop/)
+      * [ lsio-api  ](../docker-lsio-api/)
+      * [ luanti  ](../docker-luanti/)
+      * [ lychee  ](../docker-lychee/)
+      * [ mame  ](../docker-mame/)
+      * [ manyfold  ](../docker-manyfold/)
+      * [ mariadb  ](../docker-mariadb/)
+      * [ mastodon  ](../docker-mastodon/)
+      * [ mediaelch  ](../docker-mediaelch/)
+      * [ medusa  ](../docker-medusa/)
+      * [ melonds  ](../docker-melonds/)
+      * [ minisatip  ](../docker-minisatip/)
+      * [ modmanager  ](../docker-modmanager/)
+      * [ modrinth  ](../docker-modrinth/)
+      * [ monica  ](../docker-monica/)
+      * [ msedge  ](../docker-msedge/)
+      * [ mstream  ](../docker-mstream/)
+      * [ mullvad-browser  ](../docker-mullvad-browser/)
+      * [ mylar3  ](../docker-mylar3/)
+      * [ mysql-workbench  ](../docker-mysql-workbench/)
+      * [ netbootxyz  ](../docker-netbootxyz/)
+      * [ netbox  ](../docker-netbox/)
+      * [ nextcloud  ](../docker-nextcloud/)
+      * [ nginx  ](../docker-nginx/)
+      * [ ngircd  ](../docker-ngircd/)
+      * [ nomacs  ](../docker-nomacs/)
+      * [ nzbget  ](../docker-nzbget/)
+      * [ nzbhydra2  ](../docker-nzbhydra2/)
+      * [ obsidian  ](../docker-obsidian/)
+      * [ ombi  ](../docker-ombi/)
+      * [ onlyoffice  ](../docker-onlyoffice/)
+      * [ openshot  ](../docker-openshot/)
+      * [ openssh-server  ](../docker-openssh-server/)
+      * [ openvscode-server  ](../docker-openvscode-server/)
+      * [ opera  ](../docker-opera/)
+      * [ orcaslicer  ](../docker-orcaslicer/)
+      * [ oscam  ](../docker-oscam/)
+      * [ pairdrop  ](../docker-pairdrop/)
+      * [ pcsx2  ](../docker-pcsx2/)
+      * [ pelorus  ](../docker-pelorus/)
+      * [ phpmyadmin  ](../docker-phpmyadmin/)
+      * [ pidgin  ](../docker-pidgin/)
+      * [ piper  ](../docker-piper/)
+      * [ piwigo  ](../docker-piwigo/)
+      * [ planka  ](../docker-planka/)
+      * [ plex  ](../docker-plex/)
+      * [ ppsspp  ](../docker-ppsspp/)
+      * [ projectsend  ](../docker-projectsend/)
+      * [ prowlarr  ](../docker-prowlarr/)
+      * [ pwndrop  ](../docker-pwndrop/)
+      * [ pycharm  ](../docker-pycharm/)
+      * [ pydio-cells  ](../docker-pydio-cells/)
+      * [ pyload-ng  ](../docker-pyload-ng/)
+      * [ python  ](../docker-python/)
+      * [ qbittorrent  ](../docker-qbittorrent/)
+      * [ qdirstat  ](../docker-qdirstat/)
+      * [ qemu-static  ](../docker-qemu-static/)
+      * [ radarr  ](../docker-radarr/)
+      * [ raneto  ](../docker-raneto/)
+      * [ rawtherapee  ](../docker-rawtherapee/)
+      * [ rdesktop  ](../docker-rdesktop/)
+      * [ remmina  ](../docker-remmina/)
+      * [ resilio-sync  ](../docker-resilio-sync/)
+      * [ retroarch  ](../docker-retroarch/)
+      * [ rpcs3  ](../docker-rpcs3/)
+      * [ rsnapshot  ](../docker-rsnapshot/)
+      * [ rustdesk  ](../docker-rustdesk/)
+      * [ sabnzbd  ](../docker-sabnzbd/)
+      * [ scummvm  ](../docker-scummvm/)
+      * [ sealskin  ](../docker-sealskin/)
+      * [ series-troxide  ](../docker-series-troxide/)
+      * [ shadps4  ](../docker-shadps4/)
+      * [ shotcut  ](../docker-shotcut/)
+      * [ sickgear  ](../docker-sickgear/)
+      * [ signal  ](../docker-signal/)
+      * [ smokeping  ](../docker-smokeping/)
+      * [ snapdrop  ](../docker-snapdrop/)
+      * [ socket-proxy  ](../docker-socket-proxy/)
+      * [ sonarr  ](../docker-sonarr/)
+      * [ speedtest-tracker  ](../docker-speedtest-tracker/)
+      * [ spotube  ](../docker-spotube/)
+      * [ sqlitebrowser  ](../docker-sqlitebrowser/)
+      * [ steam  ](../docker-steam/)
+      * [ steamos  ](../docker-steamos/)
+      * [ swag  ](../docker-swag/)
+      * [ synclounge  ](../docker-synclounge/)
+      * [ syncthing  ](../docker-syncthing/)
+      * [ syslog-ng  ](../docker-syslog-ng/)
+      * [ tautulli  ](../docker-tautulli/)
+      * [ telegram  ](../docker-telegram/)
+      * [ thelounge  ](../docker-thelounge/)
+      * [ thunderbird  ](../docker-thunderbird/)
+      * [ transmission  ](../docker-transmission/)
+      * [ tvheadend  ](../docker-tvheadend/)
+      * [ ubooquity  ](../docker-ubooquity/)
+      * [ ungoogled-chromium  ](../docker-ungoogled-chromium/)
+      * [ unifi-network-application  ](../docker-unifi-network-application/)
+      * [ vivaldi  ](../docker-vivaldi/)
+      * [ vlc  ](../docker-vlc/)
+      * [ vscode  ](../docker-vscode/)
+      * [ vscodium-web  ](../docker-vscodium-web/)
+      * [ vscodium  ](../docker-vscodium/)
+      * [ webcord  ](../docker-webcord/)
+      * [ webgrabplus  ](../docker-webgrabplus/)
+      * [ webstation  ](../docker-webstation/)
+      * webtop  [ webtop  ](./) Table of contents 
+        * Supported Architectures 
+        * Version Tags 
+        * Application Setup 
+          * Strict reverse proxies 
+          * Start Minimal 
+          * GPU Acceleration 
+          * Security 
+          * Language Support - Internationalization 
+          * Beyond Running the App 
+        * Usage 
+          * docker-compose (recommended, click here for more info) 
+          * docker cli (click here for more info) 
+        * Parameters 
+          * Ports (-p) 
+          * Environment Variables (-e) 
+          * Volume Mappings (-v) 
+            * Miscellaneous Options 
+        * Environment variables from files (Docker secrets) 
+        * Umask for running applications 
+        * User / Group Identifiers 
+        * Docker Mods 
+        * Support Info 
+        * Updating Info 
+          * Via Docker Compose 
+          * Via Docker Run 
+          * Image Update Notifications - Diun (Docker Image Update Notifier) 
+        * Building locally 
+        * Versions 
+      * [ weixin  ](../docker-weixin/)
+      * [ wikijs  ](../docker-wikijs/)
+      * [ winegui  ](../docker-winegui/)
+      * [ wireguard  ](../docker-wireguard/)
+      * [ wireshark  ](../docker-wireshark/)
+      * [ wps-office  ](../docker-wps-office/)
+      * [ xbackbone  ](../docker-xbackbone/)
+      * [ xemu  ](../docker-xemu/)
+      * [ yaak  ](../docker-yaak/)
+      * [ your_spotify  ](../docker-your_spotify/)
+      * [ zen  ](../docker-zen/)
+      * [ znc  ](../docker-znc/)
+      * [ zotero  ](../docker-zotero/)
+    * Deprecated Images  Deprecated Images 
+      * [ airsonic  ](../../deprecated_images/docker-airsonic/)
+      * [ baseimage-alpine-python  ](../../deprecated_images/docker-baseimage-alpine-python/)
+      * [ baseimage-cloud9  ](../../deprecated_images/docker-baseimage-cloud9/)
+      * [ baseimage-el  ](../../deprecated_images/docker-baseimage-el/)
+      * [ baseimage-guacgui  ](../../deprecated_images/docker-baseimage-guacgui/)
+      * [ baseimage-gui  ](../../deprecated_images/docker-baseimage-gui/)
+      * [ baseimage-mono  ](../../deprecated_images/docker-baseimage-mono/)
+      * [ baseimage-rdesktop-web  ](../../deprecated_images/docker-baseimage-rdesktop-web/)
+      * [ baseimage-rdesktop  ](../../deprecated_images/docker-baseimage-rdesktop/)
+      * [ booksonic-air  ](../../deprecated_images/docker-booksonic-air/)
+      * [ booksonic  ](../../deprecated_images/docker-booksonic/)
+      * [ budge  ](../../deprecated_images/docker-budge/)
+      * [ cardigann  ](../../deprecated_images/docker-cardigann/)
+      * [ chevereto  ](../../deprecated_images/docker-chevereto/)
+      * [ citron  ](../../deprecated_images/docker-citron/)
+      * [ clarkson  ](../../deprecated_images/docker-clarkson/)
+      * [ cloud9  ](../../deprecated_images/docker-cloud9/)
+      * [ codiad  ](../../deprecated_images/docker-codiad/)
+      * [ codimd  ](../../deprecated_images/docker-codimd/)
+      * [ couchpotato  ](../../deprecated_images/docker-couchpotato/)
+      * [ daapd  ](../../deprecated_images/docker-daapd/)
+      * [ dillinger  ](../../deprecated_images/docker-dillinger/)
+      * [ Docker doc builder  ](../../deprecated_images/docker-doc-builder/)
+      * [ docker-compose  ](../../deprecated_images/docker-docker-compose/)
+      * [ domoticz  ](../../deprecated_images/docker-domoticz/)
+      * [ Docker doplarr  ](../../deprecated_images/docker-doplarr/)
+      * [ embystat  ](../../deprecated_images/docker-embystat/)
+      * [ emulatorjs  ](../../deprecated_images/docker-emulatorjs/)
+      * [ endlessh  ](../../deprecated_images/docker-endlessh/)
+      * [ feed2toot  ](../../deprecated_images/docker-feed2toot/)
+      * [ fleet  ](../../deprecated_images/docker-fleet/)
+      * [ freetube  ](../../deprecated_images/docker-freetube/)
+      * [ gazee  ](../../deprecated_images/docker-gazee/)
+      * [ gmail-order-bot  ](../../deprecated_images/docker-gmail-order-bot/)
+      * [ guacd  ](../../deprecated_images/docker-guacd/)
+      * [ headphones  ](../../deprecated_images/docker-headphones/)
+      * [ hydra  ](../../deprecated_images/docker-hydra/)
+      * [ hydra2  ](../../deprecated_images/docker-hydra2/)
+      * [ ipfs  ](../../deprecated_images/docker-ipfs/)
+      * [ kanzi  ](../../deprecated_images/docker-kanzi/)
+      * [ letsencrypt  ](../../deprecated_images/docker-letsencrypt/)
+      * [ libresonic  ](../../deprecated_images/docker-libresonic/)
+      * [ minetest  ](../../deprecated_images/docker-minetest/)
+      * [ monica  ](../../deprecated_images/docker-monica/)
+      * [ musicbrainz  ](../../deprecated_images/docker-musicbrainz/)
+      * [ muximux  ](../../deprecated_images/docker-muximux/)
+      * [ mylar  ](../../deprecated_images/docker-mylar/)
+      * [ nano-discord-bot  ](../../deprecated_images/docker-nano-discord-bot/)
+      * [ nano-wallet  ](../../deprecated_images/docker-nano-wallet/)
+      * [ nano  ](../../deprecated_images/docker-nano/)
+      * [ netbootxyz  ](../../deprecated_images/docker-netbootxyz/)
+      * [ nntp2nntp  ](../../deprecated_images/docker-nntp2nntp/)
+      * [ openvpn-as  ](../../deprecated_images/docker-openvpn-as/)
+      * [ openvscode-server  ](../../deprecated_images/docker-openvscode-server/)
+      * [ organizr  ](../../deprecated_images/docker-organizr/)
+      * [ overseerr  ](../../deprecated_images/docker-overseerr/)
+      * [ paperless-ng  ](../../deprecated_images/docker-paperless-ng/)
+      * [ paperless-ngx  ](../../deprecated_images/docker-paperless-ngx/)
+      * [ papermerge  ](../../deprecated_images/docker-papermerge/)
+      * [ photoshow  ](../../deprecated_images/docker-photoshow/)
+      * [ pixapop  ](../../deprecated_images/docker-pixapop/)
+      * [ plex-meta-manager  ](../../deprecated_images/docker-plex-meta-manager/)
+      * [ pydio  ](../../deprecated_images/docker-pydio/)
+      * [ pyload  ](../../deprecated_images/docker-pyload/)
+      * [ pylon  ](../../deprecated_images/docker-pylon/)
+      * [ quassel-core  ](../../deprecated_images/docker-quassel-core/)
+      * [ quassel-web  ](../../deprecated_images/docker-quassel-web/)
+      * [ rdesktop  ](../../deprecated_images/docker-rdesktop/)
+      * [ readarr  ](../../deprecated_images/docker-readarr/)
+      * [ readme-sync  ](../../deprecated_images/docker-readme-sync/)
+      * [ requestrr  ](../../deprecated_images/docker-requestrr/)
+      * [ rutorrent  ](../../deprecated_images/docker-rutorrent/)
+      * [ scrutiny  ](../../deprecated_images/docker-scrutiny/)
+      * [ shout-irc  ](../../deprecated_images/docker-shout-irc/)
+      * [ sickchill  ](../../deprecated_images/docker-sickchill/)
+      * [ sickrage  ](../../deprecated_images/docker-sickrage/)
+      * [ snapdrop  ](../../deprecated_images/docker-snapdrop/)
+      * [ snipe-it  ](../../deprecated_images/docker-snipe-it/)
+      * [ steamos  ](../../deprecated_images/docker-steamos/)
+      * [ taisun  ](../../deprecated_images/docker-taisun/)
+      * [ tester  ](../../deprecated_images/docker-tester/)
+      * [ unifi-controller  ](../../deprecated_images/docker-unifi-controller/)
+  * [ API  ](../../API/)
+  * Selkies  Selkies 
+    * [ Overview  ](../../selkies/)
+    * User Guide  User Guide 
+      * [ User Guide  ](../../selkies/user-guide/)
+      * [ Quickstart  ](../../selkies/user-guide/quickstart/)
+      * [ Installation  ](../../selkies/user-guide/installation/)
+      * [ GPU Acceleration  ](../../selkies/user-guide/gpu/)
+      * [ Using the Web Client  ](../../selkies/user-guide/web-client/)
+      * [ Configuration Reference  ](../../selkies/user-guide/configuration/)
+      * [ Available Apps and Desktops  ](../../selkies/user-guide/apps/)
+      * [ Installing Applications  ](../../selkies/user-guide/installing-apps/)
+      * [ Security and Hardening  ](../../selkies/user-guide/security/)
+      * [ Reverse Proxy  ](../../selkies/user-guide/reverse-proxy/)
+      * [ WebRTC Transport  ](../../selkies/user-guide/webrtc/)
+      * [ Troubleshooting  ](../../selkies/user-guide/troubleshooting/)
+    * Developer Guide  Developer Guide 
+      * [ Developer Guide  ](../../selkies/developer-guide/)
+      * [ Platform Architecture  ](../../selkies/developer-guide/architecture/)
+      * [ Building Custom Images  ](../../selkies/developer-guide/building-images/)
+      * [ Baseimage Internals  ](../../selkies/developer-guide/baseimage-internals/)
+      * [ Customizing Containers  ](../../selkies/developer-guide/customization/)
+      * [ The Streaming Protocol  ](../../selkies/developer-guide/protocol/)
+      * [ Development Environment  ](../../selkies/developer-guide/development/)
+    * Components  Components 
+      * [ Components  ](../../selkies/components/)
+      * [ Selkies  ](../../selkies/components/selkies/)
+      * [ Pixelflux and Pcmflux  ](../../selkies/components/pixelflux/)
+      * [ Selkies Baseimages  ](../../selkies/components/baseimages/)
+      * [ Selkies Desktop  ](../../selkies/components/selkies-desktop/)
+      * [ SealSkin  ](../../selkies/components/sealskin/)
+      * [ SealSkin Apps Registry  ](../../selkies/components/sealskin-apps/)
+      * [ Pelorus  ](../../selkies/components/pelorus/)
+  * [ Frequently Asked Questions  ](../../FAQ/)
+  * Misc  Misc 
+    * [ Finances  ](../../misc/finances/)
+    * [ Running Containers As A Non-Root User  ](../../misc/non-root/)
+    * [ Running Containers Read-Only  ](../../misc/read-only/)
+    * [ LinuxServer Support Policy  ](../../misc/support-policy/)
+
+Table of contents
+
+  * Supported Architectures 
+  * Version Tags 
+  * Application Setup 
+    * Strict reverse proxies 
+    * Start Minimal 
+    * GPU Acceleration 
+    * Security 
+    * Language Support - Internationalization 
+    * Beyond Running the App 
+  * Usage 
+    * docker-compose (recommended, click here for more info) 
+    * docker cli (click here for more info) 
+  * Parameters 
+    * Ports (-p) 
+    * Environment Variables (-e) 
+    * Volume Mappings (-v) 
+      * Miscellaneous Options 
+  * Environment variables from files (Docker secrets) 
+  * Umask for running applications 
+  * User / Group Identifiers 
+  * Docker Mods 
+  * Support Info 
+  * Updating Info 
+    * Via Docker Compose 
+    * Via Docker Run 
+    * Image Update Notifications - Diun (Docker Image Update Notifier) 
+  * Building locally 
+  * Versions 
+
+# [linuxserver/webtop](https://github.com/linuxserver/docker-webtop)¶
+
+[](https://scarf.sh) [](https://github.com/linuxserver/docker-webtop) [](https://github.com/linuxserver/docker-webtop/releases) [](https://github.com/linuxserver/docker-webtop/packages) [](https://gitlab.com/linuxserver.io/docker-webtop/container_registry) [](https://quay.io/repository/linuxserver.io/webtop) [](https://hub.docker.com/r/linuxserver/webtop) [](https://hub.docker.com/r/linuxserver/webtop) [](https://ci.linuxserver.io/job/Docker-Pipeline-Builders/job/docker-webtop/job/master/) [](https://ci-tests.linuxserver.io/linuxserver/webtop/latest/index.html)
+
+[Webtop](https://github.com/linuxserver/docker-webtop) \- Alpine, Ubuntu, Fedora, and Arch based containers containing full desktop environments in officially supported flavors accessible via any modern web browser.
+
+[](https://github.com/linuxserver/docker-webtop)
+
+## Supported Architectures¶
+
+We utilise the docker manifest for multi-platform awareness. More information is available from docker [here](https://distribution.github.io/distribution/spec/manifest-v2-2/#manifest-list) and our announcement [here](https://blog.linuxserver.io/2019/02/21/the-lsio-pipeline-project/).
+
+Simply pulling `lscr.io/linuxserver/webtop:latest` should retrieve the correct
+image for your arch, but you can also pull specific arch images via tags.
+
+The architectures supported by this image are:
+
+Architecture | Available | Tag  
+---|---|---  
+x86-64 | ✅ | amd64-<version tag>  
+arm64 | ✅ | arm64v8-<version tag>  
+  
+## Version Tags¶
+
+This image provides various versions that are available via tags. Please read
+the descriptions carefully and exercise caution when using unstable or
+development tags.
+
+Tag | Available | Description  
+---|---|---  
+latest | ✅ | XFCE Alpine *Wayland Support  
+alpine-i3 | ✅ | i3 Alpine *Wayland Support  
+alpine-kde | ✅ | KDE Alpine *Wayland Only  
+alpine-mate | ✅ | MATE Alpine  
+arch-i3 | ✅ | i3 Arch *Wayland Support  
+arch-kde | ✅ | KDE Arch *Wayland Only  
+arch-mate | ✅ | MATE Arch  
+arch-xfce | ✅ | XFCE Arch *Wayland Support  
+debian-i3 | ✅ | i3 Debian *Wayland Support  
+debian-kde | ✅ | KDE Debian  
+debian-mate | ✅ | MATE Debian  
+debian-xfce | ✅ | XFCE Debian  
+fedora-i3 | ✅ | i3 Fedora *Wayland Support  
+fedora-kde | ✅ | KDE Fedora *Wayland Support  
+fedora-mate | ✅ | MATE Fedora  
+fedora-xfce | ✅ | XFCE Fedora  
+ubuntu-i3 | ✅ | i3 Ubuntu *Wayland Support  
+ubuntu-kde | ✅ | KDE Ubuntu *Wayland Support  
+ubuntu-lxqt | ✅ | LXQt Ubuntu *Wayland Support  
+ubuntu-mate | ✅ | MATE Ubuntu  
+ubuntu-xfce | ✅ | XFCE Ubuntu *Wayland Support  
+dev | ✅ | KDE Ubuntu *Current Selkies Development Head  
+  
+## Application Setup¶
+
+The application can be accessed at:
+
+  * https://yourhost:3001/
+
+### Strict reverse proxies¶
+
+This image uses a self-signed certificate by default. This naturally means the scheme is `https`. If you are using a reverse proxy which validates certificates, you need to [disable this check for the container](https://docs.linuxserver.io/faq#strict-proxy).
+
+This container is based on [Docker Baseimage Selkies](https://github.com/linuxserver/docker-baseimage-selkies), which streams a desktop or single application to your web browser. Only the essentials are covered below, the full platform documentation lives at [docs.linuxserver.io/selkies](https://docs.linuxserver.io/selkies/).
+
+### Start Minimal¶
+
+Most support issues we see stem from large run configurations assembled from
+years of forum posts. These containers are designed to work with almost
+nothing. Start with the minimal command below, confirm it works, then add your
+options (volumes, env vars, GPU flags) one at a time:
+
+    
+    
+    docker run --rm -it \
+      --shm-size=1gb \
+      -p 3001:3001 \
+      lscr.io/linuxserver/webtop:latest bash
+    
+
+Open **https://localhost:3001** (note the `https`) and accept the self signed certificate warning. The trailing `bash` gives you a shell inside the container, `ctrl+d` exits and cleans everything up. If a bigger setup misbehaves, return to this command to isolate the problem, see the [Quickstart](https://docs.linuxserver.io/selkies/user-guide/quickstart/) and [Troubleshooting](https://docs.linuxserver.io/selkies/user-guide/troubleshooting/) guides.
+
+### GPU Acceleration¶
+
+A GPU is optional, the CPU pipeline is fast enough for smooth sessions on
+modest hardware. When a GPU is mounted into the container it is automatically
+detected and configured for zero copy rendering and encoding, set
+`AUTO_GPU=false` to disable this behavior.
+
+**Intel / AMD (open source drivers), one flag is all it takes:**
+
+    
+    
+    docker run --rm -it \
+      --shm-size=1gb \
+      -p 3001:3001 \
+      --device /dev/dri \
+      lscr.io/linuxserver/webtop:latest bash
+    
+
+**Nvidia (proprietary drivers, not available on Alpine based images):**
+
+Requires host driver **580 or newer** installed from the `.run` file downloaded directly from Nvidia. On drivers older than 595.80 you may also need kernel parameters and a dummy plug, see [GPU Acceleration](https://docs.linuxserver.io/selkies/user-guide/gpu/) before opening an issue.
+    
+    
+    docker run --rm -it \
+      --shm-size=1gb \
+      -p 3001:3001 \
+      --runtime nvidia \
+      --gpus all \
+      --device /dev/nvidia-modeset \
+      lscr.io/linuxserver/webtop:latest bash
+    
+
+Compose examples, multi GPU selection (`DRINODE`/`DRI_NODE`), Unraid notes, and a step by step debugging loop are in the [GPU Acceleration](https://docs.linuxserver.io/selkies/user-guide/gpu/) guide.
+
+### Security¶
+
+Warning
+
+This container provides privileged access to the host system. Do not expose it
+to the Internet unless you have secured it properly.
+
+**HTTPS is required.** Modern browser features used for video and audio
+(WebCodecs) only work in a secure context. Port `3001` serves HTTPS directly,
+the HTTP port exists only to sit behind a reverse proxy.
+
+By default there is **no authentication**. Setting the `CUSTOM_USER` and `PASSWORD` environment variables enables HTTP basic auth, which is suitable only for a trusted local network. For internet exposure, place the container behind a reverse proxy with robust authentication, such as [SWAG](https://github.com/linuxserver/docker-swag). Keep in mind the web interface includes a terminal with passwordless `sudo`, anyone who can reach the GUI can gain root inside the container.
+
+Authentication options, sharing link behavior, container isolation, and the lockdown variables for kiosk style deployments are covered in [Security and Hardening](https://docs.linuxserver.io/selkies/user-guide/security/).
+
+### Language Support - Internationalization¶
+
+To launch the session in a different language, set the `LC_ALL` environment
+variable, e.g. `-e LC_ALL=zh_CN.UTF-8` (Chinese), `ja_JP.UTF-8` (Japanese),
+`ko_KR.UTF-8` (Korean), `ar_AE.UTF-8` (Arabic), `ru_RU.UTF-8` (Russian),
+`es_MX.UTF-8` (Spanish Latin America), `de_DE.UTF-8` (German), `fr_FR.UTF-8`
+(French), `nl_NL.UTF-8` (Dutch), `it_IT.UTF-8` (Italian).
+
+### Beyond Running the App¶
+
+This image inherits every capability of the Selkies platform, all documented
+in depth on the docs site:
+
+  * [Configuration Reference](https://docs.linuxserver.io/selkies/user-guide/configuration/) \- every environment variable: ports, subfolder reverse proxy, custom dashboards, watermarking, and the full set of `SELKIES_*` stream, feature, and UI settings with their `|locked` syntax.
+  * [Using the Web Client](https://docs.linuxserver.io/selkies/user-guide/web-client/) \- file transfer, clipboard sync, audio and microphone, up to four gamepads, session sharing, and mobile touch support.
+  * [Installing Applications](https://docs.linuxserver.io/selkies/user-guide/installing-apps/) \- persistent user installed apps with [proot-apps](https://github.com/linuxserver/proot-apps) (`proot-apps install filezilla`) or native packages at boot with Docker mods.
+  * [Docker in Docker and host Docker control](https://docs.linuxserver.io/selkies/user-guide/configuration/#optional-run-configurations) \- run `--privileged` for an isolated DinD setup, or mount `/var/run/docker.sock` to manage the host.
+  * [Reverse Proxy](https://docs.linuxserver.io/selkies/user-guide/reverse-proxy/) \- proxying websockets and subfolders correctly.
+  * [SealSkin](https://docs.linuxserver.io/selkies/components/sealskin/) \- turnkey multi user VDI orchestration with browser extension and mobile apps, this image is fully compatible.
+  * [Pelorus](https://docs.linuxserver.io/selkies/components/pelorus/) \- expose the session to AI agents via a computer use API and accessibility stack.
+
+## Usage¶
+
+To help you get started creating a container from this image you can either
+use docker-compose or the docker cli.
+
+Info
+
+Unless a parameter is flagged as 'optional', it is _mandatory_ and a value
+must be provided.
+
+### docker-compose (recommended, [click here for more info](https://docs.linuxserver.io/general/docker-compose))¶
+    
+    
+    ---
+    services:
+      webtop:
+        image: lscr.io/linuxserver/webtop:latest
+        container_name: webtop
+        environment:
+          - PUID=1000
+          - PGID=1000
+          - TZ=Etc/UTC
+        volumes:
+          - /path/to/data:/config
+        ports:
+          - 3000:3000
+          - 3001:3001
+        shm_size: "1gb"
+        restart: unless-stopped
+    
+
+### docker cli ([click here for more info](https://docs.docker.com/engine/reference/commandline/cli/))¶
+    
+    
+    docker run -d \
+      --name=webtop \
+      -e PUID=1000 \
+      -e PGID=1000 \
+      -e TZ=Etc/UTC \
+      -p 3000:3000 \
+      -p 3001:3001 \
+      -v /path/to/data:/config \
+      --shm-size="1gb" \
+      --restart unless-stopped \
+      lscr.io/linuxserver/webtop:latest
+    
+
+## Parameters¶
+
+Containers are configured using parameters passed at runtime (such as those
+above). These parameters are separated by a colon and indicate
+`<external>:<internal>` respectively. For example, `-p 8080:80` would expose
+port `80` from inside the container to be accessible from the host's IP on
+port `8080` outside the container.
+
+### Ports (`-p`)¶
+
+Parameter | Function  
+---|---  
+`3000:3000` | Web Desktop GUI HTTP, must be proxied  
+`3001:3001` | Web Desktop GUI HTTPS  
+  
+### Environment Variables (`-e`)¶
+
+Env | Function  
+---|---  
+`PUID=1000` | for UserID - see below for explanation  
+`PGID=1000` | for GroupID - see below for explanation  
+`TZ=Etc/UTC` | specify a timezone to use, see this [list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List).  
+  
+### Volume Mappings (`-v`)¶
+
+Volume | Function  
+---|---  
+`/config` | abc users home directory  
+  
+#### Miscellaneous Options¶
+
+Parameter | Function  
+---|---  
+`--shm-size=` | Recommended for all desktop images.  
+  
+## Environment variables from files (Docker secrets)¶
+
+You can set any environment variable from a file by using a special prepend
+`FILE__`.
+
+As an example:
+
+    
+    
+    -e FILE__MYVAR=/run/secrets/mysecretvariable
+    
+
+Will set the environment variable `MYVAR` based on the contents of the
+`/run/secrets/mysecretvariable` file.
+
+## Umask for running applications¶
+
+For all of our images we provide the ability to override the default umask settings for services started within the containers using the optional `-e UMASK=022` setting. Keep in mind umask is not chmod it subtracts from permissions based on it's value it does not add. Please read up [here](https://en.wikipedia.org/wiki/Umask) before asking for support.
+
+## User / Group Identifiers¶
+
+When using volumes (`-v` flags), permissions issues can arise between the host
+OS and the container, we avoid this issue by allowing you to specify the user
+`PUID` and group `PGID`.
+
+Ensure any volume directories on the host are owned by the same user you
+specify and any permissions issues will vanish like magic.
+
+In this instance `PUID=1000` and `PGID=1000`, to find yours use `id your_user`
+as below:
+
+    
+    
+    id your_user
+    
+
+Example output:
+
+    
+    
+    uid=1000(your_user) gid=1000(your_user) groups=1000(your_user)
+    
+
+## Docker Mods¶
+
+[](https://mods.linuxserver.io/?mod=webtop "view available mods for this container.") [](https://mods.linuxserver.io/?mod=universal "view available universal mods.")
+
+We publish various [Docker Mods](https://github.com/linuxserver/docker-mods) to enable additional functionality within the containers. The list of Mods available for this image (if any) as well as universal mods that can be applied to any one of our images can be accessed via the dynamic badges above.
+
+## Support Info¶
+
+  * Shell access whilst the container is running:
+        
+        docker exec -it webtop /bin/bash
+        
+
+  * To monitor the logs of the container in realtime:
+        
+        docker logs -f webtop
+        
+
+  * Container version number:
+        
+        docker inspect -f '{{ index .Config.Labels "build_version" }}' webtop
+        
+
+  * Image version number:
+        
+        docker inspect -f '{{ index .Config.Labels "build_version" }}' lscr.io/linuxserver/webtop:latest
+        
+
+## Updating Info¶
+
+Most of our images are static, versioned, and require an image update and
+container recreation to update the app inside. With some exceptions (noted in
+the relevant readme.md), we do not recommend or support updating apps inside
+the container. Please consult the Application Setup section above to see if it
+is recommended for the image.
+
+Below are the instructions for updating containers:
+
+### Via Docker Compose¶
+
+  * Update images:
+
+    * All images:
+          
+          docker-compose pull
+          
+
+    * Single image:
+          
+          docker-compose pull webtop
+          
+
+  * Update containers:
+
+    * All containers:
+          
+          docker-compose up -d
+          
+
+    * Single container:
+          
+          docker-compose up -d webtop
+          
+
+  * You can also remove the old dangling images:
+        
+        docker image prune
+        
+
+### Via Docker Run¶
+
+  * Update the image:
+        
+        docker pull lscr.io/linuxserver/webtop:latest
+        
+
+  * Stop the running container:
+        
+        docker stop webtop
+        
+
+  * Delete the container:
+        
+        docker rm webtop
+        
+
+  * Recreate a new container with the same docker run parameters as instructed above (if mapped correctly to a host folder, your `/config` folder and settings will be preserved)
+
+  * You can also remove the old dangling images:
+        
+        docker image prune
+        
+
+### Image Update Notifications - Diun (Docker Image Update Notifier)¶
+
+Tip
+
+We recommend [Diun](https://crazymax.dev/diun/) for update notifications. Other tools that automatically update containers unattended are not recommended or supported.
+
+## Building locally¶
+
+If you want to make local modifications to these images for development
+purposes or just to customize the logic:
+
+    
+    
+    git clone https://github.com/linuxserver/docker-webtop.git
+    cd docker-webtop
+    docker build \
+      --no-cache \
+      --pull \
+      -t lscr.io/linuxserver/webtop:latest .
+    
+
+The ARM variants can be built on x86_64 hardware and vice versa using
+`lscr.io/linuxserver/qemu-static`
+
+    
+    
+    docker run --rm --privileged lscr.io/linuxserver/qemu-static --reset
+    
+
+Once registered you can define the dockerfile to use with `-f
+Dockerfile.aarch64`.
+
+To help with development, we generate this dependency graph.
+
+Init dependency graph
+
+webtop:latestBase Imagesdocker-modsbaselegacy-servicescustom servicesinit-
+servicesci-service-checkinit-migrationsinit-adduserinit-os-endinit-configinit-
+selkies-endinit-config-endinit-crontab-configinit-mods-endinit-custom-
+filesinit-device-permsinit-envfileinit-modsinit-mods-package-installinit-
+selkiesinit-nginxinit-selkies-configinit-videosvc-cronsvc-dbussvc-xorgsvc-
+delegacy-cont-initsvc-nginxsvc-selkiessvc-dockersvc-pulseaudiosvc-watchdogsvc-
+xsettingsdbaseimage-selkies:alpine324baseimage-alpine:3.24fix-attr +legacy
+cont-init
+
+webtop:latestBase Imagesdocker-modsbaselegacy-servicescustom servicesinit-
+servicesci-service-checkinit-migrationsinit-adduserinit-os-endinit-configinit-
+selkies-endinit-config-endinit-crontab-configinit-mods-endinit-custom-
+filesinit-device-permsinit-envfileinit-modsinit-mods-package-installinit-
+selkiesinit-nginxinit-selkies-configinit-videosvc-cronsvc-dbussvc-xorgsvc-
+delegacy-cont-initsvc-nginxsvc-selkiessvc-dockersvc-pulseaudiosvc-watchdogsvc-
+xsettingsdbaseimage-selkies:alpine324baseimage-alpine:3.24fix-attr +legacy
+cont-init
+
+## Versions¶
+
+  * **02.10.26:** \- Quality of life upgrades for KDE, MATE, and Xfce. Install base packages for flavors initialize KDE sessions properly.
+  * **21.09.26:** \- Updates for Selkies v2, add x11 init for ubuntu-kde, show ubuntu-lxqt branch.
+  * **10.06.26:** \- Rebase Alpine images to 3.24.
+  * **07.05.26:** \- Deprecate Enterprise Linux tags.
+  * **07.04.26:** \- Rebase Ubuntu images to Resolute.
+  * **26.03.26:** \- Rebase Fedora images to 44.
+  * **24.03.26:** \- Update tags that support Wayland to pass ozone platform for chromium.
+  * **27.12.25:** \- Rebase Alpine images to 3.23.
+  * **17.11.25:** \- Rebase Fedora images to 43.
+  * **24.07.25:** \- Rebase Debian images to Trixie.
+  * **17.06.25:** \- Rebase all images to Selkies, drop openbox and icewm, bump Alpine to 3.22, bump Fedora to 42.
+  * **10.01.25:** \- Rebase Fedora to 41.
+  * **06.12.24:** \- Rebase Alpine to 3.21.
+  * **26.09.24:** \- Swap from firefox to chromium on Alpine images.
+  * **23.05.24:** \- Rebase Alpine to 3.20, document Nvidia support.
+  * **22.04.24:** \- Rebase Ubuntu to Noble.
+  * **16.04.24:** \- Add docs on PRoot Apps.
+  * **14.04.24:** \- Rebase Fedora to 40.
+  * **11.02.24:** \- Add PWA icons and title variants properly.
+  * **06.02.24:** \- Update Readme about native language support.
+  * **29.12.23:** \- Rebase Alpine to 3.19 and swap back to Firefox.
+  * **07.11.23:** \- Rebase Fedora to 39.
+  * **14.06.23:** \- Rebase to Debian Bookworm.
+  * **13.05.23:** \- Rebase to Alpine 3.18 and Fedora 38.
+  * **23.03.23:** \- Rebase all Webtops to KasmVNC base image.
+  * **21.10.22:** \- Rebase xfce to Alpine 3.16, migrate to s6v3.
+  * **12.03.22:** \- Add documentation for mounting in a GPU.
+  * **05.02.22:** \- Rebase KDE Ubuntu to Jammy, add new documentation for updated gclient, stop recommending priv mode.
+  * **21.09.21:** \- Add Fedora and Arch images, show seccomp settings in readme.
+  * **26.09.21:** \- Rebase to Alpine versions to 3.14.
+  * **20.04.21:** \- Initial release.
+
+Back to top  [ Previous  webstation  ](../docker-webstation/) [ Next  weixin  ](../docker-weixin/)
+
+Copyright (C) 2025 LinuxServer.io
+
+Made with [ Material for MkDocs ](https://squidfunk.github.io/mkdocs-material/)
+
+[ ](https://linuxserver.io "linuxserver.io") [ ](https://linuxserver.io/discord "linuxserver.io") [ ](https://discourse.linuxserver.io "discourse.linuxserver.io") [ ](https://github.com/linuxserver "github.com") [ ](https://gitlab.com/linuxserver.io "gitlab.com") [ ](https://mastodon.linuxserver.io/@linuxserver "mastodon.linuxserver.io") [ ](https://bsky.app/profile/linuxserver.io "bsky.app")
+
