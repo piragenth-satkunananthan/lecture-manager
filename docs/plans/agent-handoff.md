@@ -9,16 +9,16 @@ Use this note to continue the approved OpenRouter migration. The EGM brainstorm,
 ## Verified project state
 
 - The user approved the revised design on 2026-11-08. Migration Milestones 1-3 (design reconciliation, local schema/evidence validation, and OpenRouter adapter) are complete.
-- Gemini remains available for comparison. The OpenRouter adapter is implemented, but no free model has been selected and no live comparison has run.
+- Gemini remains available for comparison. The OpenRouter adapter and synthetic comparison runner are implemented, but no free model has been selected and no live comparison has run.
 - `src/ai.ts` validates the strict extraction shape, field evidence, exact quotes, supported values, dates, times, and Zoom link indexes before returning results. Source IDs remain application-owned.
 - `scripts/whatsapp-pilot.ts` tests message intake only. It makes no AI calls. Its duplicate tracking is in memory and is not durable.
 - There is no planner database or event persistence path. Keep live intake disabled until durable failure retention, pending review, and provenance are implemented.
 - The browser GUI and Zoom worker are design/planning work; they are not implemented.
-- The latest implementation check ran `npm test`: TypeScript build passed and all 31 tests passed. Mocked OpenRouter tests cover request shape, privacy, free-model restriction, one-attempt behavior, timeout, and API response failures. No live Gemini/OpenRouter quality test, WhatsApp reconnect test, or Zoom test has run.
+- The latest implementation check ran `npm test`: TypeScript build passed and all 33 tests passed. Mocked tests cover request privacy, free-model restriction, timeouts, API failures, and field scoring. The runner compares 11 synthetic fixtures. `npm run pilot:compare` builds, then refuses to run because API keys are absent; no live Gemini/OpenRouter model call was made. No WhatsApp reconnect test or Zoom test has run.
 - `README.md` is stale: it says there is no source code or test command. The implementation plan schedules that documentation correction for a later operations-documentation milestone.
 - A separate resolution-report file was not found. Review dispositions are summarized in `docs/plans/student-planner-implementation.md` and the Goldfish reports.
 
-Implementation through Milestone 2 is recorded at commit `0145aeb`. Recheck `git status` and `git log` before making changes.
+Milestone 3 is recorded at commit `d62cee4`. Recheck `git status` and `git log` before making changes.
 
 ## Approved decisions to preserve
 
@@ -30,14 +30,14 @@ Implementation through Milestone 2 is recorded at commit `0145aeb`. Recheck `git
 - Use synthetic fixtures for model comparisons. Do not send real WhatsApp posts to model candidates.
 - Existing English/ISO date and English field-term checks fail closed for unsupported languages or formats. Add synthetic fixtures for the languages lecturers use before model selection.
 
-## Next work: Migration Milestone 4
+## Next work: Finish Migration Milestone 4
 
-Read the approved [design](../designs/student-planner.md) and [OpenRouter migration plan](openrouter-migration-implementation.md), then run the synthetic comparison milestone:
+Read the approved [design](../designs/student-planner.md) and [OpenRouter migration plan](openrouter-migration-implementation.md). The comparison runner is ready; the process environment currently has no API keys:
 
-1. Run Gemini and shortlisted free OpenRouter models on the same saved synthetic fixtures. The Gemini pilot previously ended early with timeouts and HTTP 503 responses, so do not treat it as a completed baseline.
-2. Record model IDs, provider routes, fixture outcomes, errors, and per-field scores. Send no real WhatsApp content. Keep one request per fixture, 60-second timeout, and no retry loops.
-3. Require every expected field to match, all non-null facts to have valid evidence, and zero unsupported, ambiguous, incomplete, or contradictory item to be confirmed. Select no model if a required run is incomplete or fails.
-4. If credentials are unavailable, stop at the synthetic harness and report the comparison as pending. Do not read or print `.env` contents.
+1. Provide `GEMINI_API_KEY` and `OPENROUTER_API_KEY` as process environment variables, and optionally set `OPENROUTER_CANDIDATE_MODELS` to a comma-separated list of free model IDs. The default candidate is `google/gemma-4-31b-it:free`.
+2. Run `npm run pilot:compare`. It compares Gemini and each candidate on the same 11 synthetic fixtures, one request at a time, with no retries. Results contain no message text or evidence quotes and are saved under `artifacts/model-comparison/`.
+3. Require every expected field to match, all non-null facts to have valid evidence, and zero unsupported, ambiguous, incomplete, or contradictory item to be confirmed. A rate limit, timeout, API error, or missing route metadata makes that run incomplete. Select no model if a required run is incomplete or fails.
+4. Do not read or print `.env` contents. No comparison is complete until a report is saved and reviewed.
 5. Update the plans and this handoff with results before moving to Milestone 5.
 
 Do not select or cut over to a production model unless the comparison passes. Do not change live WhatsApp intake or run the WhatsApp pilot against a live subject group.
@@ -58,4 +58,4 @@ There is no repository `AGENTS.md` in the current file listing. Follow the user'
 
 ## Suggested restart prompt
 
-> Continue the existing OpenRouter migration from `docs/plans/agent-handoff.md`. Read the handoff, approved design, migration plan, overall implementation plan, and repository instructions. Do not repeat EGM. Continue with Migration Milestone 4 using synthetic fixtures only, preserve all approved privacy and fail-safe constraints, record exact comparison results, and update the handoff as work progresses. Do not enable live WhatsApp intake.
+> Continue the existing OpenRouter migration from `docs/plans/agent-handoff.md`. Read the handoff, approved design, migration plan, overall implementation plan, and repository instructions. Do not repeat EGM. Finish Migration Milestone 4 using synthetic fixtures only, preserve all approved privacy and fail-safe constraints, record exact comparison results, and update the handoff as work progresses. Do not enable live WhatsApp intake.

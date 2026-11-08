@@ -1,6 +1,6 @@
 # OpenRouter Migration Implementation Plan
 
-**Status:** Design approved; Migration Milestones 1-3 complete. Migration Milestone 4 is next.
+**Status:** Design approved; Migration Milestones 1-3 complete. Migration Milestone 4 comparison runner is ready; live runs are pending API credentials.
 **Date:** 2026-11-08
 **Next-agent handoff:** [`agent-handoff.md`](agent-handoff.md)
 **Design input:** [`openrouter_migration_brief.md`](../../openrouter_migration_brief.md)
@@ -13,6 +13,8 @@ Move the planner's single-post extraction from Gemini to the best passing free O
 ## Current state and limits
 
 - The app has Gemini and OpenRouter adapters that share the same local schema and evidence validation. No free model has been selected.
+- A synthetic comparison runner is available as `npm run pilot:compare`. It uses the 11 synthetic fixtures and saves model IDs, provider routes, fixture outcomes, field scores, and sanitized error kinds under `artifacts/model-comparison/`.
+- No Gemini or OpenRouter API key is available in the current process environment. The comparison command was checked with both keys unset and stopped before making model calls.
 - The project has no planner database or event-persistence path yet. The WhatsApp pilot tests intake only, makes no model calls, and keeps deduplication in memory.
 - The OpenRouter and field-evidence design was approved by the user on 2026-11-08; the design and main implementation plan now show the same status.
 - The current local semantic checks recognize English field terms and English/ISO date expressions. Other languages and unsupported date formats fail closed; add synthetic fixtures for the languages used in the lecturer groups before selecting a production model.
@@ -68,6 +70,8 @@ Move the planner's single-post extraction from Gemini to the best passing free O
 **Exit checks:** Mocked adapter tests verify request shape, model ID, `response_format`, `provider.require_parameters`, timeout, error handling, and that no WhatsApp identifiers, actual URLs, or passcodes leave the app. `npm test` passes all 31 tests.
 
 ### Migration Milestone 4: Compare free models on synthetic fixtures
+
+**Status:** In progress — comparison runner and fixtures are ready; live model runs have not been performed.
 
 1. Expand the current synthetic dataset with expected values and exact evidence quotes for every supported field. Include clear, ambiguous, conflicting, corrected, cancellation, rescheduling, and invalid-evidence cases.
 2. Run Gemini and each shortlisted free OpenRouter candidate on the same dataset. Save model IDs, provider route, fixture results, errors, and per-field scores. Store no real WhatsApp content.

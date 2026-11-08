@@ -33,13 +33,22 @@ test("sends one sanitized JSON-mode request and reuses local extraction validati
   assert.ok(expected);
   const { zoom_url: _zoomUrl, ...modelItem } = expected;
   let captured: { url: string; init: RequestInit } | undefined;
+  let route: { requestedModel: string; responseModel: string | null; selectedProvider: string | null } | undefined;
   let calls = 0;
   const fetchImplementation: typeof fetch = async (input, init) => {
     calls++;
     captured = { url: String(input), init: init ?? {} };
-    return Response.json({ choices: [{ message: { content: JSON.stringify({ items: [{ ...modelItem, zoom_link_index: null }] }) } }] });
+    return Response.json({
+      model: config.model,
+      openrouter_metadata: { endpoints: { available: [{ provider: "Google AI Studio", selected: true }] } },
+      choices: [{ message: { content: JSON.stringify({ items: [{ ...modelItem, zoom_link_index: null }] }) } }],
+    });
   };
-  const extractor = createOpenRouterAnnouncementExtractor(config, createOpenRouterGenerate(config.apiKey, fetchImplementation));
+  const extractor = createOpenRouterAnnouncementExtractor(config, createOpenRouterGenerate(
+    config.apiKey,
+    fetchImplementation,
+    (result) => { route = result; },
+  ));
   const sourceText = `${fixture.text} Join https://us02web.zoom.us/j/00000000001?pwd=private-passcode`;
   const result = await extractor({ text: sourceText, sentAt: new Date(fixture.sentAt) });
 
@@ -48,6 +57,12 @@ test("sends one sanitized JSON-mode request and reuses local extraction validati
   assert.equal(captured?.init.method, "POST");
   assert.equal(new Headers(captured?.init.headers).get("authorization"), `Bearer ${config.apiKey}`);
   assert.equal(new Headers(captured?.init.headers).get("content-type"), "application/json");
+  assert.equal(new Headers(captured?.init.headers).get("x-openrouter-metadata"), "enabled");
+  assert.deepEqual(route, {
+    requestedModel: config.model,
+    responseModel: config.model,
+    selectedProvider: "Google AI Studio",
+  });
   const body = JSON.parse(String(captured?.init.body)) as {
     model: string;
     messages: Array<{ role: string; content: string }>;

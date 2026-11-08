@@ -22,7 +22,7 @@
 - The Node 24 TypeScript foundation, configuration validation, Gemini extraction adapter, synthetic fixtures, and their local tests are committed.
 - The repository has an in-progress Baileys pilot and WhatsApp post-selection tests. Preserve and finish this work rather than replacing it.
 - The local test command is `npm test`; it runs the strict TypeScript build and Node test suite. Current milestone work must pass it before being marked complete.
-- Current verification on Node 24.22.2: `npm test` passes all 31 tests, including fixture and evidence validation plus mocked OpenRouter request, privacy, timeout, and error checks.
+- Current verification on Node 24.22.2: `npm test` passes all 33 tests, including fixture scoring, evidence validation, and mocked OpenRouter request, privacy, timeout, and error checks. The comparison command builds, then stops before model calls when API keys are absent.
 - The current build/test suite does not prove Gemini API quality, WhatsApp reconnect recovery, or Zoom admission and capture. Those require separate external pilots.
 
 ## Approved constraints
@@ -56,7 +56,7 @@ Complete the OpenRouter migration plan's local schema/adapter work, then run syn
 4. **WhatsApp test-group run:** after recording the current policy check and account-risk decision, use one separate test group to verify trusted-sender filtering, new posts, reconnect/catch-up, edits, duplicates, and process restart without loss or duplicate planner items. Do not send test-group posts to Gemini or OpenRouter. If Baileys fails, test `whatsapp-web.js` in the same group. Do not use a live subject group.
 5. **Zoom test-meeting run:** in a host-controlled meeting, verify permission, login, admission, five-minute early join, the 20-minute opening wait, usable saved screen/audio, host-end stop within 30 seconds, four-hour cap, low-space finalization, and restart behavior. Keep capture disabled if any permission or admission check fails.
 
-**Current evidence:** local Gemini, WhatsApp, and field-evidence validation coverage is available. The OpenRouter adapter passes mocked tests; live synthetic provider comparison, test-group run, and Zoom meeting result are still pending. The current WhatsApp pilot keeps deduplication in memory, so it cannot by itself prove no loss or duplication across process restart.
+**Current evidence:** local Gemini, WhatsApp, field-evidence, and mocked OpenRouter coverage is available. The synthetic comparison runner is ready, but live provider comparison, test-group run, and Zoom meeting result are still pending. The current WhatsApp pilot keeps deduplication in memory, so it cannot by itself prove no loss or duplication across process restart.
 
 **Exit checks:** at least one free OpenRouter candidate passes the 100% synthetic comparison with valid evidence and no invalid or ambiguous event confirmed; both provider runs are complete and recorded; every test-group post survives disconnect/restart without loss or duplication and untrusted senders/groups are ignored; the saved Zoom sample has usable screen/audio and passes the host-end and low-space checks. Keep live intake disabled until Planner core provides durable failure retention and manual review, and keep unattended capture disabled until its separate permission and pilot gates pass.
 

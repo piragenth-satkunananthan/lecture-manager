@@ -464,14 +464,39 @@ function isFreeOpenRouterModel(model: string): boolean {
 }
 
 const openRouterResponseSchema = z.object({
+  model: z.string().optional(),
+  openrouter_metadata: z.object({
+    endpoints: z.object({
+      available: z.array(z.object({
+        provider: z.string().optional(),
+        selected: z.boolean().optional(),
+      }).passthrough()).optional(),
+    }).passthrough().optional(),
+  }).passthrough().optional(),
   choices: z.array(z.object({
     message: z.object({ content: z.string().nullable().optional() }).passthrough(),
   }).passthrough()).min(1),
 }).passthrough();
 
+export interface OpenRouterRouteMetadata {
+  requestedModel: string;
+  responseModel: string | null;
+  selectedProvider: string | null;
+}
+
+export type OpenRouterErrorKind = "authentication" | "rate_limit" | "timeout" | "upstream" | "network" | "invalid_response" | "empty_response";
+
+export class OpenRouterError extends Error {
+  constructor(readonly kind: OpenRouterErrorKind, message: string) {
+    super(message);
+    this.name = "OpenRouterError";
+  }
+}
+
 export function createOpenRouterGenerate(
   apiKey: string,
   fetchImplementation: typeof fetch = globalThis.fetch,
+  onRoute?: (route: OpenRouterRouteMetadata) => void,
 ): OpenRouterGenerate {
   if (!apiKey.trim()) throw new Error("OPENROUTER_API_KEY is required");
 
@@ -488,12 +513,14 @@ export function createOpenRouterGenerate(
     try {
       let response: Response;
       try {
+        const headers = new Headers({
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        });
+        if (onRoute) headers.set("X-OpenRouter-Metadata", "enabled");
         response = await fetchImplementation("https://openrouter.ai/api/v1/chat/completions", {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            "Content-Type": "application/json",
-          },
+          headers,
           body: JSON.stringify({
             model,
             messages: [
@@ -508,34 +535,41 @@ export function createOpenRouterGenerate(
         });
       } catch (error) {
         if (timedOut || (error instanceof DOMException && error.name === "AbortError")) {
-          throw new Error("OpenRouter request timed out after 60 seconds");
+          throw new OpenRouterError("timeout", "OpenRouter request timed out after 60 seconds");
         }
-        throw new Error("OpenRouter request failed before receiving a response");
+        throw new OpenRouterError("network", "OpenRouter request failed before receiving a response");
       }
 
       if (!response.ok) {
         if (response.status === 401 || response.status === 403) {
-          throw new Error(`OpenRouter authentication failed (HTTP ${response.status})`);
+          throw new OpenRouterError("authentication", `OpenRouter authentication failed (HTTP ${response.status})`);
         }
-        if (response.status === 429) throw new Error("OpenRouter rate limit reached (HTTP 429)");
+        if (response.status === 429) throw new OpenRouterError("rate_limit", "OpenRouter rate limit reached (HTTP 429)");
         if (response.status === 408 || response.status === 504) {
-          throw new Error(`OpenRouter request timed out (HTTP ${response.status})`);
+          throw new OpenRouterError("timeout", `OpenRouter request timed out (HTTP ${response.status})`);
         }
-        throw new Error(`OpenRouter service failed (HTTP ${response.status})`);
+        throw new OpenRouterError("upstream", `OpenRouter service failed (HTTP ${response.status})`);
       }
 
       let payload: unknown;
       try {
         payload = await response.json();
       } catch {
-        if (timedOut) throw new Error("OpenRouter request timed out after 60 seconds");
-        throw new Error("OpenRouter returned an invalid response body");
+        if (timedOut) throw new OpenRouterError("timeout", "OpenRouter request timed out after 60 seconds");
+        throw new OpenRouterError("invalid_response", "OpenRouter returned an invalid response body");
       }
       const parsed = openRouterResponseSchema.safeParse(payload);
-      if (!parsed.success) throw new Error("OpenRouter returned an invalid response shape");
+      if (!parsed.success) throw new OpenRouterError("invalid_response", "OpenRouter returned an invalid response shape");
+      if (onRoute) {
+        onRoute({
+          requestedModel: model,
+          responseModel: parsed.data.model ?? null,
+          selectedProvider: parsed.data.openrouter_metadata?.endpoints?.available?.find(({ selected }) => selected)?.provider ?? null,
+        });
+      }
       const content = parsed.data.choices[0]?.message.content;
       if (typeof content !== "string" || !content.trim()) {
-        throw new Error("OpenRouter returned no structured response");
+        throw new OpenRouterError("empty_response", "OpenRouter returned no structured response");
       }
       return content;
     } finally {
