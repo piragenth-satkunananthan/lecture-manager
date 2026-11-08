@@ -1,6 +1,6 @@
 # OpenRouter Migration Implementation Plan
 
-**Status:** Draft for review; no application code is authorized by this plan step.
+**Status:** Plan approved; Milestone 1 design revision prepared for user review.
 **Date:** 2026-11-08
 **Design input:** [`openrouter_migration_brief.md`](../../openrouter_migration_brief.md)
 **Existing plan:** [`student-planner-implementation.md`](student-planner-implementation.md)
@@ -13,9 +13,9 @@ Move the planner's single-post extraction from Gemini to the best passing free O
 
 - The app has a Gemini extractor and pilot scripts, but no OpenRouter code.
 - The project has no planner database or event-persistence path yet. The current WhatsApp pilot logs extraction errors and can mark a failed message as already seen.
-- The approved planner design and main implementation plan still describe Gemini. The design file is labeled `Proposed`, while the implementation plan treats it as approved. Resolve that status difference before changing the design.
+- The planner design is labeled `Proposed`, while the main implementation plan treated it as approved. Keep the revised design labeled `Proposed` until the user reviews and approves it; update the main plan to show the same status.
 - The current planner plan already includes a browser calendar and management screens in its user-access milestone. This migration does not build the GUI; the planner database and service must exist before that GUI can use extracted events.
-- The provider migration proposal is a reviewed draft, not an approved design change. Keep live intake disabled until the design and plan are updated and the migration gates below pass.
+- The provider migration proposal remains a reviewed draft. Approval of this implementation plan authorizes the documentation update, not an unreviewed design change or production cutover. Keep live intake disabled until the revised design is accepted and the durable failure path exists.
 
 ## Fixed requirements
 
@@ -30,14 +30,14 @@ Move the planner's single-post extraction from Gemini to the best passing free O
 
 ## Migration milestones
 
-### Migration Milestone 1: Approve and lock the contract
+### Migration Milestone 1: Prepare and reconcile the design contract
 
-1. Update the approved design to name OpenRouter and the selected free-model policy. Record that OpenRouter may choose the upstream provider and that its data practices apply.
+1. Update the design draft to name OpenRouter and the selected free-model policy. Record that OpenRouter may choose the upstream provider and that its data practices apply. Keep the design marked Proposed until the user reviews it.
 2. Define the extraction fields, null rules, `ambiguous_fields`, `field_evidence` shape, cancellation/rescheduling fields, semantic checks, and quote retention. Include backup retention and the locally derived Zoom URL rule.
-3. Reconcile the design's `Proposed` label with the implementation plan's approval status. Update the existing planner plan so its Gemini feasibility step does not conflict with this migration.
+3. Reconcile the design and implementation plan status labels. Update the existing planner plan so its Gemini feasibility step becomes a Gemini baseline plus free OpenRouter synthetic comparison.
 4. Record that live intake remains disabled until the planner has a durable pending/retry/manual-review path.
 
-**Exit checks:** The design and plan agree on provider, data use, event schema, evidence storage, error handling, and the live-intake gate. The user has reviewed the updated design and plan.
+**Exit checks:** The design and plan agree on provider, data use, event schema, evidence storage, error handling, and the live-intake gate. The revised design remains Proposed until the user reviews it. Do not begin application implementation before that review.
 
 ### Migration Milestone 2: Implement local schema and validation
 
@@ -79,7 +79,7 @@ Move the planner's single-post extraction from Gemini to the best passing free O
 
 ## Dependencies before live use
 
-The current planner needs durable storage for pending messages, clarification, source references, and retry/manual review. The approved project plan places SQLite and planner-core work before its browser-interface milestone. Do not let the OpenRouter pilot write confirmed events until the planner core enforces validation and preserves failed work. The GUI remains the planned browser interface for the calendar, questions, corrections, provenance, and status.
+The current planner needs durable storage for pending messages, clarification, source references, and retry/manual review. The existing implementation plan places SQLite and planner-core work before its browser-interface milestone. Do not let the OpenRouter pilot write confirmed events until the planner core enforces validation and preserves failed work. The GUI remains the planned browser interface for the calendar, questions, corrections, provenance, and status.
 
 ## Rollback
 
