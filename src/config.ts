@@ -6,8 +6,7 @@ export interface AppConfig {
   timeZone: string;
   databasePath: string;
   recordingPath: string;
-  geminiApiKey: string;
-  geminiModel: string;
+  openRouterApiKey: string;
   whatsappGroupIds: string[];
   lecturerIds: string[];
   smtpHost: string;
@@ -86,8 +85,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     timeZone,
     databasePath,
     recordingPath,
-    geminiApiKey: required(env, "GEMINI_API_KEY"),
-    geminiModel: env.GEMINI_MODEL?.trim() || "gemini-3.8-flash",
+    openRouterApiKey: required(env, "OPENROUTER_API_KEY"),
     whatsappGroupIds: ids(env, "WHATSAPP_GROUP_IDS"),
     lecturerIds: ids(env, "LECTURER_IDS"),
     smtpHost: required(env, "SMTP_HOST"),

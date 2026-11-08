@@ -5,7 +5,7 @@ import { loadConfig } from "../src/config.js";
 const validEnv: NodeJS.ProcessEnv = {
   DATABASE_PATH: "./storage/planner.sqlite",
   RECORDING_PATH: "./storage/recordings",
-  GEMINI_API_KEY: "test-gemini-api-key",
+  OPENROUTER_API_KEY: "test-openrouter-api-key",
   SMTP_HOST: "smtp.example.test",
   SMTP_FROM: "planner@example.test",
   WEBTOP_AGENT_TOKEN: "a-random-token-for-local-tests-0123456789",
@@ -19,7 +19,6 @@ test("loads design defaults and numeric limits", () => {
   assert.equal(config.diskPausePercent, 80);
   assert.equal(config.minimumFreeDiskGiB, 10);
   assert.equal(config.maximumRecordingHours, 4);
-  assert.equal(config.geminiModel, "gemini-3.8-flash");
 });
 
 test("requires database and recording paths", () => {
@@ -37,9 +36,9 @@ test("rejects invalid timezone and numeric limits", () => {
   assert.throws(() => loadConfig({ ...validEnv, MIN_FREE_DISK_GIB: "0" }), /MIN_FREE_DISK_GIB/);
 });
 
-test("requires a Gemini API key and accepts a selected model", () => {
-  assert.throws(() => loadConfig({ ...validEnv, GEMINI_API_KEY: " " }), /GEMINI_API_KEY is required/);
-  assert.equal(loadConfig({ ...validEnv, GEMINI_MODEL: "gemini-3.8-flash" }).geminiModel, "gemini-3.8-flash");
+test("requires an OpenRouter API key", () => {
+  assert.throws(() => loadConfig({ ...validEnv, OPENROUTER_API_KEY: " " }), /OPENROUTER_API_KEY is required/);
+  assert.equal(loadConfig(validEnv).openRouterApiKey, "test-openrouter-api-key");
 });
 
 test("normalizes and deduplicates configured IDs", () => {

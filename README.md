@@ -4,8 +4,7 @@ Lecture Manager is a planned student planner for WhatsApp class and assignment a
 
 ## Current state
 
-- Gemini extraction remains available as the comparison baseline.
-- OpenRouter extraction uses JSON mode and the same strict local schema, evidence, date, and Zoom-link checks. No OpenRouter model has been selected for production.
+- OpenRouter is the only model provider. Extraction uses JSON mode and strict local schema, evidence, date, and Zoom-link checks. No OpenRouter model has been selected for production.
 - The comparison runner uses synthetic messages only. It does not read `.env`; provide API keys through the process environment.
 - The WhatsApp pilot tests message intake only. It does not call an AI model, save planner events, or provide durable deduplication. Use a separate test group only.
 - The planner database, browser GUI, reminders, live intake, and Zoom worker are not implemented.
@@ -23,9 +22,9 @@ npm test
 
 ## Synthetic model comparison
 
-The comparison runner tests Gemini and free OpenRouter candidates against the same synthetic fixtures. It uses one request per fixture, a 60-second timeout, and no automatic retries. Results contain model names, provider routes, fixture outcomes, field scores, and safe error categories; they do not contain message text or evidence quotes.
+The comparison runner tests free OpenRouter candidates against expected results for the same synthetic fixtures. It uses one request per fixture, a 60-second timeout, and no automatic retries. Results contain model names, provider routes, fixture outcomes, field scores, and safe error categories; they do not contain message text or evidence quotes.
 
-Set `GEMINI_API_KEY` and `OPENROUTER_API_KEY` in the process environment, then run:
+Set `OPENROUTER_API_KEY` in the process environment, then run:
 
 ```sh
 npm run pilot:compare

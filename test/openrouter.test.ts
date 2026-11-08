@@ -18,7 +18,6 @@ const request: ExtractionRequest = {
   model: config.model,
   input: "{}",
   systemInstruction: "Extract facts only.",
-  schema: { type: "object" } as ExtractionRequest["schema"],
 };
 
 test("sends one sanitized JSON-mode request and reuses local extraction validation", async () => {
