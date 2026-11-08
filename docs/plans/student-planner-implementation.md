@@ -15,7 +15,7 @@
 - The user chose OpenRouter to use free models. Select a free model only after it passes the synthetic comparison; Gemma 4 31B is a candidate. Keep Gemini only as the comparison baseline and do not use paid, Gemini, or local runtime fallback.
 - The earlier plan records one Gemini fixture passing, followed by two request timeouts and two HTTP 503 responses before the remaining fixtures ran. The Gemini API pilot remains incomplete; no OpenRouter comparison has run, and no raw run log was found to recheck the old results.
 - No live WhatsApp test group/session or host-controlled Zoom meeting is configured in the project record. No live intake or unattended recording is enabled.
-- `README.md` still says there is no source code or test command; that conflicts with the current repository and must be corrected during the operations-documentation milestone.
+- `README.md` now describes the current source, test, and synthetic comparison commands. Reconcile it with the selected provider during the cutover documentation step.
 
 ## Current project state
 

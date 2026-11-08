@@ -84,7 +84,7 @@ Move the planner's single-post extraction from Gemini to the best passing free O
 ### Migration Milestone 5: Cut over the pilot and update project records
 
 1. Pin the passing free model in the production configuration. Remove Gemini from production only after the comparison is recorded. Do not leave a paid or Gemini fallback.
-2. Update the `.env.example`, package dependencies, README, approved design, and existing implementation plan. Remove `@google/genai` only after checking every caller and pilot.
+2. Reconcile the `.env.example`, package dependencies, README, approved design, and existing implementation plan with the selected provider. Remove `@google/genai` only after checking every caller and pilot.
 3. Keep the migration at synthetic-pilot scope. Do not connect a live WhatsApp group or enable event persistence until the planner's durable failure, pending-review, and provenance paths pass their existing gates.
 
 **Exit checks:** `npm test` and the TypeScript build pass. No real lecturer text appears in fixtures or logs. The selected model is still free and supports the required request parameters at cutover. All invalid outputs fail local validation. The approved design and implementation plan agree with the deployed provider.

@@ -15,10 +15,10 @@ Use this note to continue the approved OpenRouter migration. The EGM brainstorm,
 - There is no planner database or event persistence path. Keep live intake disabled until durable failure retention, pending review, and provenance are implemented.
 - The browser GUI and Zoom worker are design/planning work; they are not implemented.
 - The latest implementation check ran `npm test`: TypeScript build passed and all 33 tests passed. Mocked tests cover request privacy, free-model restriction, timeouts, API failures, and field scoring. The runner compares 11 synthetic fixtures. `npm run pilot:compare` builds, then refuses to run because API keys are absent; no live Gemini/OpenRouter model call was made. No WhatsApp reconnect test or Zoom test has run.
-- `README.md` is stale: it says there is no source code or test command. The implementation plan schedules that documentation correction for a later operations-documentation milestone.
+- `README.md` now describes the current source, tests, and synthetic comparison command. Reconcile it with the selected provider during cutover documentation.
 - A separate resolution-report file was not found. Review dispositions are summarized in `docs/plans/student-planner-implementation.md` and the Goldfish reports.
 
-Milestone 3 is recorded at commit `d62cee4`. Recheck `git status` and `git log` before making changes.
+Milestone 3 is recorded at `d62cee4`; the Milestone 4 runner is at `4d9e63b`. Recheck `git status` and `git log` before making changes.
 
 ## Approved decisions to preserve
 
