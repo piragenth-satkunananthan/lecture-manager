@@ -1,6 +1,6 @@
 # OpenRouter Migration Implementation Plan
 
-**Status:** Design approved; Migration Milestone 2 complete. Migration Milestone 3 is next.
+**Status:** Design approved; Migration Milestones 1-3 complete. Migration Milestone 4 is next.
 **Date:** 2026-11-08
 **Next-agent handoff:** [`agent-handoff.md`](agent-handoff.md)
 **Design input:** [`openrouter_migration_brief.md`](../../openrouter_migration_brief.md)
@@ -12,7 +12,7 @@ Move the planner's single-post extraction from Gemini to the best passing free O
 
 ## Current state and limits
 
-- The app has a Gemini extractor and pilot scripts, plus local schema and evidence validation, but no OpenRouter adapter.
+- The app has Gemini and OpenRouter adapters that share the same local schema and evidence validation. No free model has been selected.
 - The project has no planner database or event-persistence path yet. The WhatsApp pilot tests intake only, makes no model calls, and keeps deduplication in memory.
 - The OpenRouter and field-evidence design was approved by the user on 2026-11-08; the design and main implementation plan now show the same status.
 - The current local semantic checks recognize English field terms and English/ISO date expressions. Other languages and unsupported date formats fail closed; add synthetic fixtures for the languages used in the lecturer groups before selecting a production model.
@@ -54,7 +54,9 @@ Move the planner's single-post extraction from Gemini to the best passing free O
 
 **Exit checks:** Tests cover missing and extra properties, wrong types, malformed and empty JSON, exact and invalid quotes, unsupported and contradictory values, ambiguous announcements, incomplete dates, cancellation/rescheduling, and Asia/Colombo date handling. Invalid output cannot produce a confirmed event.
 
-### Migration Milestone 3: Add the OpenRouter adapter
+### Migration Milestone 3: Add the OpenRouter adapter — complete
+
+**Status:** Complete — the non-streaming adapter, free-model guard, 60-second timeout, and mocked request/error tests pass. Gemini remains available for comparison.
 
 1. Add a non-streaming Chat Completions adapter using Node's built-in `fetch` if supported by the current runtime. Reuse the existing injected-generator test seam; do not add an SDK solely for this request.
 2. Send one selected post, its timestamp, timezone, and existing URL-placeholder/link-index data. Do not send stable source IDs, real URLs, or passcodes.
@@ -63,7 +65,7 @@ Move the planner's single-post extraction from Gemini to the best passing free O
 5. Preserve the one-attempt 60-second timeout. Surface authentication errors, rate limits, timeouts, empty responses, malformed JSON, and upstream failures as extraction failures. Do not log message text, quotes, keys, or links.
 6. Keep the Gemini path available for the comparison. Do not add runtime fallback between providers.
 
-**Exit checks:** Mocked adapter tests verify request shape, model ID, `response_format`, `provider.require_parameters`, timeout, error handling, and that no WhatsApp identifiers, actual URLs, or passcodes leave the app.
+**Exit checks:** Mocked adapter tests verify request shape, model ID, `response_format`, `provider.require_parameters`, timeout, error handling, and that no WhatsApp identifiers, actual URLs, or passcodes leave the app. `npm test` passes all 31 tests.
 
 ### Migration Milestone 4: Compare free models on synthetic fixtures
 

@@ -151,14 +151,21 @@ export interface SourceMessage {
 export type GeminiConfig = Pick<AppConfig, "geminiApiKey" | "geminiModel" | "timeZone">;
 type JsonSchema = typeof geminiJsonSchema;
 
-export interface GeminiRequest {
+export interface ExtractionRequest {
   model: string;
   input: string;
   systemInstruction: string;
   schema: JsonSchema;
 }
 
-export type GeminiGenerate = (request: GeminiRequest) => Promise<string>;
+export type GeminiRequest = ExtractionRequest;
+export type GeminiGenerate = (request: ExtractionRequest) => Promise<string>;
+export type OpenRouterGenerate = (request: ExtractionRequest) => Promise<string>;
+export interface OpenRouterConfig {
+  apiKey: string;
+  model: string;
+  timeZone: string;
+}
 
 interface SourceLink {
   url: string;
@@ -452,9 +459,95 @@ export function createGeminiGenerate(client: Pick<GoogleGenAI, "interactions">):
   };
 }
 
-export function createAnnouncementExtractor(
-  config: GeminiConfig,
-  generate: GeminiGenerate = createGeminiGenerate(new GoogleGenAI({ apiKey: config.geminiApiKey })),
+function isFreeOpenRouterModel(model: string): boolean {
+  return model.includes("/") && model.endsWith(":free") && !/\s/.test(model);
+}
+
+const openRouterResponseSchema = z.object({
+  choices: z.array(z.object({
+    message: z.object({ content: z.string().nullable().optional() }).passthrough(),
+  }).passthrough()).min(1),
+}).passthrough();
+
+export function createOpenRouterGenerate(
+  apiKey: string,
+  fetchImplementation: typeof fetch = globalThis.fetch,
+): OpenRouterGenerate {
+  if (!apiKey.trim()) throw new Error("OPENROUTER_API_KEY is required");
+
+  return async ({ model, input, systemInstruction }) => {
+    if (!isFreeOpenRouterModel(model)) throw new Error("OpenRouter model must use a free model ID");
+
+    const controller = new AbortController();
+    let timedOut = false;
+    const timeout = setTimeout(() => {
+      timedOut = true;
+      controller.abort();
+    }, 60_000);
+
+    try {
+      let response: Response;
+      try {
+        response = await fetchImplementation("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model,
+            messages: [
+              { role: "system", content: systemInstruction },
+              { role: "user", content: input },
+            ],
+            response_format: { type: "json_object" },
+            provider: { require_parameters: true },
+            stream: false,
+          }),
+          signal: controller.signal,
+        });
+      } catch (error) {
+        if (timedOut || (error instanceof DOMException && error.name === "AbortError")) {
+          throw new Error("OpenRouter request timed out after 60 seconds");
+        }
+        throw new Error("OpenRouter request failed before receiving a response");
+      }
+
+      if (!response.ok) {
+        if (response.status === 401 || response.status === 403) {
+          throw new Error(`OpenRouter authentication failed (HTTP ${response.status})`);
+        }
+        if (response.status === 429) throw new Error("OpenRouter rate limit reached (HTTP 429)");
+        if (response.status === 408 || response.status === 504) {
+          throw new Error(`OpenRouter request timed out (HTTP ${response.status})`);
+        }
+        throw new Error(`OpenRouter service failed (HTTP ${response.status})`);
+      }
+
+      let payload: unknown;
+      try {
+        payload = await response.json();
+      } catch {
+        if (timedOut) throw new Error("OpenRouter request timed out after 60 seconds");
+        throw new Error("OpenRouter returned an invalid response body");
+      }
+      const parsed = openRouterResponseSchema.safeParse(payload);
+      if (!parsed.success) throw new Error("OpenRouter returned an invalid response shape");
+      const content = parsed.data.choices[0]?.message.content;
+      if (typeof content !== "string" || !content.trim()) {
+        throw new Error("OpenRouter returned no structured response");
+      }
+      return content;
+    } finally {
+      clearTimeout(timeout);
+    }
+  };
+}
+
+function createValidatedAnnouncementExtractor(
+  model: string,
+  timeZone: string,
+  generate: GeminiGenerate | OpenRouterGenerate,
 ): (source: SourceMessage) => Promise<ExtractedAnnouncement> {
   return async (source) => {
     if (!source.text.trim()) return { items: [] };
@@ -464,12 +557,12 @@ export function createAnnouncementExtractor(
     const modelText = promptMessage(source.text, links);
     const input = JSON.stringify({
       sent_at: source.sentAt.toISOString(),
-      time_zone: config.timeZone,
+      time_zone: timeZone,
       message: modelText,
       links: links.map((link, index) => ({ index: index + 1, is_zoom: link.isZoom })),
     });
     const content = await generate({
-      model: config.geminiModel,
+      model,
       input,
       systemInstruction,
       schema: geminiJsonSchema,
@@ -486,9 +579,25 @@ export function createAnnouncementExtractor(
       if (!isCalendarDate(item.due_date) || !isCalendarDate(item.class_date)) {
         throw new Error("Model returned an invalid calendar date");
       }
-      validateFieldEvidence(item, source.text, modelText, source.sentAt, config.timeZone);
+      validateFieldEvidence(item, source.text, modelText, source.sentAt, timeZone);
     }
     const items = result.items.map((item) => itemWithSourceLink(item, links));
     return { items };
   };
+}
+
+export function createAnnouncementExtractor(
+  config: GeminiConfig,
+  generate: GeminiGenerate = createGeminiGenerate(new GoogleGenAI({ apiKey: config.geminiApiKey })),
+): (source: SourceMessage) => Promise<ExtractedAnnouncement> {
+  return createValidatedAnnouncementExtractor(config.geminiModel, config.timeZone, generate);
+}
+
+export function createOpenRouterAnnouncementExtractor(
+  config: OpenRouterConfig,
+  generate: OpenRouterGenerate = createOpenRouterGenerate(config.apiKey),
+): (source: SourceMessage) => Promise<ExtractedAnnouncement> {
+  if (!config.apiKey.trim()) throw new Error("OPENROUTER_API_KEY is required");
+  if (!isFreeOpenRouterModel(config.model)) throw new Error("OpenRouter model must use a free model ID");
+  return createValidatedAnnouncementExtractor(config.model, config.timeZone, generate);
 }
