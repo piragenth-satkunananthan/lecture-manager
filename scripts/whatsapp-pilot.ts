@@ -1,7 +1,6 @@
 import makeWASocket, { DisconnectReason, useMultiFileAuthState } from "@whiskeysockets/baileys";
 import qrcode from "qrcode-terminal";
 import pino from "pino";
-import { createAnnouncementExtractor } from "../src/ai.js";
 import { selectLecturerPosts } from "../src/whatsapp.js";
 
 function configuredIds(name: string): string[] {
@@ -10,16 +9,8 @@ function configuredIds(name: string): string[] {
 
 const whatsappGroupIds = configuredIds("WHATSAPP_GROUP_IDS");
 const lecturerIds = configuredIds("LECTURER_IDS");
-const geminiApiKey = process.env.GEMINI_API_KEY?.trim();
 if (whatsappGroupIds.length !== 1) throw new Error("Set exactly one WHATSAPP_GROUP_IDS test group");
 if (lecturerIds.length === 0) throw new Error("Set LECTURER_IDS for the test group");
-if (!geminiApiKey) throw new Error("Set GEMINI_API_KEY before running the WhatsApp pilot");
-
-const extract = createAnnouncementExtractor({
-  geminiApiKey,
-  geminiModel: process.env.GEMINI_MODEL?.trim() || "gemini-3.8-flash",
-  timeZone: process.env.TIME_ZONE?.trim() || "Asia/Colombo",
-});
 const config = { whatsappGroupIds, lecturerIds };
 const startedAt = new Date();
 const seenMessageIds = new Set<string>();
@@ -64,11 +55,7 @@ async function connect(): Promise<void> {
     for (const post of selectLecturerPosts(event, config, startedAt)) {
       if (seenMessageIds.has(post.messageId)) continue;
       seenMessageIds.add(post.messageId);
-      void extract({ text: post.text, sentAt: post.sentAt }).then((result) => {
-        console.log(`Eligible lecturer post processed: ${result.items.length} planner item(s).`);
-      }).catch(() => {
-        console.error("Eligible lecturer post extraction failed.");
-      });
+      console.log("Eligible test-group message received; model extraction was not called.");
     }
   });
 }

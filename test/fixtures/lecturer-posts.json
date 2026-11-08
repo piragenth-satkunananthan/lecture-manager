@@ -7,13 +7,49 @@
       {
         "kind": "assignment",
         "title": "Data Structures assignment 2",
-        "details": null,
+        "details": "submit by",
         "due_date": "2026-11-10",
         "due_time": "17:00",
         "class_date": null,
         "class_time": null,
         "zoom_url": null,
-        "ambiguous_fields": []
+        "ambiguous_fields": [],
+        "course": "Data Structures",
+        "location": null,
+        "change_type": null,
+        "change_details": null,
+        "field_evidence": {
+          "kind": [
+            {
+              "quote": "assignment"
+            }
+          ],
+          "title": [
+            {
+              "quote": "Data Structures assignment 2"
+            }
+          ],
+          "course": [
+            {
+              "quote": "Data Structures"
+            }
+          ],
+          "details": [
+            {
+              "quote": "submit by"
+            }
+          ],
+          "due_date": [
+            {
+              "quote": "submit by 10 November 2026"
+            }
+          ],
+          "due_time": [
+            {
+              "quote": "submit by 10 November 2026 at 5:00 PM"
+            }
+          ]
+        }
       }
     ]
   },
@@ -31,7 +67,33 @@
         "class_date": null,
         "class_time": null,
         "zoom_url": null,
-        "ambiguous_fields": []
+        "ambiguous_fields": [],
+        "course": "Database",
+        "location": null,
+        "change_type": null,
+        "change_details": null,
+        "field_evidence": {
+          "kind": [
+            {
+              "quote": "assignment"
+            }
+          ],
+          "title": [
+            {
+              "quote": "Database assignment 3"
+            }
+          ],
+          "course": [
+            {
+              "quote": "Database"
+            }
+          ],
+          "due_date": [
+            {
+              "quote": "Database assignment 3 is due on 5 January"
+            }
+          ]
+        }
       }
     ]
   },
@@ -49,7 +111,30 @@
         "class_date": "2026-11-08",
         "class_time": null,
         "zoom_url": "https://us02web.zoom.us/j/00000000001?pwd=synthetic",
-        "ambiguous_fields": ["class_time"]
+        "ambiguous_fields": [
+          "class_time"
+        ],
+        "course": null,
+        "location": null,
+        "change_type": null,
+        "change_details": null,
+        "field_evidence": {
+          "kind": [
+            {
+              "quote": "lecture"
+            }
+          ],
+          "title": [
+            {
+              "quote": "online lecture"
+            }
+          ],
+          "class_date": [
+            {
+              "quote": "Next online lecture is on 8 November 2026"
+            }
+          ]
+        }
       }
     ]
   },
@@ -67,7 +152,28 @@
         "class_date": null,
         "class_time": null,
         "zoom_url": null,
-        "ambiguous_fields": []
+        "ambiguous_fields": [],
+        "course": null,
+        "location": null,
+        "change_type": null,
+        "change_details": null,
+        "field_evidence": {
+          "kind": [
+            {
+              "quote": "Assignment"
+            }
+          ],
+          "title": [
+            {
+              "quote": "Assignment"
+            }
+          ],
+          "due_date": [
+            {
+              "quote": "Correction: the deadline is 12 November 2026"
+            }
+          ]
+        }
       }
     ]
   },
@@ -85,7 +191,33 @@
         "class_date": null,
         "class_time": null,
         "zoom_url": null,
-        "ambiguous_fields": ["due_date"]
+        "ambiguous_fields": [
+          "due_date"
+        ],
+        "course": null,
+        "location": null,
+        "change_type": null,
+        "change_details": null,
+        "field_evidence": {
+          "kind": [
+            {
+              "quote": "assignment"
+            }
+          ],
+          "title": [
+            {
+              "quote": "assignment"
+            }
+          ],
+          "due_date": [
+            {
+              "quote": "10 November 2026"
+            },
+            {
+              "quote": "12 November 2026"
+            }
+          ]
+        }
       }
     ]
   },
@@ -103,7 +235,38 @@
         "class_date": "2026-11-08",
         "class_time": "09:30",
         "zoom_url": "https://us02web.zoom.us/j/00000000002?pwd=synthetic",
-        "ambiguous_fields": []
+        "ambiguous_fields": [],
+        "course": "Computer Networks",
+        "location": null,
+        "change_type": null,
+        "change_details": null,
+        "field_evidence": {
+          "kind": [
+            {
+              "quote": "lecture"
+            }
+          ],
+          "title": [
+            {
+              "quote": "Computer Networks Zoom lecture"
+            }
+          ],
+          "course": [
+            {
+              "quote": "Computer Networks"
+            }
+          ],
+          "class_date": [
+            {
+              "quote": "Computer Networks Zoom lecture: 8 November 2026"
+            }
+          ],
+          "class_time": [
+            {
+              "quote": "Computer Networks Zoom lecture: 8 November 2026 at 9:30 AM"
+            }
+          ]
+        }
       }
     ]
   },
@@ -121,7 +284,35 @@
         "class_date": null,
         "class_time": null,
         "zoom_url": null,
-        "ambiguous_fields": ["due_date"]
+        "ambiguous_fields": [
+          "due_date"
+        ],
+        "course": "Operating Systems",
+        "location": null,
+        "change_type": null,
+        "change_details": null,
+        "field_evidence": {
+          "kind": [
+            {
+              "quote": "assignment"
+            }
+          ],
+          "title": [
+            {
+              "quote": "Operating Systems assignment"
+            }
+          ],
+          "course": [
+            {
+              "quote": "Operating Systems"
+            }
+          ],
+          "due_date": [
+            {
+              "quote": "30 February 2026"
+            }
+          ]
+        }
       }
     ]
   },
@@ -130,5 +321,122 @@
     "sentAt": "2026-11-07T09:00:00+05:30",
     "text": "I uploaded the reading notes from yesterday. Thanks.",
     "expected": []
+  },
+  {
+    "id": "cancelled-class-without-replacement-time",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "Computer Networks lecture is cancelled. The replacement time is not announced.",
+    "expected": [
+      {
+        "kind": "class",
+        "title": "Computer Networks lecture",
+        "details": null,
+        "due_date": null,
+        "due_time": null,
+        "class_date": null,
+        "class_time": null,
+        "zoom_url": null,
+        "ambiguous_fields": [
+          "class_date",
+          "class_time",
+          "zoom_url"
+        ],
+        "course": "Computer Networks",
+        "location": null,
+        "change_type": "cancelled",
+        "change_details": "lecture is cancelled",
+        "field_evidence": {
+          "kind": [
+            {
+              "quote": "lecture"
+            }
+          ],
+          "title": [
+            {
+              "quote": "Computer Networks lecture"
+            }
+          ],
+          "course": [
+            {
+              "quote": "Computer Networks"
+            }
+          ],
+          "change_type": [
+            {
+              "quote": "cancelled"
+            }
+          ],
+          "change_details": [
+            {
+              "quote": "lecture is cancelled"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "rescheduled-assignment-with-location-and-action",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "Data Structures assignment 2 is rescheduled to 12 November 2026. Submit the revised report in Room 4.",
+    "expected": [
+      {
+        "kind": "assignment",
+        "title": "Data Structures assignment 2",
+        "details": "Submit the revised report",
+        "due_date": "2026-11-12",
+        "due_time": null,
+        "class_date": null,
+        "class_time": null,
+        "zoom_url": null,
+        "ambiguous_fields": [],
+        "course": "Data Structures",
+        "location": "Room 4",
+        "change_type": "rescheduled",
+        "change_details": "rescheduled to 12 November 2026",
+        "field_evidence": {
+          "kind": [
+            {
+              "quote": "assignment"
+            }
+          ],
+          "title": [
+            {
+              "quote": "Data Structures assignment 2"
+            }
+          ],
+          "details": [
+            {
+              "quote": "Submit the revised report"
+            }
+          ],
+          "course": [
+            {
+              "quote": "Data Structures"
+            }
+          ],
+          "location": [
+            {
+              "quote": "Room 4"
+            }
+          ],
+          "due_date": [
+            {
+              "quote": "Data Structures assignment 2 is rescheduled to 12 November 2026"
+            }
+          ],
+          "change_type": [
+            {
+              "quote": "rescheduled"
+            }
+          ],
+          "change_details": [
+            {
+              "quote": "rescheduled to 12 November 2026"
+            }
+          ]
+        }
+      }
+    ]
   }
 ]

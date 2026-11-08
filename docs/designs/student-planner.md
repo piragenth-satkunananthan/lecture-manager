@@ -1,8 +1,8 @@
 # Student Planner for WhatsApp Classes and Assignments
 
 * **Author:** piragenth-satkunananthan
-* **Status:** Proposed — OpenRouter migration revision awaiting design review
-* **Date:** 2026-11-07
+* **Status:** Approved
+* **Date:** 2026-11-08
 
 --------------------------------------------------------------------------------
 

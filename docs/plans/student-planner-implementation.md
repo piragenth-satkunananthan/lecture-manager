@@ -1,7 +1,7 @@
 # Student Planner Implementation Plan
 
 **Status:** In progress  
-**Design under review:** [`docs/designs/student-planner.md`](../designs/student-planner.md)
+**Approved design:** [`docs/designs/student-planner.md`](../designs/student-planner.md)
 **Plan date:** 2026-11-07
 **Provider migration plan:** [`openrouter-migration-implementation.md`](openrouter-migration-implementation.md)
 
@@ -9,7 +9,7 @@
 
 - The EGM artifacts are stored in the project root; the resolved design is under `docs/designs/` and the implementation plan is under `docs/plans/`.
 - No repository `AGENTS.md`, `SPEC.md`, `ROADMAP.md`, or `TASKS.md` was found. The user-provided project instructions apply.
-- The design file is `Proposed` and is being revised to include the user's OpenRouter and field-evidence decisions. The user approved the migration implementation plan, but has not yet reviewed this revised design. Keep the design under review and live intake disabled until the design is accepted and the durable failure/manual-review path exists.
+- The user approved the revised OpenRouter and field-evidence design on 2026-11-08. Keep live intake disabled until the durable failure/manual-review path exists.
 - The resolution report marks findings 1-8 and 10-14 `PROPOSE FIX`, finding 9 `ESCALATE` with no edit because the author had approved the detailed plan, and finding 15 `DECLINE` as editorial. Those dispositions are recorded in `goldfish_review_report.md`; the resolved design includes the accepted changes.
 - The user chose OpenRouter to use free models. Select a free model only after it passes the synthetic comparison; Gemma 4 31B is a candidate. Keep Gemini only as the comparison baseline and do not use paid, Gemini, or local runtime fallback.
 - The earlier plan records one Gemini fixture passing, followed by two request timeouts and two HTTP 503 responses before the remaining fixtures ran. The Gemini API pilot remains incomplete; no OpenRouter comparison has run, and no raw run log was found to recheck the old results.
@@ -19,12 +19,12 @@
 ## Current project state
 
 - The Node 24 TypeScript foundation, configuration validation, Gemini extraction adapter, synthetic fixtures, and their local tests are committed.
-- The working tree contains an in-progress Baileys pilot and WhatsApp post-selection tests, plus its dependency changes. Preserve and finish this work rather than replacing it.
+- The repository has an in-progress Baileys pilot and WhatsApp post-selection tests. Preserve and finish this work rather than replacing it.
 - The local test command is `npm test`; it runs the strict TypeScript build and Node test suite. Current milestone work must pass it before being marked complete.
-- Current verification on Node 24.22.2: `npm test` passes all 19 tests, including complete Gemini fixture shape and impossible-date expectations.
+- Current verification on Node 24.22.2: `npm test` passes all 26 tests, including complete synthetic fixture shape, field evidence, semantic/date validation, and impossible-date expectations.
 - The current build/test suite does not prove Gemini API quality, WhatsApp reconnect recovery, or Zoom admission and capture. Those require separate external pilots.
 
-## Constraints to preserve in the revised design
+## Approved constraints
 
 - Keep the planner calendar in SQLite and use `Asia/Colombo`; date-only assignments are due at 11:59 PM.
 - Accept only new posts from configured groups and trusted lecturers. Pilot Baileys first; try `whatsapp-web.js` only if Baileys fails. Do not enable live-group intake before the current-policy and account-risk gate.
@@ -55,7 +55,7 @@ Complete the OpenRouter migration plan's local schema/adapter work, then run syn
 4. **WhatsApp test-group run:** after recording the current policy check and account-risk decision, use one separate test group to verify trusted-sender filtering, new posts, reconnect/catch-up, edits, duplicates, and process restart without loss or duplicate planner items. Do not send test-group posts to Gemini or OpenRouter. If Baileys fails, test `whatsapp-web.js` in the same group. Do not use a live subject group.
 5. **Zoom test-meeting run:** in a host-controlled meeting, verify permission, login, admission, five-minute early join, the 20-minute opening wait, usable saved screen/audio, host-end stop within 30 seconds, four-hour cap, low-space finalization, and restart behavior. Keep capture disabled if any permission or admission check fails.
 
-**Current evidence:** local Gemini and WhatsApp unit coverage is available. The live Gemini run is incomplete; no OpenRouter comparison, test-group run, or Zoom meeting result is recorded. The current WhatsApp pilot keeps deduplication in memory, so it cannot by itself prove no loss or duplication across process restart.
+**Current evidence:** local Gemini, WhatsApp, and field-evidence validation coverage is available. The OpenRouter adapter/comparison, test-group run, and Zoom meeting result are still pending. The current WhatsApp pilot keeps deduplication in memory, so it cannot by itself prove no loss or duplication across process restart.
 
 **Exit checks:** at least one free OpenRouter candidate passes the 100% synthetic comparison with valid evidence and no invalid or ambiguous event confirmed; both provider runs are complete and recorded; every test-group post survives disconnect/restart without loss or duplication and untrusted senders/groups are ignored; the saved Zoom sample has usable screen/audio and passes the host-end and low-space checks. Keep live intake disabled until Planner core provides durable failure retention and manual review, and keep unattended capture disabled until its separate permission and pilot gates pass.
 

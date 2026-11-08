@@ -1,6 +1,6 @@
 # OpenRouter Migration Implementation Plan
 
-**Status:** Plan approved; Milestone 1 design revision prepared for user review.
+**Status:** Design approved; Migration Milestone 2 complete. Migration Milestone 3 is next.
 **Date:** 2026-11-08
 **Design input:** [`openrouter_migration_brief.md`](../../openrouter_migration_brief.md)
 **Existing plan:** [`student-planner-implementation.md`](student-planner-implementation.md)
@@ -11,11 +11,12 @@ Move the planner's single-post extraction from Gemini to the best passing free O
 
 ## Current state and limits
 
-- The app has a Gemini extractor and pilot scripts, but no OpenRouter code.
-- The project has no planner database or event-persistence path yet. The current WhatsApp pilot logs extraction errors and can mark a failed message as already seen.
-- The planner design is labeled `Proposed`, while the main implementation plan treated it as approved. Keep the revised design labeled `Proposed` until the user reviews and approves it; update the main plan to show the same status.
+- The app has a Gemini extractor and pilot scripts, plus local schema and evidence validation, but no OpenRouter adapter.
+- The project has no planner database or event-persistence path yet. The WhatsApp pilot tests intake only, makes no model calls, and keeps deduplication in memory.
+- The OpenRouter and field-evidence design was approved by the user on 2026-11-08; the design and main implementation plan now show the same status.
+- The current local semantic checks recognize English field terms and English/ISO date expressions. Other languages and unsupported date formats fail closed; add synthetic fixtures for the languages used in the lecturer groups before selecting a production model.
 - The current planner plan already includes a browser calendar and management screens in its user-access milestone. This migration does not build the GUI; the planner database and service must exist before that GUI can use extracted events.
-- The provider migration proposal remains a reviewed draft. Approval of this implementation plan authorizes the documentation update, not an unreviewed design change or production cutover. Keep live intake disabled until the revised design is accepted and the durable failure path exists.
+- The migration brief is a historical proposal; the approved design is current. Design approval does not enable production cutover. Keep live intake disabled until the durable failure path exists.
 
 ## Fixed requirements
 
@@ -30,16 +31,20 @@ Move the planner's single-post extraction from Gemini to the best passing free O
 
 ## Migration milestones
 
-### Migration Milestone 1: Prepare and reconcile the design contract
+### Migration Milestone 1: Prepare and reconcile the design contract — complete
 
-1. Update the design draft to name OpenRouter and the selected free-model policy. Record that OpenRouter may choose the upstream provider and that its data practices apply. Keep the design marked Proposed until the user reviews it.
+**Status:** Complete — user approved the revised design on 2026-11-08.
+
+1. Update the design to name OpenRouter and the selected free-model policy. Record that OpenRouter may choose the upstream provider and that its data practices apply. Mark the design approved after the user approves it.
 2. Define the extraction fields, null rules, `ambiguous_fields`, `field_evidence` shape, cancellation/rescheduling fields, semantic checks, and quote retention. Include backup retention and the locally derived Zoom URL rule.
 3. Reconcile the design and implementation plan status labels. Update the existing planner plan so its Gemini feasibility step becomes a Gemini baseline plus free OpenRouter synthetic comparison.
 4. Record that live intake remains disabled until the planner has a durable pending/retry/manual-review path.
 
-**Exit checks:** The design and plan agree on provider, data use, event schema, evidence storage, error handling, and the live-intake gate. The revised design remains Proposed until the user reviews it. Do not begin application implementation before that review.
+**Exit checks:** The design and plan agree on provider, data use, event schema, evidence storage, error handling, and the live-intake gate. The user approved the revised design before application implementation began.
 
-### Migration Milestone 2: Implement local schema and validation
+### Migration Milestone 2: Implement local schema and validation — complete
+
+**Status:** Complete — strict schema, quote validation, field checks, and synthetic regression tests pass.
 
 1. Extend the current strict Zod output contract. Keep `kind` as the event type, existing title/details/date/time fields, and Zoom-link index behavior. Add course, location, cancellation/rescheduling, and `field_evidence` fields as defined in Milestone 1.
 2. Add a local evidence validator. Require exact quotes from both the sanitized model input and original source post. Require evidence for every non-null model fact. Reject evidence for missing or unrelated text.

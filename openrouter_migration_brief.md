@@ -1,8 +1,10 @@
 # OpenRouter Migration Proposal
 
 * **Date:** 2026-11-08
-* **Status:** Brainstorm proposal for user review. This is not an approved design change.
-* **Scope:** Change the AI provider and add the requested field-level evidence. Do not change application code in this step.
+* **Status:** Reviewed proposal; its OpenRouter and field-evidence decisions were incorporated into the approved design on 2026-11-08.
+* **Scope:** Records the provider migration choices and constraints. Implementation follows the approved design and [`docs/plans/openrouter-migration-implementation.md`](docs/plans/openrouter-migration-implementation.md).
+
+This is the historical proposal. The approved [`student planner design`](docs/designs/student-planner.md) controls the current requirements; conditional wording below records the state before approval.
 
 ## Recommendation
 
