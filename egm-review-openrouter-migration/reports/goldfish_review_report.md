@@ -1,6 +1,7 @@
 # Goldfish Annotated Review Report
 
-**Target:** `openrouter_migration_brief.md` (`full file`, lines 1-96)
+**Target:** `openrouter_migration_brief.md` (`full file`, lines 1-105 after resolution)
+**Status:** Resolved. All 12 proposed fixes were applied; 0 contested, 0 escalated, and 0 declined.
 
 ## Prioritized Findings & AI Suggestions
 
@@ -138,4 +139,4 @@
 
 ## Resolution status
 
-No finding has been contested or escalated. All findings are proposed edits for user review. No changes have been applied to the target document.
+All 12 proposed fixes were applied to `openrouter_migration_brief.md`. No findings were contested, escalated, or declined. The approved student-planner design and application code were not changed.
