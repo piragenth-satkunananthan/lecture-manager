@@ -2,6 +2,7 @@
 
 **Status:** Design approved; Migration Milestone 2 complete. Migration Milestone 3 is next.
 **Date:** 2026-11-08
+**Next-agent handoff:** [`agent-handoff.md`](agent-handoff.md)
 **Design input:** [`openrouter_migration_brief.md`](../../openrouter_migration_brief.md)
 **Existing plan:** [`student-planner-implementation.md`](student-planner-implementation.md)
 

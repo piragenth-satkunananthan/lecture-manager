@@ -4,6 +4,7 @@
 **Approved design:** [`docs/designs/student-planner.md`](../designs/student-planner.md)
 **Plan date:** 2026-11-07
 **Provider migration plan:** [`openrouter-migration-implementation.md`](openrouter-migration-implementation.md)
+**Agent handoff:** [`agent-handoff.md`](agent-handoff.md)
 
 ## Recovered handoff
 
