@@ -1,0 +1,15 @@
+# Planner HTTPS termination. Copy to /etc/caddy/Caddyfile.
+# The planner app itself binds 127.0.0.1:3000 and is never exposed directly.
+
+planner.home.arpa {
+	tls internal
+
+	reverse_proxy 127.0.0.1:3000
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "no-referrer"
+	}
+}

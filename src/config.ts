@@ -102,7 +102,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
   }
 
   const plannerPassword = env.PLANNER_PASSWORD?.trim() || "";
-  const sessionKeyFile = env.SESSION_KEY_FILE?.trim() || "";
+  const sessionKeyFile = env.SESSION_KEY_FILE?.trim() || "./storage/session.key";
   const plannerOrigin = env.PLANNER_ORIGIN?.trim() || "";
   if (plannerOrigin) {
     try {

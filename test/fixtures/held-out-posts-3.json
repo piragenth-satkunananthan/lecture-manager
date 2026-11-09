@@ -1,0 +1,123 @@
+[
+  {
+    "id": "fresh3-deadline-only-assignment",
+    "sentAt": "2026-11-09T09:00:00+05:30",
+    "text": "The Cybersecurity assignment is due on 27 November 2026 at 11:00 AM.",
+    "expected": [
+      {
+        "kind": "assignment",
+        "title": "Cybersecurity assignment",
+        "details": null,
+        "course": "Cybersecurity",
+        "location": null,
+        "due_date": "2026-11-27",
+        "due_time": "11:00",
+        "class_date": null,
+        "class_time": null,
+        "change_type": null,
+        "change_details": null,
+        "zoom_url": null,
+        "ambiguous_fields": [],
+        "field_evidence": {
+          "kind": [{ "quote": "assignment" }],
+          "title": [{ "quote": "Cybersecurity assignment" }],
+          "course": [{ "quote": "Cybersecurity" }],
+          "due_date": [{ "quote": "assignment is due on 27 November 2026" }],
+          "due_time": [{ "quote": "due on 27 November 2026 at 11:00 AM" }]
+        }
+      }
+    ]
+  },
+  {
+    "id": "fresh3-class-only",
+    "sentAt": "2026-11-09T09:00:00+05:30",
+    "text": "The Distributed Systems lecture is on 28 November 2026 at 10:00 AM.",
+    "expected": [
+      {
+        "kind": "class",
+        "title": "Distributed Systems lecture",
+        "details": null,
+        "course": "Distributed Systems",
+        "location": null,
+        "due_date": null,
+        "due_time": null,
+        "class_date": "2026-11-28",
+        "class_time": "10:00",
+        "change_type": null,
+        "change_details": null,
+        "zoom_url": null,
+        "ambiguous_fields": ["zoom_url"],
+        "field_evidence": {
+          "kind": [{ "quote": "lecture" }],
+          "title": [{ "quote": "Distributed Systems lecture" }],
+          "course": [{ "quote": "Distributed Systems" }],
+          "class_date": [{ "quote": "lecture is on 28 November 2026" }],
+          "class_time": [{ "quote": "lecture is on 28 November 2026 at 10:00 AM" }]
+        }
+      }
+    ]
+  },
+  {
+    "id": "fresh3-assignment-with-action",
+    "sentAt": "2026-11-09T09:00:00+05:30",
+    "text": "The Data Mining assignment is due on 29 November 2026. Submit the report and dataset.",
+    "expected": [
+      {
+        "kind": "assignment",
+        "title": "Data Mining assignment",
+        "details": "Submit the report and dataset",
+        "course": "Data Mining",
+        "location": null,
+        "due_date": "2026-11-29",
+        "due_time": null,
+        "class_date": null,
+        "class_time": null,
+        "change_type": null,
+        "change_details": null,
+        "zoom_url": null,
+        "ambiguous_fields": [],
+        "field_evidence": {
+          "kind": [{ "quote": "assignment" }],
+          "title": [{ "quote": "Data Mining assignment" }],
+          "course": [{ "quote": "Data Mining" }],
+          "details": [{ "quote": "Submit the report and dataset" }],
+          "due_date": [{ "quote": "assignment is due on 29 November 2026" }]
+        }
+      }
+    ]
+  },
+  {
+    "id": "fresh3-non-announcement",
+    "sentAt": "2026-11-09T09:00:00+05:30",
+    "text": "The library will be closed on 30 November 2026 for maintenance.",
+    "expected": []
+  },
+  {
+    "id": "fresh3-deadline-word",
+    "sentAt": "2026-11-09T09:00:00+05:30",
+    "text": "The Compiler Design assignment deadline is 1 December 2026.",
+    "expected": [
+      {
+        "kind": "assignment",
+        "title": "Compiler Design assignment",
+        "details": null,
+        "course": "Compiler Design",
+        "location": null,
+        "due_date": "2026-12-01",
+        "due_time": null,
+        "class_date": null,
+        "class_time": null,
+        "change_type": null,
+        "change_details": null,
+        "zoom_url": null,
+        "ambiguous_fields": [],
+        "field_evidence": {
+          "kind": [{ "quote": "assignment" }],
+          "title": [{ "quote": "Compiler Design assignment" }],
+          "course": [{ "quote": "Compiler Design" }],
+          "due_date": [{ "quote": "assignment deadline is 1 December 2026" }]
+        }
+      }
+    ]
+  }
+]

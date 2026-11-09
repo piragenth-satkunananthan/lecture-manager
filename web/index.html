@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Planner</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="shell">
+    <section id="login-view" class="card login">
+      <h1>Student Planner</h1>
+      <p class="muted">Sign in to view your calendar and questions.</p>
+      <form id="login-form">
+        <label>Password
+          <input id="password" type="password" autocomplete="current-password" required autofocus>
+        </label>
+        <button class="primary" type="submit">Sign in</button>
+      </form>
+      <p id="login-error" class="error" role="alert"></p>
+    </section>
+
+    <section id="planner-view" hidden>
+      <header class="topbar">
+        <div>
+          <h1>Student Planner</h1>
+          <p id="health" class="muted"></p>
+        </div>
+        <button id="logout" class="ghost" type="button">Log out</button>
+      </header>
+
+      <div class="grid">
+        <section class="card calendar-card">
+          <div class="monthbar">
+            <button id="prev-month" class="ghost" type="button" aria-label="Previous month">←</button>
+            <h2 id="month-label"></h2>
+            <button id="next-month" class="ghost" type="button" aria-label="Next month">→</button>
+          </div>
+          <div class="weekdays" aria-hidden="true">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+          <div id="calendar" class="calendar"></div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <h2>Upcoming</h2>
+            <label class="toggle"><input id="show-archived" type="checkbox"> Show archived</label>
+          </div>
+          <ul id="items" class="items"></ul>
+        </section>
+      </div>
+
+      <section class="card">
+        <div class="section-head">
+          <h2>WhatsApp tracking</h2>
+          <button id="refresh-groups" class="ghost" type="button">Refresh list</button>
+        </div>
+        <p id="whatsapp-status" class="muted"></p>
+        <label>Tracked test group
+          <select id="group-select"></select>
+        </label>
+        <label class="toggle">
+          <input id="allow-all-senders" type="checkbox">
+          Accept posts from any group member
+        </label>
+        <p class="muted">This disables the lecturer-only sender allowlist. Any member of the tracked group can create items. Sender provenance is still shown.</p>
+        <div class="actions">
+          <button id="save-group" class="primary" type="button">Save group</button>
+          <button id="clear-group" class="ghost" type="button">Clear</button>
+        </div>
+        <p class="muted">Run <code>npm run whatsapp:groups</code> to refresh candidates. Selecting a group does not start intake.</p>
+      </section>
+
+      <section class="card">
+        <h2>Questions</h2>
+        <ul id="clarifications" class="items"></ul>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <h2>Failed posts</h2>
+          <span id="failed-note" class="muted"></span>
+        </div>
+        <ul id="failed-sources" class="items"></ul>
+      </section>
+
+      <p id="status" class="status" role="status"></p>
+    </section>
+  </main>
+
+  <dialog id="edit-dialog">
+    <form id="edit-form">
+      <h2>Edit item</h2>
+      <div class="form-grid">
+        <label>Title<input name="title" autocomplete="off"></label>
+        <label>Course<input name="course" autocomplete="off"></label>
+        <label>Location<input name="location" autocomplete="off"></label>
+        <label>Due date<input name="dueDate" type="date"></label>
+        <label>Due time<input name="dueTime" type="time"></label>
+        <label>Class date<input name="classDate" type="date"></label>
+        <label>Class time<input name="classTime" type="time"></label>
+        <label>Change type
+          <select name="changeType">
+            <option value="">None</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="rescheduled">Rescheduled</option>
+          </select>
+        </label>
+      </div>
+      <label>Details<textarea name="details" rows="3"></textarea></label>
+      <label>Change details<textarea name="changeDetails" rows="2"></textarea></label>
+      <div class="dialog-actions">
+        <button id="edit-cancel" class="ghost" type="button">Cancel</button>
+        <button class="primary" type="submit">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

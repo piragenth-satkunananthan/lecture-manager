@@ -1,0 +1,16 @@
+[
+  {
+    "groupId": "group-1",
+    "messageId": "local-intake-1",
+    "senderId": "lecturer-1",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "Data Structures assignment 2 is due on 10 November 2026."
+  },
+  {
+    "groupId": "group-1",
+    "messageId": "local-intake-2",
+    "senderId": "lecturer-1",
+    "sentAt": "2026-11-07T09:05:00+05:30",
+    "text": "Computer Networks lecture is cancelled."
+  }
+]

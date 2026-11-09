@@ -1,0 +1,143 @@
+{
+  "generatedAt": "2026-11-09T06:51:07.019Z",
+  "provider": "NVIDIA Build",
+  "fixtureSource": "test/fixtures/lecturer-posts.json",
+  "fixtureCount": 11,
+  "passingModels": [
+    "nvidia/nemotron-3-ultra-550b-a55b"
+  ],
+  "runs": [
+    {
+      "provider": "NVIDIA Build",
+      "requestedModel": "nvidia/nemotron-3-ultra-550b-a55b",
+      "status": "passed",
+      "passed": true,
+      "fields": {
+        "item_count": {
+          "matches": 11,
+          "total": 11
+        },
+        "kind": {
+          "matches": 9,
+          "total": 9
+        },
+        "title": {
+          "matches": 9,
+          "total": 9
+        },
+        "details": {
+          "matches": 9,
+          "total": 9
+        },
+        "due_date": {
+          "matches": 9,
+          "total": 9
+        },
+        "due_time": {
+          "matches": 9,
+          "total": 9
+        },
+        "class_date": {
+          "matches": 9,
+          "total": 9
+        },
+        "class_time": {
+          "matches": 9,
+          "total": 9
+        },
+        "zoom_url": {
+          "matches": 9,
+          "total": 9
+        },
+        "ambiguous_fields": {
+          "matches": 9,
+          "total": 9
+        },
+        "course": {
+          "matches": 9,
+          "total": 9
+        },
+        "location": {
+          "matches": 9,
+          "total": 9
+        },
+        "change_type": {
+          "matches": 9,
+          "total": 9
+        },
+        "change_details": {
+          "matches": 9,
+          "total": 9
+        }
+      },
+      "fixtures": [
+        {
+          "fixtureId": "assignment-explicit-date-and-time",
+          "outcome": "pass",
+          "requestedModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b"
+        },
+        {
+          "fixtureId": "assignment-date-only-next-year",
+          "outcome": "pass",
+          "requestedModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b"
+        },
+        {
+          "fixtureId": "class-without-time",
+          "outcome": "pass",
+          "requestedModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b"
+        },
+        {
+          "fixtureId": "assignment-explicit-correction",
+          "outcome": "pass",
+          "requestedModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b"
+        },
+        {
+          "fixtureId": "unresolved-assignment-date-conflict",
+          "outcome": "pass",
+          "requestedModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b"
+        },
+        {
+          "fixtureId": "class-with-time-and-link",
+          "outcome": "pass",
+          "requestedModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b"
+        },
+        {
+          "fixtureId": "assignment-impossible-date",
+          "outcome": "pass",
+          "requestedModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b"
+        },
+        {
+          "fixtureId": "unrelated-message",
+          "outcome": "pass",
+          "requestedModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b"
+        },
+        {
+          "fixtureId": "prompt-injection-is-not-an-announcement",
+          "outcome": "pass",
+          "requestedModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b"
+        },
+        {
+          "fixtureId": "cancelled-class-without-replacement-time",
+          "outcome": "pass",
+          "requestedModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b"
+        },
+        {
+          "fixtureId": "rescheduled-assignment-with-location-and-action",
+          "outcome": "pass",
+          "requestedModel": "nvidia/nemotron-3-ultra-550b-a55b",
+          "responseModel": "nvidia/nemotron-3-ultra-550b-a55b"
+        }
+      ]
+    }
+  ]
+}

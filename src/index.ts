@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { loadConfig } from "./config.js";
-import { openPlannerDatabase } from "./db.js";
+import { expireFailedSources, openPlannerDatabase } from "./db.js";
+import { createConfiguredExtraction } from "./extraction-factory.js";
 import { createSmtpTransport, deliverDueReminders } from "./notifications.js";
 import { buildServer } from "./server.js";
 
@@ -12,11 +13,13 @@ const sessionKey = readFileSync(config.sessionKeyFile);
 if (sessionKey.length !== 32) throw new Error("SESSION_KEY_FILE must contain exactly 32 bytes");
 
 const db = openPlannerDatabase(config.databasePath);
+const extractor = createConfiguredExtraction(config);
 const app = await buildServer({
   db,
   plannerPassword: config.plannerPassword,
   sessionKey,
   extractionEnabled: config.extractionEnabled,
+  extractor,
   secureCookies: config.plannerOrigin.startsWith("https://"),
   ...(config.plannerOrigin ? { plannerOrigin: config.plannerOrigin } : {}),
 });
@@ -34,6 +37,8 @@ const transport = createSmtpTransport({
 });
 const runReminderTick = async (): Promise<void> => {
   try {
+    const expired = expireFailedSources(db);
+    if (expired > 0) console.log(`Expired ${expired} retained source message(s)`);
     const result = await deliverDueReminders(db, transport, {
       from: config.smtpFrom,
       to: config.smtpTo,

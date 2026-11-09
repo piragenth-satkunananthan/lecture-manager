@@ -12,6 +12,8 @@
 >
 > **Decision update 2026-11-09 (NVIDIA activation):** The user approved NVIDIA Build as an active provider and accepted its data terms. `nvidia/nemotron-3-ultra-550b-a55b` is pinned. Configuration, extraction pipeline, and configured factory are implemented. `EXTRACTION_ENABLED` remains false by default, so no live extraction starts; live intake remains disabled.
 >
+> **Decision update 2026-11-09 (any-member posts):** The user reported that students also post class links and times in the target group, and that requiring a lecturer test message was not workable. The planner supports an opt-in `allowAllSenders` setting per tracked group: when enabled, any member's message can be processed. The default remains lecturer-only. Sender provenance is retained, extraction validation still applies, and this weakens the trusted-sender gate; student posts can create items.
+>
 > **Decision update 2026-11-09 (gate semantics):** The model gate compares structured fields exactly and validates evidence through the extractor. Free-text fields accept source-supported normalized spans; the model is not required to reproduce a curated fixture quote. Exact checks remain for dates, times, enums, nulls, item counts, `ambiguous_fields`, and `zoom_url`.
 >
 > **Decision update 2026-11-09 (sequencing):** The user authorized starting Planner core Phase 2A–2C before the model gate passes. The SQLite schema, item lifecycle, clarification resolution, and reminder scheduling are implemented; extraction and live intake remain disabled.

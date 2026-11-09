@@ -1,8 +1,12 @@
 import { timingSafeEqual } from "node:crypto";
+import { join } from "node:path";
 import type Database from "better-sqlite3";
 import Fastify, { type FastifyInstance } from "fastify";
+import fastifyStatic from "@fastify/static";
 import secureSession from "@fastify/secure-session";
-import { getClarification, getPlannerItem, updatePlannerItem } from "./db.js";
+import { deleteFailedSource, getClarification, getPlannerItem, getSourceMessage, getTrackedWhatsAppGroup, listFailedSources, setTrackedWhatsAppGroup, clearTrackedWhatsAppGroup, updatePlannerItem, type PlannerItem } from "./db.js";
+import { processSourceMessage, type ExtractionRunner } from "./extraction.js";
+import { readGroupCache } from "./whatsapp-groups.js";
 import {
   applyUserCorrection,
   archivePlannerItem,
@@ -20,7 +24,10 @@ export interface ServerOptions {
   sessionKey: Buffer;
   plannerOrigin?: string;
   extractionEnabled?: boolean;
+  extractor?: ExtractionRunner | null;
   secureCookies?: boolean;
+  webRoot?: string;
+  whatsappGroupsPath?: string;
 }
 
 interface AuthenticatedSession {
@@ -57,6 +64,24 @@ function asRecord(value: unknown): Record<string, unknown> | null {
     : null;
 }
 
+function withSource(db: Database.Database, item: PlannerItem) {
+  const source = getSourceMessage(db, {
+    groupId: item.sourceGroupId,
+    messageId: item.sourceMessageId,
+  });
+  return {
+    ...item,
+    source: source
+      ? {
+          groupId: source.groupId,
+          messageId: source.messageId,
+          senderId: source.senderId,
+          sentAt: source.sentAt,
+        }
+      : null,
+  };
+}
+
 function safeEqual(left: string, right: string): boolean {
   const a = Buffer.from(left);
   const b = Buffer.from(right);
@@ -82,6 +107,7 @@ export async function buildServer(options: ServerOptions): Promise<FastifyInstan
 
   const app = Fastify({ logger: false });
   const db = options.db;
+  const groupsPath = options.whatsappGroupsPath ?? join(process.cwd(), "storage", "whatsapp-groups.json");
 
   await app.register(secureSession, {
     key: options.sessionKey,
@@ -93,6 +119,12 @@ export async function buildServer(options: ServerOptions): Promise<FastifyInstan
       sameSite: "strict",
       maxAge: 6 * 60 * 60,
     },
+  });
+
+  await app.register(fastifyStatic, {
+    root: options.webRoot ?? join(process.cwd(), "web"),
+    prefix: "/",
+    wildcard: false,
   });
 
   app.addHook("onRequest", async (request, reply) => {
@@ -142,7 +174,8 @@ export async function buildServer(options: ServerOptions): Promise<FastifyInstan
   });
 
   app.get<{ Querystring: { includeArchived?: string } }>("/api/items", async (request) => ({
-    items: listPlannerItems(db, { includeArchived: request.query.includeArchived === "true" }),
+    items: listPlannerItems(db, { includeArchived: request.query.includeArchived === "true" })
+      .map((item) => withSource(db, item)),
   }));
 
   app.get<{ Params: { id: string } }>("/api/items/:id", async (request, reply) => {
@@ -150,7 +183,7 @@ export async function buildServer(options: ServerOptions): Promise<FastifyInstan
     if (id === null) return reply.code(400).send({ error: "invalid_id" });
     const item = getPlannerItem(db, id);
     if (!item) return reply.code(404).send({ error: "not_found" });
-    return { item };
+    return { item: withSource(db, item) };
   });
 
   app.patch<{ Params: { id: string }; Body: unknown }>("/api/items/:id", async (request, reply) => {
@@ -250,6 +283,79 @@ export async function buildServer(options: ServerOptions): Promise<FastifyInstan
       return reply.code(409).send({ error: "clarification_update_failed" });
     }
   });
+
+  app.get("/api/sources/failed", async () => ({ sources: listFailedSources(db) }));
+
+  app.get("/api/whatsapp/groups", async () => {
+    const cache = readGroupCache(groupsPath);
+    return { generatedAt: cache?.generatedAt ?? null, groups: cache?.groups ?? [] };
+  });
+
+  app.get("/api/whatsapp/tracking", async () => {
+    const cache = readGroupCache(groupsPath);
+    return {
+      tracked: getTrackedWhatsAppGroup(db),
+      cacheGeneratedAt: cache?.generatedAt ?? null,
+    };
+  });
+
+  app.put<{ Body: unknown }>("/api/whatsapp/tracking", async (request, reply) => {
+    const body = asRecord(request.body);
+    if (!body || typeof body.groupId !== "string" || !body.groupId.trim()) {
+      return reply.code(400).send({ error: "group_id_required" });
+    }
+    if (body.allowAllSenders !== undefined && typeof body.allowAllSenders !== "boolean") {
+      return reply.code(400).send({ error: "invalid_allow_all_senders" });
+    }
+    const cache = readGroupCache(groupsPath);
+    if (!cache) return reply.code(409).send({ error: "group_cache_missing" });
+    const group = cache.groups.find((candidate) => candidate.id === body.groupId);
+    if (!group) return reply.code(400).send({ error: "unknown_group" });
+    const tracked = setTrackedWhatsAppGroup(db, {
+      groupId: group.id,
+      subject: group.subject,
+      addressingMode: group.addressingMode,
+      allowAllSenders: body.allowAllSenders === true,
+    });
+    return { tracked };
+  });
+
+  app.delete("/api/whatsapp/tracking", async (_request, reply) => {
+    clearTrackedWhatsAppGroup(db);
+    return reply.code(204).send();
+  });
+
+  app.post<{ Params: { groupId: string; messageId: string } }>(
+    "/api/sources/:groupId/:messageId/retry",
+    async (request, reply) => {
+      const key = { groupId: request.params.groupId, messageId: request.params.messageId };
+      const source = getSourceMessage(db, key);
+      if (!source) return reply.code(404).send({ error: "not_found" });
+      if (source.extractionState !== "failed") {
+        return reply.code(409).send({ error: "source_not_failed" });
+      }
+      if (!options.extractor) return reply.code(409).send({ error: "extraction_unavailable" });
+
+      try {
+        const result = await processSourceMessage(db, key, options.extractor, { enabled: true });
+        return { status: result.pending ? "pending" : "processed", itemIds: result.itemIds };
+      } catch {
+        return reply.code(502).send({ error: "retry_failed" });
+      }
+    },
+  );
+
+  app.delete<{ Params: { groupId: string; messageId: string } }>(
+    "/api/sources/:groupId/:messageId",
+    async (request, reply) => {
+      const deleted = deleteFailedSource(db, {
+        groupId: request.params.groupId,
+        messageId: request.params.messageId,
+      });
+      if (!deleted) return reply.code(409).send({ error: "source_not_failed" });
+      return reply.code(204).send();
+    },
+  );
 
   return app;
 }

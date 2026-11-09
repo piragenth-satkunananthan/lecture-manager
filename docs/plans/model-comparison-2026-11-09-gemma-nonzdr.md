@@ -23,7 +23,7 @@ The account-level Google group must be set to the least-permissive non-ZDR optio
 - [src/ai.ts](../../src/ai.ts) now selects the provider controls through a narrow policy: only `google/gemma-4-31b-it:free` gets `zdr: false`; every other model keeps `zdr: true`.
 - [test/openrouter.test.ts](../../test/openrouter.test.ts) asserts the Gemma exception and a strict-ZDR non-Gemma model.
 - [scripts/model-comparison-pilot.ts](../../scripts/model-comparison-pilot.ts) adds optional `OPENROUTER_REQUEST_INTERVAL_MS` pacing between fixtures. It does not retry failures.
-- `npm test`: **72/72 pass** (32/32 at the time of this run; NVIDIA adapter, SQLite/planner/reminder/extraction, and server tests added later).
+- `npm test`: **90/90 pass** (32/32 at the time of this run; NVIDIA adapter, SQLite/planner/reminder/extraction, server, SMTP, static UI, intake, backup, and group-selection tests added later).
 
 ## Routing and availability evidence
 

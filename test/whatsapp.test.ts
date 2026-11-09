@@ -58,6 +58,23 @@ test("selects only new messages from configured subject groups and lecturers", (
   });
 });
 
+test("accepts posts from any member when the allowlist is disabled", () => {
+  const selected = selectLecturerPosts(upsert([
+    message(),
+    message({ senderId: "student@s.whatsapp.net", messageId: "student-message" }),
+  ]), { ...config, allowAllSenders: true });
+
+  assert.deepEqual(selected.map((post) => post.senderId), [
+    "lecturer@s.whatsapp.net",
+    "student@s.whatsapp.net",
+  ]);
+});
+
+test("rejects every sender when the allowlist is empty and not disabled", () => {
+  const selected = selectLecturerPosts(upsert([message()]), { ...config, lecturerIds: [] });
+  assert.deepEqual(selected, []);
+});
+
 test("extracts text from ephemeral, extended-text, and media captions", () => {
   const selected = selectLecturerPosts(upsert([
     message({ message: { ephemeralMessage: { message: { extendedTextMessage: { text: "Corrected assignment date." } } } } }),

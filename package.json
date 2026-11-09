@@ -11,8 +11,14 @@
     "test": "npm run build && node --test dist/test/*.test.js",
     "pilot:compare": "npm run build && node dist/scripts/model-comparison-pilot.js",
     "pilot:nvidia": "npm run build && node dist/scripts/nvidia-comparison-pilot.js",
-    "pilot:whatsapp": "npm run build && node dist/scripts/whatsapp-pilot.js",
-    "start": "node dist/src/index.js"
+    "pilot:whatsapp": "npm run build && node --env-file-if-exists=.env dist/scripts/whatsapp-pilot.js",
+    "start": "node --env-file-if-exists=.env dist/src/index.js",
+    "intake:local": "npm run build && node --env-file-if-exists=.env dist/scripts/intake-local.js",
+    "backup": "npm run build && node --env-file-if-exists=.env dist/scripts/backup.js",
+    "restore": "npm run build && node --env-file-if-exists=.env dist/scripts/restore.js",
+    "whatsapp:groups": "npm run build && node --env-file-if-exists=.env dist/scripts/whatsapp-list-groups.js",
+    "pilot:report": "npm run build && node --env-file-if-exists=.env dist/scripts/pilot-report.js",
+    "whatsapp:who": "npm run build && node --env-file-if-exists=.env dist/scripts/whatsapp-who.js"
   },
   "devDependencies": {
     "@types/node": "24.19.2",

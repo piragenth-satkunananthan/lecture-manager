@@ -1,7 +1,9 @@
 import { normalizeMessageContent, type BaileysEventMap, type WAMessage } from "@whiskeysockets/baileys";
 import type { AppConfig } from "./config.js";
 
-export type WhatsAppIntakeConfig = Pick<AppConfig, "whatsappGroupIds" | "lecturerIds">;
+export type WhatsAppIntakeConfig = Pick<AppConfig, "whatsappGroupIds" | "lecturerIds"> & {
+  allowAllSenders?: boolean;
+};
 
 export interface WhatsAppPost {
   groupId: string;
@@ -29,7 +31,7 @@ function toLecturerPost(message: WAMessage, config: WhatsAppIntakeConfig): Whats
     !groupId?.endsWith("@g.us") ||
     !config.whatsappGroupIds.includes(groupId) ||
     !senderId ||
-    !config.lecturerIds.includes(senderId) ||
+    (!config.allowAllSenders && !config.lecturerIds.includes(senderId)) ||
     !messageId ||
     !Number.isFinite(seconds) ||
     seconds <= 0 ||

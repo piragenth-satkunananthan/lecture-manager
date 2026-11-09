@@ -40,6 +40,15 @@ export interface SourceMessage extends SourceMessageKey {
   updatedAt: string;
 }
 
+export interface FailedSourceSummary extends SourceMessageKey {
+  senderId: string;
+  sentAt: string;
+  failureCode: string | null;
+  attemptCount: number;
+  rawTextExpiresAt: string | null;
+  createdAt: string;
+}
+
 export interface NewSourceMessage extends SourceMessageKey {
   senderId: string;
   sentAt: string;
@@ -235,6 +244,12 @@ CREATE TABLE IF NOT EXISTS reminder_deliveries (
   FOREIGN KEY (item_id) REFERENCES planner_items(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS settings (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS source_messages_state_idx ON source_messages(extraction_state);
 CREATE INDEX IF NOT EXISTS planner_items_status_idx ON planner_items(status);
 CREATE INDEX IF NOT EXISTS clarifications_state_idx ON clarifications(state);
@@ -392,6 +407,64 @@ export function getSourceMessage(
     "SELECT * FROM source_messages WHERE group_id = ? AND message_id = ?",
   ).get(key.groupId, key.messageId) as SourceMessageRow | undefined;
   return row ? toSourceMessage(row) : undefined;
+}
+
+export function listFailedSources(db: Database.Database): FailedSourceSummary[] {
+  const rows = db.prepare(`
+    SELECT group_id, message_id, sender_id, sent_at, failure_code, attempt_count,
+           raw_text_expires_at, created_at
+    FROM source_messages
+    WHERE extraction_state = 'failed'
+    ORDER BY sent_at DESC, message_id DESC
+  `).all() as Array<{
+    group_id: string;
+    message_id: string;
+    sender_id: string;
+    sent_at: string;
+    failure_code: string | null;
+    attempt_count: number;
+    raw_text_expires_at: string | null;
+    created_at: string;
+  }>;
+  return rows.map((row) => ({
+    groupId: row.group_id,
+    messageId: row.message_id,
+    senderId: row.sender_id,
+    sentAt: row.sent_at,
+    failureCode: row.failure_code,
+    attemptCount: row.attempt_count,
+    rawTextExpiresAt: row.raw_text_expires_at,
+    createdAt: row.created_at,
+  }));
+}
+
+export function deleteFailedSource(db: Database.Database, key: SourceMessageKey): boolean {
+  const source = getSourceMessage(db, key);
+  if (!source || source.extractionState !== "failed") return false;
+  transitionExtractionState(db, key, "deleted");
+  return true;
+}
+
+export function expireFailedSources(
+  db: Database.Database,
+  now = new Date().toISOString(),
+): number {
+  const rows = db.prepare(`
+    SELECT group_id, message_id
+    FROM source_messages
+    WHERE extraction_state = 'failed'
+      AND raw_text_expires_at IS NOT NULL
+      AND raw_text_expires_at <= ?
+  `).all(now) as Array<{ group_id: string; message_id: string }>;
+  for (const row of rows) {
+    transitionExtractionState(
+      db,
+      { groupId: row.group_id, messageId: row.message_id },
+      "expired",
+      { at: now },
+    );
+  }
+  return rows.length;
 }
 
 export function transitionExtractionState(
@@ -621,4 +694,67 @@ export function markReminderDelivered(
       state = 'delivered', attempt_count = attempt_count + 1, last_error = NULL, updated_at = ?
     WHERE item_id = ? AND reminder_kind = ? AND scheduled_at = ?
   `).run(at, input.itemId, input.reminderKind, input.scheduledAt);
+}
+
+export function getSetting(db: Database.Database, key: string): string | null {
+  const row = db.prepare("SELECT value FROM settings WHERE key = ?").get(key) as { value: string } | undefined;
+  return row?.value ?? null;
+}
+
+export function setSetting(
+  db: Database.Database,
+  key: string,
+  value: string,
+  at = new Date().toISOString(),
+): void {
+  db.prepare(`
+    INSERT INTO settings (key, value, updated_at) VALUES (?, ?, ?)
+    ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at
+  `).run(key, value, at);
+}
+
+export function clearSetting(db: Database.Database, key: string): void {
+  db.prepare("DELETE FROM settings WHERE key = ?").run(key);
+}
+
+export interface TrackedWhatsAppGroup {
+  groupId: string;
+  subject: string;
+  addressingMode: string | null;
+  allowAllSenders: boolean;
+  selectedAt: string;
+}
+
+const TRACKED_WHATSAPP_KEY = "whatsapp_tracking";
+
+export function getTrackedWhatsAppGroup(db: Database.Database): TrackedWhatsAppGroup | null {
+  const raw = getSetting(db, TRACKED_WHATSAPP_KEY);
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    if (typeof parsed.groupId !== "string" || typeof parsed.subject !== "string") return null;
+    return {
+      groupId: parsed.groupId,
+      subject: parsed.subject,
+      addressingMode: typeof parsed.addressingMode === "string" ? parsed.addressingMode : null,
+      allowAllSenders: parsed.allowAllSenders === true,
+      selectedAt: typeof parsed.selectedAt === "string" ? parsed.selectedAt : new Date(0).toISOString(),
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function setTrackedWhatsAppGroup(
+  db: Database.Database,
+  group: { groupId: string; subject: string; addressingMode: string | null; allowAllSenders?: boolean },
+  at = new Date().toISOString(),
+): TrackedWhatsAppGroup {
+  const tracked: TrackedWhatsAppGroup = { ...group, allowAllSenders: group.allowAllSenders === true, selectedAt: at };
+  setSetting(db, TRACKED_WHATSAPP_KEY, JSON.stringify(tracked), at);
+  return tracked;
+}
+
+export function clearTrackedWhatsAppGroup(db: Database.Database): void {
+  clearSetting(db, TRACKED_WHATSAPP_KEY);
 }

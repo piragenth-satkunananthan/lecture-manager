@@ -1,9 +1,9 @@
 # NVIDIA Build Evaluation — 2026-11-09
 
-**Status:** `nvidia/nemotron-3-ultra-550b-a55b` passes all 11 tuned synthetic fixtures, is approved as an active provider, and is pinned. Two held-out checks passed 5/6 each. The first gap (a non-announcement reminder) was fixed by a general rule; the remaining gap is a deadline-only assignment setting `details` instead of null. The extraction pipeline and configured factory are implemented, but `EXTRACTION_ENABLED=false` by default. Remaining: production licensing confirmation, a narrow `details` rule plus a third held-out set, and server/API integration. Extraction and live WhatsApp intake remain disabled.
+**Status:** `nvidia/nemotron-3-ultra-550b-a55b` passes all 11 tuned synthetic fixtures, is approved as an active provider, and is pinned. Three held-out checks stand at 5/6, 5/6, and 5/5. The non-announcement and deadline-only `details` gaps were fixed; the main gate was re-run at 11/11 after the fixes. The extraction pipeline, configured factory, server/API, SMTP delivery, browser UI, and local intake path are implemented, but `EXTRACTION_ENABLED=false` by default. Remaining: production licensing, HTTPS termination, and the live WhatsApp/Zoom pilots. Extraction and live WhatsApp intake remain disabled.
 **Provider:** NVIDIA Build (`https://integrate.api.nvidia.com/v1`)
 **Code:** [`src/ai.ts`](../../src/ai.ts), [`scripts/nvidia-comparison-pilot.ts`](../../scripts/nvidia-comparison-pilot.ts), [`src/extraction.ts`](../../src/extraction.ts), [`src/extraction-factory.ts`](../../src/extraction-factory.ts)
-**Tests:** `npm test` — 72/72 pass
+**Tests:** `npm test` — 90/90 pass
 **Passing artifact:** [`artifacts/model-comparison/2026-11-09T05-07-11-690Z.json`](../../artifacts/model-comparison/2026-11-09T05-07-11-690Z.json)
 
 ## Access
@@ -78,6 +78,19 @@ Full report: [`nvidia-heldout2-evaluation-2026-11-09.md`](nvidia-heldout2-evalua
 
 Two held-out sets now stand at 5/6 each, with different failures. The model is conditionally validated.
 
+## Third held-out check
+
+The deadline-only `details` rule and a tighter cancellation rule were added, then a third five-case set was written and run without tuning on it. Result: **5/5 pass**.
+
+- Deadline-only assignment and class cases now set `details` to null.
+- A separate action instruction is still kept in `details`.
+- The non-announcement case returned empty items.
+- The main 11-fixture gate was re-run after the rule change and passed **11/11**.
+
+Full report: [`nvidia-heldout3-evaluation-2026-11-09.md`](nvidia-heldout3-evaluation-2026-11-09.md). Artifact: [`2026-11-09T06-51-52-036Z.json`](../../artifacts/model-comparison/2026-11-09T06-51-52-036Z.json). Main gate: [`2026-11-09T06-51-07-019Z.json`](../../artifacts/model-comparison/2026-11-09T06-51-07-019Z.json).
+
+Three held-out sets: 5/6, 5/6, 5/5. No known model-quality gap remains on the current synthetic cases.
+
 ## Activation gates
 
 The model is approved and pinned, but extraction is still off by default:
@@ -86,13 +99,13 @@ The model is approved and pinned, but extraction is still off by default:
 2. **Production licensing — pending.** NVIDIA Build’s free/development tier is subject to NVIDIA’s terms; production use may require a commercial license.
 3. **Model pin — done.** `NVIDIA_MODEL=nvidia/nemotron-3-ultra-550b-a55b`.
 4. **Extractor wiring — done.** `src/extraction.ts`, `src/extraction-factory.ts`, and `src/config.ts` support the NVIDIA provider. `EXTRACTION_ENABLED` defaults to false.
-5. **Held-out fixtures — partially checked.** Two sets passed 5/6 each. The non-announcement gap is fixed; one deadline-only `details` mismatch remains. Add a narrow rule and a third held-out set before enabling.
-6. **Server/API integration — pending.** Then set `EXTRACTION_ENABLED=true` after integration tests.
-7. **Live WhatsApp intake — still gated.** Keep it disabled until the durable failure, pending-review, and provenance paths are connected.
+5. **Held-out fixtures — checked.** Three sets: 5/6, 5/6, 5/5. The non-announcement and deadline-only `details` gaps are fixed, and the main gate was re-run at 11/11.
+6. **Local integration — done.** Server/API, SMTP delivery, browser UI, and local JSON intake are implemented. `EXTRACTION_ENABLED` remains false.
+7. **HTTPS and live pilots — pending.** Record the HTTPS termination path and pass the WhatsApp/Zoom gates. Keep live intake disabled until then.
 
 ## Conclusion
 
-- The 550B passes the tuned 11/11 gate and two held-out checks at 5/6 each.
+- The 550B passes the tuned 11/11 gate and three held-out checks at 5/6, 5/6, and 5/5.
 - It is approved, pinned, and wired behind a disabled flag.
-- It is conditionally validated: strong positive extraction, non-announcement gap fixed, one minor deadline-only `details` gap remains.
-- Next: a narrow `details` rule plus a third held-out set, licensing confirmation, and server/API integration.
+- The known model-quality gaps are fixed; remaining risks are synthetic-only coverage, provider nondeterminism, licensing, and the live pilots.
+- Next: licensing confirmation, HTTPS termination, and the WhatsApp/Zoom gates before enabling.
