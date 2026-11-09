@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-11-08T17:11:17.333Z",
+  "fixtureCount": 11,
+  "passingFreeModels": [],
+  "runs": [
+    {
+      "provider": "OpenRouter",
+      "requestedModel": "google/gemma-4-31b-it:free",
+      "status": "incomplete",
+      "passed": false,
+      "fields": {},
+      "fixtures": [
+        {
+          "fixtureId": "assignment-explicit-date-and-time",
+          "outcome": "incomplete",
+          "errorKind": "rate_limit",
+          "requestedModel": "google/gemma-4-31b-it:free",
+          "responseModel": null,
+          "selectedProvider": null
+        }
+      ]
+    }
+  ]
+}

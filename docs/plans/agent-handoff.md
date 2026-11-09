@@ -19,7 +19,7 @@ Use this note to continue the approved OpenRouter-only migration. The EGM brains
 - `README.md` describes the OpenRouter-only setup, current source, tests, and synthetic comparison command. Update it again after a free model passes Milestone 4.
 - A separate resolution-report file was not found. Review dispositions are summarized in `docs/plans/student-planner-implementation.md` and the Goldfish reports.
 
-The OpenRouter adapter is recorded at `d62cee4`; the comparison runner is at `4d9e63b`. Recheck `git status` and `git log` before making changes.
+The OpenRouter adapter is recorded at `d62cee4`; the comparison runner is at `4d9e63b`; removal of the previous provider is recorded at `43e8c82`. Recheck `git status` and `git log` before making changes.
 
 ## Approved decisions to preserve
 
