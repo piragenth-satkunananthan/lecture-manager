@@ -1,0 +1,126 @@
+{
+  "generatedAt": "2026-11-09T03:31:39.374Z",
+  "fixtureCount": 11,
+  "passingFreeModels": [],
+  "runs": [
+    {
+      "provider": "OpenRouter",
+      "requestedModel": "dots-studio/dots-3-note-preview:free",
+      "status": "incomplete",
+      "passed": false,
+      "fields": {
+        "item_count": {
+          "matches": 1,
+          "total": 1
+        }
+      },
+      "fixtures": [
+        {
+          "fixtureId": "assignment-explicit-date-and-time",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "dots-studio/dots-3-note-preview:free",
+          "responseModel": "dots-studio/dots-3-note-preview:free",
+          "selectedProvider": "AtlasCloud"
+        },
+        {
+          "fixtureId": "assignment-date-only-next-year",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "dots-studio/dots-3-note-preview:free",
+          "responseModel": "dots-studio/dots-3-note-preview:free",
+          "selectedProvider": "AtlasCloud"
+        },
+        {
+          "fixtureId": "class-without-time",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "dots-studio/dots-3-note-preview:free",
+          "responseModel": "dots-studio/dots-3-note-preview:free",
+          "selectedProvider": "AtlasCloud"
+        },
+        {
+          "fixtureId": "assignment-explicit-correction",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "dots-studio/dots-3-note-preview:free",
+          "responseModel": "dots-studio/dots-3-note-preview:free",
+          "selectedProvider": "AtlasCloud"
+        },
+        {
+          "fixtureId": "unresolved-assignment-date-conflict",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "dots-studio/dots-3-note-preview:free",
+          "responseModel": "dots-studio/dots-3-note-preview:free",
+          "selectedProvider": "AtlasCloud"
+        },
+        {
+          "fixtureId": "class-with-time-and-link",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "dots-studio/dots-3-note-preview:free",
+          "responseModel": "dots-studio/dots-3-note-preview:free",
+          "selectedProvider": "AtlasCloud"
+        },
+        {
+          "fixtureId": "assignment-impossible-date",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "dots-studio/dots-3-note-preview:free",
+          "responseModel": "dots-studio/dots-3-note-preview:free",
+          "selectedProvider": "AtlasCloud"
+        },
+        {
+          "fixtureId": "unrelated-message",
+          "outcome": "pass",
+          "requestedModel": "dots-studio/dots-3-note-preview:free",
+          "responseModel": "dots-studio/dots-3-note-preview:free",
+          "selectedProvider": "AtlasCloud"
+        },
+        {
+          "fixtureId": "prompt-injection-is-not-an-announcement",
+          "outcome": "incomplete",
+          "errorKind": "upstream",
+          "httpStatus": 400,
+          "requestedModel": "dots-studio/dots-3-note-preview:free",
+          "responseModel": null,
+          "selectedProvider": null
+        }
+      ]
+    },
+    {
+      "provider": "OpenRouter",
+      "requestedModel": "recursive/flint-v1.0:free",
+      "status": "incomplete",
+      "passed": false,
+      "fields": {},
+      "fixtures": [
+        {
+          "fixtureId": "assignment-explicit-date-and-time",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "recursive/flint-v1.0:free",
+          "responseModel": "recursive/flint-v1.0:free",
+          "selectedProvider": "Recursive"
+        },
+        {
+          "fixtureId": "assignment-date-only-next-year",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "recursive/flint-v1.0:free",
+          "responseModel": "recursive/flint-v1.0:free",
+          "selectedProvider": "Recursive"
+        },
+        {
+          "fixtureId": "class-without-time",
+          "outcome": "incomplete",
+          "errorKind": "timeout",
+          "requestedModel": "recursive/flint-v1.0:free",
+          "responseModel": null,
+          "selectedProvider": null
+        }
+      ]
+    }
+  ]
+}

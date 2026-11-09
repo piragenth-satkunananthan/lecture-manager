@@ -1,0 +1,59 @@
+{
+  "generatedAt": "2026-11-09T02:53:10.115Z",
+  "fixtureCount": 11,
+  "passingFreeModels": [],
+  "runs": [
+    {
+      "provider": "OpenRouter",
+      "requestedModel": "google/gemma-4-31b-it:free",
+      "status": "incomplete",
+      "passed": false,
+      "fields": {},
+      "fixtures": [
+        {
+          "fixtureId": "assignment-explicit-date-and-time",
+          "outcome": "incomplete",
+          "errorKind": "upstream",
+          "httpStatus": 404,
+          "requestedModel": "google/gemma-4-31b-it:free",
+          "responseModel": null,
+          "selectedProvider": null
+        }
+      ]
+    },
+    {
+      "provider": "OpenRouter",
+      "requestedModel": "xingchen-agi/xing4.0-29b-a4b:free",
+      "status": "incomplete",
+      "passed": false,
+      "fields": {},
+      "fixtures": [
+        {
+          "fixtureId": "assignment-explicit-date-and-time",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "xingchen-agi/xing4.0-29b-a4b:free",
+          "responseModel": "xingchen-agi/xing4.0-29b-a4b:free",
+          "selectedProvider": "Phala"
+        },
+        {
+          "fixtureId": "assignment-date-only-next-year",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "xingchen-agi/xing4.0-29b-a4b:free",
+          "responseModel": "xingchen-agi/xing4.0-29b-a4b:free",
+          "selectedProvider": "Phala"
+        },
+        {
+          "fixtureId": "class-without-time",
+          "outcome": "incomplete",
+          "errorKind": "rate_limit",
+          "httpStatus": 429,
+          "requestedModel": "xingchen-agi/xing4.0-29b-a4b:free",
+          "responseModel": null,
+          "selectedProvider": null
+        }
+      ]
+    }
+  ]
+}

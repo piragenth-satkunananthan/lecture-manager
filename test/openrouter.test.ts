@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   createOpenRouterAnnouncementExtractor,
   createOpenRouterGenerate,
+  OpenRouterError,
   type ExtractedItem,
   type ExtractionRequest,
 } from "../src/ai.js";
@@ -66,13 +67,23 @@ test("sends one sanitized JSON-mode request and reuses local extraction validati
     model: string;
     messages: Array<{ role: string; content: string }>;
     response_format: { type: string };
-    provider: { require_parameters: boolean };
+    provider: {
+      require_parameters: boolean;
+      data_collection: string;
+      zdr: boolean;
+      allow_fallbacks: boolean;
+    };
     stream: boolean;
   };
   assert.equal(body.model, config.model);
   assert.deepEqual(body.messages.map(({ role }) => role), ["system", "user"]);
   assert.equal(body.response_format.type, "json_object");
-  assert.equal(body.provider.require_parameters, true);
+  assert.deepEqual(body.provider, {
+    require_parameters: true,
+    data_collection: "deny",
+    zdr: false,
+    allow_fallbacks: false,
+  });
   assert.equal(body.stream, false);
   assert.doesNotMatch(JSON.stringify(body), /message_id|group_id|sender_id|us02web\.zoom\.us|private-passcode/);
   const modelInput = JSON.parse(body.messages[1]?.content ?? "{}") as {
@@ -96,6 +107,47 @@ test("sends one sanitized JSON-mode request and reuses local extraction validati
     }),
     /unsupported evidence for title/,
   );
+});
+
+test("keeps strict ZDR for free models outside the approved Gemma exception", async () => {
+  const otherModel = "xingchen-agi/xing4.0-29b-a4b:free";
+  let captured: RequestInit | undefined;
+  const generate = createOpenRouterGenerate(config.apiKey, async (_input, init) => {
+    captured = init;
+    return Response.json({
+      model: otherModel,
+      choices: [{ message: { content: "{}" } }],
+    });
+  });
+  await generate({ ...request, model: otherModel });
+  const body = JSON.parse(String(captured?.body)) as { provider: unknown };
+  assert.deepEqual(body.provider, {
+    require_parameters: true,
+    data_collection: "deny",
+    zdr: true,
+    allow_fallbacks: false,
+  });
+});
+
+test("allows an evaluation-only non-ZDR policy without changing the default", async () => {
+  const otherModel = "dots-studio/dots-3-note-preview:free";
+  let captured: RequestInit | undefined;
+  const generate = createOpenRouterGenerate(config.apiKey, async (_input, init) => {
+    captured = init;
+    return Response.json({ model: otherModel, choices: [{ message: { content: "{}" } }] });
+  }, undefined, new Set([otherModel]));
+  await generate({ ...request, model: otherModel });
+  const body = JSON.parse(String(captured?.body)) as { provider: { zdr: boolean } };
+  assert.equal(body.provider.zdr, false);
+
+  let defaultCaptured: RequestInit | undefined;
+  const defaultGenerate = createOpenRouterGenerate(config.apiKey, async (_input, init) => {
+    defaultCaptured = init;
+    return Response.json({ model: otherModel, choices: [{ message: { content: "{}" } }] });
+  });
+  await defaultGenerate({ ...request, model: otherModel });
+  const defaultBody = JSON.parse(String(defaultCaptured?.body)) as { provider: { zdr: boolean } };
+  assert.equal(defaultBody.provider.zdr, true);
 });
 
 test("rejects missing credentials and non-free model IDs before making a request", async () => {
@@ -122,7 +174,12 @@ test("surfaces authentication, rate-limit, upstream, and timeout failures withou
       calls++;
       return Response.json({ error: { message: "private provider response" } }, { status });
     });
-    await assert.rejects(generate(request), message);
+    await assert.rejects(generate(request), (error: Error) => {
+      assert.ok(error instanceof OpenRouterError);
+      assert.equal(error.status, status);
+      assert.match(error.message, message);
+      return true;
+    });
     assert.equal(calls, 1);
   }
 

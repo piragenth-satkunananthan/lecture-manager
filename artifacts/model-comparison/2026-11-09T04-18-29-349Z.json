@@ -1,0 +1,59 @@
+{
+  "generatedAt": "2026-11-09T04:18:29.349Z",
+  "provider": "NVIDIA Build",
+  "fixtureCount": 11,
+  "passingModels": [],
+  "runs": [
+    {
+      "provider": "NVIDIA Build",
+      "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "status": "incomplete",
+      "passed": false,
+      "fields": {},
+      "fixtures": [
+        {
+          "fixtureId": "assignment-explicit-date-and-time",
+          "outcome": "invalid_output",
+          "errorKind": "empty_response",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        },
+        {
+          "fixtureId": "assignment-date-only-next-year",
+          "outcome": "invalid_output",
+          "errorKind": "empty_response",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        },
+        {
+          "fixtureId": "class-without-time",
+          "outcome": "invalid_output",
+          "errorKind": "empty_response",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        },
+        {
+          "fixtureId": "assignment-explicit-correction",
+          "outcome": "invalid_output",
+          "errorKind": "empty_response",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        },
+        {
+          "fixtureId": "unresolved-assignment-date-conflict",
+          "outcome": "invalid_output",
+          "errorKind": "empty_response",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        },
+        {
+          "fixtureId": "class-with-time-and-link",
+          "outcome": "incomplete",
+          "errorKind": "timeout",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": null
+        }
+      ]
+    }
+  ]
+}

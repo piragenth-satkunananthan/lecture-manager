@@ -482,7 +482,7 @@ test("reattaches the selected source Zoom URL locally and preserves unresolved c
         class_date: [{ quote: "Next lecture is on 8 November" }],
       },
     }],
-  }))({ text: "Next lecture is on 8 November.", sentAt: new Date() });
+  }))({ text: "Next lecture is on 8 November.", sentAt: new Date("2026-11-07T03:30:00.000Z") });
   assert.deepEqual(withoutLink.items[0]?.ambiguous_fields, ["class_time", "zoom_url"]);
 });
 

@@ -4,7 +4,7 @@ import test from "node:test";
 import type { ExtractedItem } from "../src/ai.js";
 import { scoreExtraction } from "../src/model-evaluation.js";
 
-test("scores exact fields while ignoring object and evidence-list order", async () => {
+test("scores exact factual fields and leaves evidence validity to the extractor", async () => {
   const fixtures = JSON.parse(await readFile("test/fixtures/lecturer-posts.json", "utf8")) as Array<{
     expected: ExtractedItem[];
   }>;
@@ -19,6 +19,35 @@ test("scores exact fields while ignoring object and evidence-list order", async 
   assert.equal(score.passed, true);
   assert.deepEqual(score.mismatches, []);
   assert.deepEqual(score.fields.item_count, { matches: 1, total: 1 });
+});
+
+test("accepts source-supported free-text spans but rejects unrelated or tiny fragments", async () => {
+  const fixtures = JSON.parse(await readFile("test/fixtures/lecturer-posts.json", "utf8")) as Array<{
+    expected: ExtractedItem[];
+  }>;
+  const expected = fixtures[0]?.expected;
+  assert.ok(expected);
+
+  const acceptable = structuredClone(expected);
+  if (acceptable[0]) {
+    acceptable[0].details = "submit";
+    acceptable[0].course = "Data Structures assignment 2";
+  }
+  const accepted = scoreExtraction(expected, acceptable);
+  assert.equal(accepted.passed, true);
+  assert.deepEqual(accepted.mismatches, []);
+
+  const unrelated = structuredClone(expected);
+  if (unrelated[0]) unrelated[0].details = "unrelated";
+  const rejected = scoreExtraction(expected, unrelated);
+  assert.equal(rejected.passed, false);
+  assert.deepEqual(rejected.mismatches, ["items.0.details"]);
+
+  const tiny = structuredClone(expected);
+  if (tiny[0]) tiny[0].title = "assignment";
+  const tinyScore = scoreExtraction(expected, tiny);
+  assert.equal(tinyScore.passed, false);
+  assert.deepEqual(tinyScore.mismatches, ["items.0.title"]);
 });
 
 test("reports mismatched fields and item counts without copying extracted values", async () => {

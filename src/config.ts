@@ -7,6 +7,13 @@ export interface AppConfig {
   databasePath: string;
   recordingPath: string;
   openRouterApiKey: string;
+  nvidiaApiKey: string;
+  nvidiaModel: string;
+  extractionProvider: "disabled" | "openrouter" | "nvidia";
+  extractionEnabled: boolean;
+  plannerPassword: string;
+  sessionKeyFile: string;
+  plannerOrigin: string;
   whatsappGroupIds: string[];
   lecturerIds: string[];
   smtpHost: string;
@@ -14,6 +21,7 @@ export interface AppConfig {
   smtpUser: string;
   smtpPassword: string;
   smtpFrom: string;
+  smtpTo: string;
   webtopAgentToken: string;
   diskPausePercent: number;
   minimumFreeDiskGiB: number;
@@ -79,6 +87,32 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     throw new Error("WEBTOP_AGENT_TOKEN must be at least 32 characters");
   }
 
+  const extractionProvider = env.EXTRACTION_PROVIDER?.trim() || "disabled";
+  if (extractionProvider !== "disabled" && extractionProvider !== "openrouter" && extractionProvider !== "nvidia") {
+    throw new Error("EXTRACTION_PROVIDER must be disabled, openrouter, or nvidia");
+  }
+  const extractionEnabled = (env.EXTRACTION_ENABLED?.trim() || "false") === "true";
+  if (extractionEnabled && extractionProvider === "disabled") {
+    throw new Error("EXTRACTION_ENABLED requires EXTRACTION_PROVIDER to be openrouter or nvidia");
+  }
+  const nvidiaApiKey = env.NVIDIA_API_KEY?.trim() || "";
+  const nvidiaModel = env.NVIDIA_MODEL?.trim() || "nvidia/nemotron-3-ultra-550b-a55b";
+  if (extractionEnabled && extractionProvider === "nvidia" && !nvidiaApiKey) {
+    throw new Error("NVIDIA_API_KEY is required when EXTRACTION_PROVIDER=nvidia and extraction is enabled");
+  }
+
+  const plannerPassword = env.PLANNER_PASSWORD?.trim() || "";
+  const sessionKeyFile = env.SESSION_KEY_FILE?.trim() || "";
+  const plannerOrigin = env.PLANNER_ORIGIN?.trim() || "";
+  if (plannerOrigin) {
+    try {
+      const url = new URL(plannerOrigin);
+      if (url.protocol !== "http:" && url.protocol !== "https:") throw new Error("unsupported protocol");
+    } catch {
+      throw new Error("PLANNER_ORIGIN must be an absolute http(s) URL");
+    }
+  }
+
   return {
     host: env.HOST?.trim() || "127.0.0.1",
     port: integer(env, "PORT", 3000, 1, 65535),
@@ -86,6 +120,13 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     databasePath,
     recordingPath,
     openRouterApiKey: required(env, "OPENROUTER_API_KEY"),
+    nvidiaApiKey,
+    nvidiaModel,
+    extractionProvider,
+    extractionEnabled,
+    plannerPassword,
+    sessionKeyFile,
+    plannerOrigin,
     whatsappGroupIds: ids(env, "WHATSAPP_GROUP_IDS"),
     lecturerIds: ids(env, "LECTURER_IDS"),
     smtpHost: required(env, "SMTP_HOST"),
@@ -93,6 +134,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     smtpUser,
     smtpPassword,
     smtpFrom: required(env, "SMTP_FROM"),
+    smtpTo: env.SMTP_TO?.trim() || required(env, "SMTP_FROM"),
     webtopAgentToken,
     diskPausePercent: integer(env, "DISK_PAUSE_PERCENT", 80, 1, 99),
     minimumFreeDiskGiB: positiveNumber(env, "MIN_FREE_DISK_GIB", 10),

@@ -1,0 +1,98 @@
+{
+  "generatedAt": "2026-11-09T04:21:10.473Z",
+  "provider": "NVIDIA Build",
+  "fixtureCount": 11,
+  "passingModels": [],
+  "runs": [
+    {
+      "provider": "NVIDIA Build",
+      "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "status": "failed",
+      "passed": false,
+      "fields": {
+        "item_count": {
+          "matches": 1,
+          "total": 1
+        }
+      },
+      "fixtures": [
+        {
+          "fixtureId": "assignment-explicit-date-and-time",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        },
+        {
+          "fixtureId": "assignment-date-only-next-year",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        },
+        {
+          "fixtureId": "class-without-time",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        },
+        {
+          "fixtureId": "assignment-explicit-correction",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        },
+        {
+          "fixtureId": "unresolved-assignment-date-conflict",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        },
+        {
+          "fixtureId": "class-with-time-and-link",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        },
+        {
+          "fixtureId": "assignment-impossible-date",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        },
+        {
+          "fixtureId": "unrelated-message",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        },
+        {
+          "fixtureId": "prompt-injection-is-not-an-announcement",
+          "outcome": "pass",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        },
+        {
+          "fixtureId": "cancelled-class-without-replacement-time",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        },
+        {
+          "fixtureId": "rescheduled-assignment-with-location-and-action",
+          "outcome": "incomplete",
+          "errorKind": "invalid_output",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": "nvidia/nemotron-3.5-lightning-30b-a3b"
+        }
+      ]
+    }
+  ]
+}

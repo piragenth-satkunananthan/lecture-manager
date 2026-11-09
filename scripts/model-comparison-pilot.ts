@@ -22,6 +22,7 @@ interface FixtureResult {
   outcome: "pass" | "mismatch" | "invalid_output" | "incomplete" | "route_missing";
   mismatches?: string[];
   errorKind?: string;
+  httpStatus?: number;
   requestedModel: string;
   responseModel: string | null;
   selectedProvider: string | null;
@@ -50,7 +51,19 @@ if (candidateModels.length === 0 || candidateModels.some((model) => !model.inclu
   throw new Error("OPENROUTER_CANDIDATE_MODELS must contain only free OpenRouter model IDs ending in :free");
 }
 
+// Evaluation may test candidate endpoints that require non-ZDR routing. Production extraction keeps the
+// adapter's default policy, which approves only the Gemma free exception.
+const evaluationNonZdrModels = new Set(["google/gemma-4-31b-it:free", ...candidateModels]);
+
 const timeZone = process.env.TIME_ZONE?.trim() || "Asia/Colombo";
+const requestIntervalMs = Number(process.env.OPENROUTER_REQUEST_INTERVAL_MS?.trim() || "0");
+if (!Number.isFinite(requestIntervalMs) || requestIntervalMs < 0) {
+  throw new Error("OPENROUTER_REQUEST_INTERVAL_MS must be a non-negative number of milliseconds");
+}
+
+function delay(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
 
 function errorKind(error: unknown): string {
   if (error instanceof OpenRouterError) return error.kind;
@@ -78,7 +91,8 @@ async function runModel(
     fields: {},
     fixtures: [],
   };
-  for (const fixture of fixtures) {
+  for (const [index, fixture] of fixtures.entries()) {
+    if (index > 0 && requestIntervalMs > 0) await delay(requestIntervalMs);
     try {
       const { result, route } = await extract(fixture);
       const score = scoreExtraction(fixture.expected, result.items);
@@ -102,11 +116,13 @@ async function runModel(
       }
     } catch (error) {
       const kind = errorKind(error);
+      const status = error instanceof OpenRouterError ? error.status : undefined;
       const route = routeAfterError();
       run.fixtures.push({
         fixtureId: fixture.id,
         outcome: kind === "empty_response" ? "invalid_output" : "incomplete",
         errorKind: kind,
+        ...(status !== undefined ? { httpStatus: status } : {}),
         requestedModel: route?.requestedModel ?? model,
         responseModel: route?.responseModel ?? null,
         selectedProvider: route?.selectedProvider ?? null,
@@ -128,7 +144,7 @@ for (const model of candidateModels) {
   let route: OpenRouterRouteMetadata | null = null;
   const extract = createOpenRouterAnnouncementExtractor(
     { apiKey, model, timeZone },
-    createOpenRouterGenerate(apiKey, globalThis.fetch, (metadata) => { route = metadata; }),
+    createOpenRouterGenerate(apiKey, globalThis.fetch, (metadata) => { route = metadata; }, evaluationNonZdrModels),
   );
   runs.push(await runModel(model, async (fixture) => {
     route = null;

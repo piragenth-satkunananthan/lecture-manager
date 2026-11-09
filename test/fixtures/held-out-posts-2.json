@@ -1,0 +1,131 @@
+[
+  {
+    "id": "fresh-non-announcement-hall-ticket",
+    "sentAt": "2026-11-09T09:00:00+05:30",
+    "text": "Don't forget to collect your hall ticket from the office on Friday.",
+    "expected": []
+  },
+  {
+    "id": "fresh-fee-deadline",
+    "sentAt": "2026-11-09T09:00:00+05:30",
+    "text": "Semester fee payment closes on 30 November 2026.",
+    "expected": []
+  },
+  {
+    "id": "fresh-class-lab-location",
+    "sentAt": "2026-11-09T09:00:00+05:30",
+    "text": "The Mobile Computing lab will meet on 19 November 2026 at 11:00 AM in Lab 3.",
+    "expected": [
+      {
+        "kind": "class",
+        "title": "Mobile Computing lab",
+        "details": null,
+        "course": "Mobile Computing",
+        "location": "Lab 3",
+        "due_date": null,
+        "due_time": null,
+        "class_date": "2026-11-19",
+        "class_time": "11:00",
+        "change_type": null,
+        "change_details": null,
+        "zoom_url": null,
+        "ambiguous_fields": ["zoom_url"],
+        "field_evidence": {
+          "kind": [{ "quote": "lab" }],
+          "title": [{ "quote": "Mobile Computing lab" }],
+          "course": [{ "quote": "Mobile Computing" }],
+          "location": [{ "quote": "Lab 3" }],
+          "class_date": [{ "quote": "lab will meet on 19 November 2026" }],
+          "class_time": [{ "quote": "lab will meet on 19 November 2026 at 11:00 AM" }]
+        }
+      }
+    ]
+  },
+  {
+    "id": "fresh-assignment-deadline",
+    "sentAt": "2026-11-09T09:00:00+05:30",
+    "text": "The Artificial Intelligence assignment deadline is 24 November 2026. Upload your solution to the portal.",
+    "expected": [
+      {
+        "kind": "assignment",
+        "title": "Artificial Intelligence assignment",
+        "details": "Upload your solution to the portal",
+        "course": "Artificial Intelligence",
+        "location": null,
+        "due_date": "2026-11-24",
+        "due_time": null,
+        "class_date": null,
+        "class_time": null,
+        "change_type": null,
+        "change_details": null,
+        "zoom_url": null,
+        "ambiguous_fields": [],
+        "field_evidence": {
+          "kind": [{ "quote": "assignment" }],
+          "title": [{ "quote": "Artificial Intelligence assignment" }],
+          "course": [{ "quote": "Artificial Intelligence" }],
+          "details": [{ "quote": "Upload your solution to the portal" }],
+          "due_date": [{ "quote": "assignment deadline is 24 November 2026" }]
+        }
+      }
+    ]
+  },
+  {
+    "id": "fresh-class-zoom-link",
+    "sentAt": "2026-11-09T09:00:00+05:30",
+    "text": "Cloud Computing lecture: 21 November 2026 at 2:30 PM. Join https://us02web.zoom.us/j/00000000003?pwd=synthetic",
+    "expected": [
+      {
+        "kind": "class",
+        "title": "Cloud Computing lecture",
+        "details": null,
+        "course": "Cloud Computing",
+        "location": null,
+        "due_date": null,
+        "due_time": null,
+        "class_date": "2026-11-21",
+        "class_time": "14:30",
+        "change_type": null,
+        "change_details": null,
+        "zoom_url": "https://us02web.zoom.us/j/00000000003?pwd=synthetic",
+        "ambiguous_fields": [],
+        "field_evidence": {
+          "kind": [{ "quote": "lecture" }],
+          "title": [{ "quote": "Cloud Computing lecture" }],
+          "course": [{ "quote": "Cloud Computing" }],
+          "class_date": [{ "quote": "Cloud Computing lecture: 21 November 2026" }],
+          "class_time": [{ "quote": "Cloud Computing lecture: 21 November 2026 at 2:30 PM" }]
+        }
+      }
+    ]
+  },
+  {
+    "id": "fresh-assignment-relative-tomorrow",
+    "sentAt": "2026-11-09T09:00:00+05:30",
+    "text": "The Computer Graphics assignment is due tomorrow at 9:00 AM.",
+    "expected": [
+      {
+        "kind": "assignment",
+        "title": "Computer Graphics assignment",
+        "details": null,
+        "course": "Computer Graphics",
+        "location": null,
+        "due_date": "2026-11-10",
+        "due_time": "09:00",
+        "class_date": null,
+        "class_time": null,
+        "change_type": null,
+        "change_details": null,
+        "zoom_url": null,
+        "ambiguous_fields": [],
+        "field_evidence": {
+          "kind": [{ "quote": "assignment" }],
+          "title": [{ "quote": "Computer Graphics assignment" }],
+          "course": [{ "quote": "Computer Graphics" }],
+          "due_date": [{ "quote": "assignment is due tomorrow" }],
+          "due_time": [{ "quote": "due tomorrow at 9:00 AM" }]
+        }
+      }
+    ]
+  }
+]

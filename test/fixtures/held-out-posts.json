@@ -1,0 +1,176 @@
+[
+  {
+    "id": "heldout-relative-weekday-assignment",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "The Operating Systems assignment is due next Monday at 11:59 PM. Submit it on the portal.",
+    "expected": [
+      {
+        "kind": "assignment",
+        "title": "Operating Systems assignment",
+        "details": "Submit it on the portal",
+        "course": "Operating Systems",
+        "location": null,
+        "due_date": "2026-11-09",
+        "due_time": "23:59",
+        "class_date": null,
+        "class_time": null,
+        "change_type": null,
+        "change_details": null,
+        "zoom_url": null,
+        "ambiguous_fields": [],
+        "field_evidence": {
+          "kind": [{ "quote": "assignment" }],
+          "title": [{ "quote": "Operating Systems assignment" }],
+          "course": [{ "quote": "Operating Systems" }],
+          "details": [{ "quote": "Submit it on the portal" }],
+          "due_date": [{ "quote": "assignment is due next Monday" }],
+          "due_time": [{ "quote": "due next Monday at 11:59 PM" }]
+        }
+      }
+    ]
+  },
+  {
+    "id": "heldout-two-items-in-one-message",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "Database assignment 4 is due on 20 November 2026. The Computer Networks class is on 18 November 2026 at 9:00 AM.",
+    "expected": [
+      {
+        "kind": "assignment",
+        "title": "Database assignment 4",
+        "details": null,
+        "course": "Database",
+        "location": null,
+        "due_date": "2026-11-20",
+        "due_time": null,
+        "class_date": null,
+        "class_time": null,
+        "change_type": null,
+        "change_details": null,
+        "zoom_url": null,
+        "ambiguous_fields": [],
+        "field_evidence": {
+          "kind": [{ "quote": "assignment" }],
+          "title": [{ "quote": "Database assignment 4" }],
+          "course": [{ "quote": "Database" }],
+          "due_date": [{ "quote": "Database assignment 4 is due on 20 November 2026" }]
+        }
+      },
+      {
+        "kind": "class",
+        "title": "Computer Networks class",
+        "details": null,
+        "course": "Computer Networks",
+        "location": null,
+        "due_date": null,
+        "due_time": null,
+        "class_date": "2026-11-18",
+        "class_time": "09:00",
+        "change_type": null,
+        "change_details": null,
+        "zoom_url": null,
+        "ambiguous_fields": ["zoom_url"],
+        "field_evidence": {
+          "kind": [{ "quote": "class" }],
+          "title": [{ "quote": "Computer Networks class" }],
+          "course": [{ "quote": "Computer Networks" }],
+          "class_date": [{ "quote": "class is on 18 November 2026" }],
+          "class_time": [{ "quote": "class is on 18 November 2026 at 9:00 AM" }]
+        }
+      }
+    ]
+  },
+  {
+    "id": "heldout-tutorial-no-link",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "Software Engineering tutorial starts at 3:30 PM on 15 November 2026.",
+    "expected": [
+      {
+        "kind": "class",
+        "title": "Software Engineering tutorial",
+        "details": null,
+        "course": "Software Engineering",
+        "location": null,
+        "due_date": null,
+        "due_time": null,
+        "class_date": "2026-11-15",
+        "class_time": "15:30",
+        "change_type": null,
+        "change_details": null,
+        "zoom_url": null,
+        "ambiguous_fields": ["zoom_url"],
+        "field_evidence": {
+          "kind": [{ "quote": "tutorial" }],
+          "title": [{ "quote": "Software Engineering tutorial" }],
+          "course": [{ "quote": "Software Engineering" }],
+          "class_date": [{ "quote": "tutorial starts at 3:30 PM on 15 November 2026" }],
+          "class_time": [{ "quote": "tutorial starts at 3:30 PM on 15 November 2026" }]
+        }
+      }
+    ]
+  },
+  {
+    "id": "heldout-cancelled-class-no-replacement",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "Discrete Mathematics lecture is cancelled. The lecturer has not announced a replacement date or time.",
+    "expected": [
+      {
+        "kind": "class",
+        "title": "Discrete Mathematics lecture",
+        "details": null,
+        "course": "Discrete Mathematics",
+        "location": null,
+        "due_date": null,
+        "due_time": null,
+        "class_date": null,
+        "class_time": null,
+        "change_type": "cancelled",
+        "change_details": "lecture is cancelled",
+        "zoom_url": null,
+        "ambiguous_fields": ["class_date", "class_time", "zoom_url"],
+        "field_evidence": {
+          "kind": [{ "quote": "lecture" }],
+          "title": [{ "quote": "Discrete Mathematics lecture" }],
+          "course": [{ "quote": "Discrete Mathematics" }],
+          "change_type": [{ "quote": "cancelled" }],
+          "change_details": [{ "quote": "lecture is cancelled" }]
+        }
+      }
+    ]
+  },
+  {
+    "id": "heldout-reminder-not-an-announcement",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "Reminder: bring your student ID to the exam hall on 25 November 2026.",
+    "expected": []
+  },
+  {
+    "id": "heldout-assignment-with-details",
+    "sentAt": "2026-11-07T09:00:00+05:30",
+    "text": "The Data Science assignment is due on 22 November 2026 at 6:00 PM. Submit the notebook and a short report.",
+    "expected": [
+      {
+        "kind": "assignment",
+        "title": "Data Science assignment",
+        "details": "Submit the notebook and a short report",
+        "course": "Data Science",
+        "location": null,
+        "due_date": "2026-11-22",
+        "due_time": "18:00",
+        "class_date": null,
+        "class_time": null,
+        "change_type": null,
+        "change_details": null,
+        "zoom_url": null,
+        "ambiguous_fields": [],
+        "field_evidence": {
+          "kind": [{ "quote": "assignment" }],
+          "title": [{ "quote": "Data Science assignment" }],
+          "course": [{ "quote": "Data Science" }],
+          "details": [{ "quote": "Submit the notebook and a short report" }],
+          "due_date": [{ "quote": "assignment is due on 22 November 2026" }],
+          "due_time": [{ "quote": "due on 22 November 2026 at 6:00 PM" }]
+        }
+      }
+    ]
+  }
+]

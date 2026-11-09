@@ -19,6 +19,30 @@ test("loads design defaults and numeric limits", () => {
   assert.equal(config.diskPausePercent, 80);
   assert.equal(config.minimumFreeDiskGiB, 10);
   assert.equal(config.maximumRecordingHours, 4);
+  assert.equal(config.extractionProvider, "disabled");
+  assert.equal(config.extractionEnabled, false);
+  assert.equal(config.nvidiaModel, "nvidia/nemotron-3-ultra-550b-a55b");
+});
+
+test("validates the extraction provider and NVIDIA key gate", () => {
+  assert.throws(() => loadConfig({ ...validEnv, EXTRACTION_PROVIDER: "gemini" }), /EXTRACTION_PROVIDER/);
+  assert.throws(
+    () => loadConfig({ ...validEnv, EXTRACTION_ENABLED: "true" }),
+    /EXTRACTION_ENABLED requires EXTRACTION_PROVIDER/,
+  );
+  assert.throws(
+    () => loadConfig({ ...validEnv, EXTRACTION_ENABLED: "true", EXTRACTION_PROVIDER: "nvidia" }),
+    /NVIDIA_API_KEY is required/,
+  );
+  const enabled = loadConfig({
+    ...validEnv,
+    EXTRACTION_ENABLED: "true",
+    EXTRACTION_PROVIDER: "nvidia",
+    NVIDIA_API_KEY: "test-nvidia-key",
+  });
+  assert.equal(enabled.extractionProvider, "nvidia");
+  assert.equal(enabled.extractionEnabled, true);
+  assert.equal(enabled.nvidiaApiKey, "test-nvidia-key");
 });
 
 test("requires database and recording paths", () => {

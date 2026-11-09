@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-11-09T04:19:58.856Z",
+  "provider": "NVIDIA Build",
+  "fixtureCount": 11,
+  "passingModels": [],
+  "runs": [
+    {
+      "provider": "NVIDIA Build",
+      "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "status": "incomplete",
+      "passed": false,
+      "fields": {},
+      "fixtures": [
+        {
+          "fixtureId": "assignment-explicit-date-and-time",
+          "outcome": "incomplete",
+          "errorKind": "timeout",
+          "requestedModel": "nvidia/nemotron-3.5-lightning-30b-a3b",
+          "responseModel": null
+        }
+      ]
+    }
+  ]
+}
