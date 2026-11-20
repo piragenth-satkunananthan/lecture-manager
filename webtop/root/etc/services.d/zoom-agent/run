@@ -1,0 +1,18 @@
+#!/bin/bash
+# Webtop Zoom agent service runner - started by the container's service manager.
+# Starts the compiled Zoom agent and restarts on failure without launching
+# a duplicate capture job.
+
+set -e
+
+cd /app
+
+# Ensure TypeScript is compiled
+if [ ! -d "dist" ] || [ "agent.ts" -nt "dist/agent.js" ]; then
+  echo "[zoom-agent] Compiling TypeScript..."
+  npx tsc --target ES2022 --module NodeNext --moduleResolution NodeNext --outDir dist \
+    --esModuleInterop --strict --skipLibCheck agent.ts capture.ts zoom-ui.ts
+fi
+
+# Run the agent; the service manager restarts it on failure.
+exec node dist/agent.js

@@ -1,0 +1,2 @@
+#!/usr/bin/with-contenv bash
+exec s6-setuidgid abc with-contenv /lsiopy/bin/selkies --addr=0.0.0.0 --port=8082

@@ -1,0 +1,20 @@
+{
+  "name": "webtop-zoom-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "build": "tsc --target ES2022 --module NodeNext --moduleResolution NodeNext --outDir dist --esModuleInterop --strict --skipLibCheck agent.ts capture.ts zoom-ui.ts",
+    "start": "node dist/agent.js"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "typescript": "7.0.2"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}

@@ -214,7 +214,7 @@ test("lists and resolves clarifications through the API", async () => {
     const itemId = seedItem(db, "class-1", {
       kind: "class",
       title: "Online lecture",
-      classDate: "2026-11-10",
+      classDate: "2026-12-10",
       classTime: null,
       dueDate: null,
       dueTime: null,

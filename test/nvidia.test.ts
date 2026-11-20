@@ -128,13 +128,17 @@ test("normalizes NVIDIA structural artifacts without relaxing evidence", async (
   const extractor = createNvidiaAnnouncementExtractor(config, async () => JSON.stringify({
     items: [{
       kind: "class",
-      title: "Online lecture",
-      class_date: "2026-11-08",
+      title: "Data Structures lecture",
+      details: "Time to be confirmed",
+      course: "Data Structures",
+      class_date: "2026-11-10",
       ambiguous_fields: ["class_time", "zoom_link_index"],
       field_evidence: {
         kind: [{ quote: "lecture" }],
-        title: [{ quote: "online lecture" }],
-        class_date: [{ quote: "Next online lecture is on 8 November 2026" }],
+        title: [{ quote: "Data Structures lecture" }],
+        details: [{ quote: "Time to be confirmed" }],
+        course: [{ quote: "Data Structures" }],
+        class_date: [{ quote: "lecture on 2026-11-10" }],
         ambiguous_fields: [],
       },
     }],

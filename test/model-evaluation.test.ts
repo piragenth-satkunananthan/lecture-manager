@@ -30,7 +30,7 @@ test("accepts source-supported free-text spans but rejects unrelated or tiny fra
 
   const acceptable = structuredClone(expected);
   if (acceptable[0]) {
-    acceptable[0].details = "submit";
+    acceptable[0].details = "Submit via the course portal";
     acceptable[0].course = "Data Structures assignment 2";
   }
   const accepted = scoreExtraction(expected, acceptable);

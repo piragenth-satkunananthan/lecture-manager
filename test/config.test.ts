@@ -9,6 +9,7 @@ const validEnv: NodeJS.ProcessEnv = {
   SMTP_HOST: "smtp.example.test",
   SMTP_FROM: "planner@example.test",
   WEBTOP_AGENT_TOKEN: "a-random-token-for-local-tests-0123456789",
+  ZOOM_ACCOUNT_EMAIL: "zoom@example.test",
 };
 
 test("loads design defaults and numeric limits", () => {
@@ -60,9 +61,15 @@ test("rejects invalid timezone and numeric limits", () => {
   assert.throws(() => loadConfig({ ...validEnv, MIN_FREE_DISK_GIB: "0" }), /MIN_FREE_DISK_GIB/);
 });
 
-test("requires an OpenRouter API key", () => {
-  assert.throws(() => loadConfig({ ...validEnv, OPENROUTER_API_KEY: " " }), /OPENROUTER_API_KEY is required/);
+test("requires an OpenRouter API key when OpenRouter extraction is enabled", () => {
+  const { OPENROUTER_API_KEY: _, ...envWithoutKey } = validEnv;
+  assert.throws(
+    () =>
+      loadConfig({ ...envWithoutKey, EXTRACTION_ENABLED: "true", EXTRACTION_PROVIDER: "openrouter" }),
+    /OPENROUTER_API_KEY is required/
+  );
   assert.equal(loadConfig(validEnv).openRouterApiKey, "test-openrouter-api-key");
+  assert.equal(loadConfig(validEnv).openRouterModel, undefined);
 });
 
 test("normalizes and deduplicates configured IDs", () => {

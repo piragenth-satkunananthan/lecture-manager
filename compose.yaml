@@ -1,0 +1,75 @@
+version: "3.8"
+
+services:
+  planner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: student-planner
+    env_file:
+      - .env
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+      - TIME_ZONE=Asia/Colombo
+      - DATABASE_PATH=/data/planner.sqlite
+      - RECORDING_PATH=/data/recordings
+      - NVIDIA_MODEL=nvidia/nemotron-3-ultra-550b-a55b
+      - EXTRACTION_PROVIDER=nvidia
+      - EXTRACTION_ENABLED=false
+      - SESSION_KEY_FILE=/data/session.key
+      - PLANNER_ORIGIN=http://localhost:3000
+      - WEBTOP_AGENT_TOKEN=${WEBTOP_AGENT_TOKEN}
+      - ZOOM_ACCOUNT_EMAIL=${ZOOM_ACCOUNT_EMAIL}
+      - DISK_PAUSE_PERCENT=80
+      - MIN_FREE_DISK_GIB=10
+      - MAX_RECORDING_HOURS=4
+    volumes:
+      - planner-data:/data
+      - recordings:/data/recordings
+      - ./storage/session.key:/data/session.key:ro
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    depends_on:
+      - webtop
+
+  webtop:
+    build:
+      context: ./webtop
+      dockerfile: Dockerfile
+    container_name: student-planner-webtop
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Colombo
+      - DISPLAY=:0
+      # Webtop specific
+      - WEBTOP_USER=abc
+      - WEBTOP_PASSWORD=${WEBTOP_PASSWORD}
+      # Agent configuration
+      - PLANNER_BASE_URL=http://planner:3000
+      - WEBTOP_AGENT_TOKEN=${WEBTOP_AGENT_TOKEN}
+      - AGENT_ID=webtop-agent-1
+      - ZOOM_ACCOUNT_EMAIL=${ZOOM_ACCOUNT_EMAIL}
+      - RECORDING_PATH=/data/recordings
+      - MAX_RECORDING_HOURS=4
+      # PulseAudio
+      - PULSE_SERVER=unix:/run/user/1000/pulse/native
+    volumes:
+      - recordings:/data/recordings
+      # - /tmp/.X11-unix:/tmp/.X11-unix:ro  # Removed - causes Xvfb conflicts
+      - /run/user/1000/pulse:/run/user/1000/pulse:ro
+    shm_size: 2gb
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/snd:/dev/snd
+    restart: unless-stopped
+    # Webtop exposes its UI on port 3000 internally, but we don't expose it publicly
+    # The planner UI is served by the planner container
+
+volumes:
+  planner-data:
+  recordings:

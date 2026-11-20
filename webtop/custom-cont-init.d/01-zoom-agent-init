@@ -1,0 +1,31 @@
+#!/bin/bash
+# Custom initialization to ensure X11 and PulseAudio are ready for Zoom agent
+# Runs before s6 services start, then starts the Zoom agent
+
+set -e
+
+echo "[zoom-agent-init] Waiting for X11 display..."
+while ! xdpyinfo -display "${DISPLAY:-:0}" >/dev/null 2>&1; do
+  sleep 1
+done
+echo "[zoom-agent-init] X11 display ready"
+
+echo "[zoom-agent-init] Waiting for PulseAudio..."
+while ! pactl info >/dev/null 2>&1; do
+  sleep 1
+done
+echo "[zoom-agent-init] PulseAudio ready"
+
+# Ensure recording directory exists
+mkdir -p "${RECORDING_PATH:-/data/recordings}"
+
+echo "[zoom-agent-init] Initialization complete, starting Zoom agent..."
+
+# Start the Zoom agent in the background
+cd /app
+nohup /entrypoint.sh > /tmp/zoom-agent.log 2>&1 &
+AGENT_PID=$!
+echo "[zoom-agent-init] Zoom agent started with PID $AGENT_PID"
+echo $AGENT_PID > /tmp/zoom-agent.pid
+
+echo "[zoom-agent-init] Initialization complete"

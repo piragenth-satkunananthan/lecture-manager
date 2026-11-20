@@ -1,5 +1,5 @@
 import type { AppConfig } from "./config.js";
-import { createNvidiaAnnouncementExtractor } from "./ai.js";
+import { createNvidiaAnnouncementExtractor, createOpenRouterAnnouncementExtractor, type OpenRouterConfig } from "./ai.js";
 import type { ExtractionRunner } from "./extraction.js";
 
 export function createConfiguredExtraction(config: AppConfig): ExtractionRunner | null {
@@ -12,7 +12,18 @@ export function createConfiguredExtraction(config: AppConfig): ExtractionRunner 
     });
   }
   if (config.extractionProvider === "openrouter") {
-    throw new Error("OpenRouter extraction is not configured for production; use the NVIDIA provider");
+    if (!config.openRouterApiKey) {
+      throw new Error("OPENROUTER_API_KEY is required when EXTRACTION_PROVIDER=openrouter and extraction is enabled");
+    }
+    if (!config.openRouterModel) {
+      throw new Error("OPENROUTER_MODEL is required when EXTRACTION_PROVIDER=openrouter and extraction is enabled");
+    }
+    const openRouterConfig: OpenRouterConfig = {
+      apiKey: config.openRouterApiKey,
+      model: config.openRouterModel,
+      timeZone: config.timeZone,
+    };
+    return createOpenRouterAnnouncementExtractor(openRouterConfig);
   }
   return null;
 }

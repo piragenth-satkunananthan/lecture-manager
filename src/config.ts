@@ -7,6 +7,7 @@ export interface AppConfig {
   databasePath: string;
   recordingPath: string;
   openRouterApiKey: string;
+  openRouterModel: string | undefined;
   nvidiaApiKey: string;
   nvidiaModel: string;
   extractionProvider: "disabled" | "openrouter" | "nvidia";
@@ -23,9 +24,12 @@ export interface AppConfig {
   smtpFrom: string;
   smtpTo: string;
   webtopAgentToken: string;
+  zoomAccountEmail: string;
   diskPausePercent: number;
   minimumFreeDiskGiB: number;
   maximumRecordingHours: number;
+  backupPath: string | undefined;
+  backupEncryptionKeyFile: string | undefined;
 }
 
 function required(env: NodeJS.ProcessEnv, name: string): string {
@@ -64,6 +68,10 @@ function ids(env: NodeJS.ProcessEnv, name: string): string[] {
   return [...new Set((env[name] ?? "").split(",").map((value) => value.trim()).filter(Boolean))];
 }
 
+function isFreeOpenRouterModel(model: string): boolean {
+  return model.includes("/") && model.endsWith(":free") && !/\s/.test(model);
+}
+
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
   const timeZone = env.TIME_ZONE?.trim() || "Asia/Colombo";
   try {
@@ -87,6 +95,12 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     throw new Error("WEBTOP_AGENT_TOKEN must be at least 32 characters");
   }
 
+  const zoomAccountEmail = required(env, "ZOOM_ACCOUNT_EMAIL");
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(zoomAccountEmail)) {
+    throw new Error("ZOOM_ACCOUNT_EMAIL must be a valid email address");
+  }
+
   const extractionProvider = env.EXTRACTION_PROVIDER?.trim() || "disabled";
   if (extractionProvider !== "disabled" && extractionProvider !== "openrouter" && extractionProvider !== "nvidia") {
     throw new Error("EXTRACTION_PROVIDER must be disabled, openrouter, or nvidia");
@@ -99,6 +113,16 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
   const nvidiaModel = env.NVIDIA_MODEL?.trim() || "nvidia/nemotron-3-ultra-550b-a55b";
   if (extractionEnabled && extractionProvider === "nvidia" && !nvidiaApiKey) {
     throw new Error("NVIDIA_API_KEY is required when EXTRACTION_PROVIDER=nvidia and extraction is enabled");
+  }
+  const openRouterApiKey = env.OPENROUTER_API_KEY?.trim() || "";
+  const openRouterModel = env.OPENROUTER_MODEL?.trim() || undefined;
+  if (extractionEnabled && extractionProvider === "openrouter") {
+    if (!openRouterApiKey) {
+      throw new Error("OPENROUTER_API_KEY is required when EXTRACTION_PROVIDER=openrouter and extraction is enabled");
+    }
+    if (!openRouterModel || !isFreeOpenRouterModel(openRouterModel)) {
+      throw new Error("OPENROUTER_MODEL must be set to a free model ID when EXTRACTION_PROVIDER=openrouter and extraction is enabled");
+    }
   }
 
   const plannerPassword = env.PLANNER_PASSWORD?.trim() || "";
@@ -119,7 +143,8 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     timeZone,
     databasePath,
     recordingPath,
-    openRouterApiKey: required(env, "OPENROUTER_API_KEY"),
+    openRouterApiKey,
+    openRouterModel,
     nvidiaApiKey,
     nvidiaModel,
     extractionProvider,
@@ -136,8 +161,11 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     smtpFrom: required(env, "SMTP_FROM"),
     smtpTo: env.SMTP_TO?.trim() || required(env, "SMTP_FROM"),
     webtopAgentToken,
+    zoomAccountEmail,
     diskPausePercent: integer(env, "DISK_PAUSE_PERCENT", 80, 1, 99),
     minimumFreeDiskGiB: positiveNumber(env, "MIN_FREE_DISK_GIB", 10),
     maximumRecordingHours: positiveNumber(env, "MAX_RECORDING_HOURS", 4),
+    backupPath: env.BACKUP_PATH?.trim() || undefined,
+    backupEncryptionKeyFile: env.BACKUP_ENCRYPTION_KEY_FILE?.trim() || undefined,
   };
 }

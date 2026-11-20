@@ -4,9 +4,18 @@ import type Database from "better-sqlite3";
 import Fastify, { type FastifyInstance } from "fastify";
 import fastifyStatic from "@fastify/static";
 import secureSession from "@fastify/secure-session";
-import { deleteFailedSource, getClarification, getPlannerItem, getSourceMessage, getTrackedWhatsAppGroup, listFailedSources, setTrackedWhatsAppGroup, clearTrackedWhatsAppGroup, updatePlannerItem, type PlannerItem } from "./db.js";
+import { deleteFailedSource, getClarification, getPlannerItem, getSourceMessage, getTrackedWhatsAppGroup, listFailedSources, setTrackedWhatsAppGroup, clearTrackedWhatsAppGroup, updatePlannerItem, type PlannerItem, getZoomJob, createRecordingMetadata, getRecordingMetadata, updateRecordingMetadata, type ZoomJob, type RecordingMetadata, type ZoomJobState, type RecordingFileStatus } from "./db.js";
 import { processSourceMessage, type ExtractionRunner } from "./extraction.js";
 import { readGroupCache } from "./whatsapp-groups.js";
+import {
+  scheduleZoomJobs,
+  getNextClaimableJob,
+  heartbeatZoomJob,
+  updateJobStatus,
+  getActiveRecordingJob,
+  checkRecordingLimits,
+  type ZoomSchedulerConfig,
+} from "./zoom.js";
 import {
   applyUserCorrection,
   archivePlannerItem,
@@ -28,6 +37,8 @@ export interface ServerOptions {
   secureCookies?: boolean;
   webRoot?: string;
   whatsappGroupsPath?: string;
+  webtopAgentToken?: string;
+  zoomSchedulerConfig?: ZoomSchedulerConfig;
 }
 
 interface AuthenticatedSession {
@@ -146,8 +157,10 @@ export async function buildServer(options: ServerOptions): Promise<FastifyInstan
     }
   });
 
-  app.setErrorHandler((_error, _request, reply) => {
-    return reply.code(500).send({ error: "internal_error" });
+  app.setErrorHandler((error: unknown, _request, reply) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("Server error:", message);
+    return reply.code(500).send({ error: "internal_error", detail: message });
   });
 
   app.get("/api/health", async () => {
@@ -356,6 +369,152 @@ export async function buildServer(options: ServerOptions): Promise<FastifyInstan
       return reply.code(204).send();
     },
   );
+
+  // Agent authentication hook
+  const requireAgentAuth = async (request: any, reply: any) => {
+    const auth = request.headers.authorization;
+    if (!auth || !auth.startsWith("Bearer ")) {
+      return reply.code(401).send({ error: "missing_token" });
+    }
+    const token = auth.slice(7);
+    if (token !== options.webtopAgentToken) {
+      return reply.code(401).send({ error: "invalid_token" });
+    }
+  };
+
+  // Agent health check
+  app.post<{ Body: unknown }>("/agent/health", { preHandler: requireAgentAuth }, async (request, reply) => {
+    const body = asRecord(request.body);
+    if (!body) return reply.code(400).send({ error: "invalid_body" });
+
+    const required = ["state", "account_email", "display_available", "audio_source_available"];
+    for (const field of required) {
+      if (!(field in body)) return reply.code(400).send({ error: `missing_${field}` });
+    }
+
+    const { state, account_email, display_available, audio_source_available } = body as {
+      state: "ready" | "unhealthy";
+      account_email: string;
+      display_available: boolean;
+      audio_source_available: boolean;
+    };
+
+    const config = options.zoomSchedulerConfig;
+    if (!config || account_email !== config.zoomAccountEmail) {
+      return reply.code(403).send({ error: "account_mismatch" });
+    }
+
+    if (state === "ready" && display_available && audio_source_available) {
+      return { status: "accepted" };
+    }
+    return reply.code(403).send({ error: "agent_unhealthy" });
+  });
+
+  // Agent claims next available job
+  app.post("/agent/jobs/claim", { preHandler: requireAgentAuth }, async (request, reply) => {
+    const agentId = request.headers["x-agent-id"];
+    if (!agentId || typeof agentId !== "string") {
+      return reply.code(400).send({ error: "missing_agent_id" });
+    }
+
+    if (!options.zoomSchedulerConfig) {
+      return reply.code(503).send({ error: "scheduler_not_configured" });
+    }
+
+    const job = getNextClaimableJob(db, agentId);
+    if (!job) return reply.code(204).send();
+
+    const item = getPlannerItem(db, job.itemId);
+    if (!item) {
+      return reply.code(500).send({ error: "item_not_found" });
+    }
+
+    return {
+      jobId: job.id,
+      itemId: job.itemId,
+      leaseId: job.leaseId,
+      meetingLink: job.meetingLink,
+      scheduledStart: job.scheduledStart,
+      leaseExpiresAt: job.leaseExpiresAt,
+      item: {
+        id: item.id,
+        title: item.title,
+        classDate: item.classDate,
+        classTime: item.classTime,
+        zoomUrl: item.zoomUrl,
+      },
+    };
+  });
+
+  // Agent heartbeat
+  app.post<{ Params: { jobId: string }; Body: unknown }>("/agent/jobs/:jobId/heartbeat", { preHandler: requireAgentAuth }, async (request, reply) => {
+    const jobId = parseId(request.params.jobId);
+    if (jobId === null) return reply.code(400).send({ error: "invalid_job_id" });
+
+    const agentId = request.headers["x-agent-id"];
+    if (!agentId || typeof agentId !== "string") {
+      return reply.code(400).send({ error: "missing_agent_id" });
+    }
+
+    const updated = heartbeatZoomJob(db, jobId, agentId);
+    if (!updated) return reply.code(409).send({ error: "lease_expired_or_mismatched" });
+
+    return { leaseExpiresAt: updated.leaseExpiresAt };
+  });
+
+  // Agent reports job status
+  app.post<{ Params: { jobId: string }; Body: unknown }>("/agent/jobs/:jobId/status", { preHandler: requireAgentAuth }, async (request, reply) => {
+    const jobId = parseId(request.params.jobId);
+    if (jobId === null) return reply.code(400).send({ error: "invalid_job_id" });
+
+    const agentId = request.headers["x-agent-id"];
+    if (!agentId || typeof agentId !== "string") {
+      return reply.code(400).send({ error: "missing_agent_id" });
+    }
+
+    const body = asRecord(request.body);
+    if (!body) return reply.code(400).send({ error: "invalid_body" });
+
+    const required = ["state", "occurred_at"];
+    for (const field of required) {
+      if (!(field in body)) return reply.code(400).send({ error: `missing_${field}` });
+    }
+
+    const state = body.state as ZoomJobState;
+    const occurredAt = body.occurred_at as string;
+    const admission = body.admission as boolean | undefined;
+    const recordingPath = body.recording_path as string | undefined;
+    const failureCode = body.failure_code as string | undefined;
+
+    const validStates = ["claimed", "joining", "waiting", "recording", "completed", "failed"];
+    if (!validStates.includes(state)) {
+      return reply.code(400).send({ error: "invalid_state" });
+    }
+
+    const updates: { admission?: boolean; recordingPath?: string; failureCode?: string; occurredAt?: string } = {
+      occurredAt,
+    };
+    if (admission !== undefined) updates.admission = admission;
+    if (recordingPath !== undefined) updates.recordingPath = recordingPath;
+    if (failureCode !== undefined) updates.failureCode = failureCode;
+
+    const job = updateJobStatus(db, jobId, agentId, state, updates, occurredAt);
+    if (!job) return reply.code(409).send({ error: "invalid_transition_or_lease" });
+
+    return { job };
+  });
+
+  // Delete recording
+  app.delete<{ Params: { id: string } }>("/api/recordings/:id", async (request, reply) => {
+    const id = parseId(request.params.id);
+    if (id === null) return reply.code(400).send({ error: "invalid_id" });
+
+    const recording = getRecordingMetadata(db, id);
+    if (!recording) return reply.code(404).send({ error: "not_found" });
+
+    updateRecordingMetadata(db, recording.jobId, { fileStatus: "deleted", deletedAt: new Date().toISOString() });
+    return reply.code(204).send();
+  });
 
   return app;
 }

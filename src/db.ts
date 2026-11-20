@@ -1,4 +1,5 @@
 import Database from "better-sqlite3";
+import { randomUUID } from "node:crypto";
 
 export type ExtractionState =
   | "received"
@@ -21,6 +22,60 @@ export type ReminderKind =
   | "assignment_due"
   | "class_day_before"
   | "class_hour_before";
+
+export type ZoomJobState =
+  | "queued"
+  | "claimed"
+  | "joining"
+  | "waiting"
+  | "recording"
+  | "completed"
+  | "failed"
+  | "expired";
+
+export type RecordingFileStatus =
+  | "recording"
+  | "finalizing"
+  | "completed"
+  | "failed"
+  | "deleted";
+
+export interface ZoomJob {
+  id: number;
+  itemId: number;
+  leaseId: string;
+  leaseOwner: string | null;
+  leaseExpiresAt: string | null;
+  state: ZoomJobState;
+  meetingLink: string | null;
+  scheduledStart: string;
+  failureCode: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface NewZoomJob {
+  itemId: number;
+  scheduledStart: string;
+  meetingLink: string | null;
+}
+
+export interface RecordingMetadata {
+  id: number;
+  jobId: number;
+  relativePath: string;
+  startTime: string | null;
+  endTime: string | null;
+  fileStatus: RecordingFileStatus;
+  deletedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface NewRecordingMetadata {
+  jobId: number;
+  relativePath: string;
+}
 
 export interface SourceMessageKey {
   groupId: string;
@@ -250,7 +305,37 @@ CREATE TABLE IF NOT EXISTS settings (
   updated_at TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS zoom_jobs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  item_id INTEGER NOT NULL,
+  lease_id TEXT NOT NULL UNIQUE,
+  lease_owner TEXT,
+  lease_expires_at TEXT,
+  state TEXT NOT NULL CHECK (state IN ('queued', 'claimed', 'joining', 'waiting', 'recording', 'completed', 'failed', 'expired')),
+  meeting_link TEXT,
+  scheduled_start TEXT NOT NULL,
+  failure_code TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (item_id) REFERENCES planner_items(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS recording_metadata (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  job_id INTEGER NOT NULL UNIQUE,
+  relative_path TEXT NOT NULL,
+  start_time TEXT,
+  end_time TEXT,
+  file_status TEXT NOT NULL CHECK (file_status IN ('recording', 'finalizing', 'completed', 'failed', 'deleted')),
+  deleted_at TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (job_id) REFERENCES zoom_jobs(id) ON DELETE CASCADE
+);
+
 CREATE INDEX IF NOT EXISTS source_messages_state_idx ON source_messages(extraction_state);
+CREATE INDEX IF NOT EXISTS zoom_jobs_state_idx ON zoom_jobs(state);
+CREATE INDEX IF NOT EXISTS zoom_jobs_item_idx ON zoom_jobs(item_id);
 CREATE INDEX IF NOT EXISTS planner_items_status_idx ON planner_items(status);
 CREATE INDEX IF NOT EXISTS clarifications_state_idx ON clarifications(state);
 CREATE INDEX IF NOT EXISTS reminder_deliveries_pending_idx ON reminder_deliveries(state, scheduled_at);
@@ -757,4 +842,204 @@ export function setTrackedWhatsAppGroup(
 
 export function clearTrackedWhatsAppGroup(db: Database.Database): void {
   clearSetting(db, TRACKED_WHATSAPP_KEY);
+}
+
+export function createZoomJob(
+  db: Database.Database,
+  input: NewZoomJob,
+  at = new Date().toISOString(),
+): number {
+  const leaseId = randomUUID();
+  const result = db.prepare(`
+    INSERT INTO zoom_jobs (
+      item_id, lease_id, state, meeting_link, scheduled_start, created_at, updated_at
+    ) VALUES (?, ?, 'queued', ?, ?, ?, ?)
+  `).run(input.itemId, leaseId, input.meetingLink, input.scheduledStart, at, at);
+  return Number(result.lastInsertRowid);
+}
+
+export function getZoomJob(db: Database.Database, id: number): ZoomJob | null {
+  const row = db.prepare("SELECT * FROM zoom_jobs WHERE id = ?").get(id) as ZoomJobRow | undefined;
+  return row ? toZoomJob(row) : null;
+}
+
+export function getZoomJobByItem(db: Database.Database, itemId: number): ZoomJob | null {
+  const row = db.prepare("SELECT * FROM zoom_jobs WHERE item_id = ?").get(itemId) as ZoomJobRow | undefined;
+  return row ? toZoomJob(row) : null;
+}
+
+export function listZoomJobsByState(db: Database.Database, state: ZoomJobState): ZoomJob[] {
+  const rows = db.prepare("SELECT * FROM zoom_jobs WHERE state = ? ORDER BY scheduled_start").all(state) as ZoomJobRow[];
+  return rows.map(toZoomJob);
+}
+
+export function claimZoomJob(
+  db: Database.Database,
+  jobId: number,
+  owner: string,
+  leaseExpiresAt: string,
+  at = new Date().toISOString(),
+): ZoomJob | null {
+  const result = db.prepare(`
+    UPDATE zoom_jobs SET
+      state = 'claimed',
+      lease_owner = ?,
+      lease_expires_at = ?,
+      updated_at = ?
+    WHERE id = ? AND state = 'queued' AND (lease_owner IS NULL OR lease_expires_at IS NULL OR lease_expires_at <= ?)
+  `).run(owner, leaseExpiresAt, at, jobId, at);
+  if (result.changes === 0) return null;
+  return getZoomJob(db, jobId);
+}
+
+export function updateZoomJobState(
+  db: Database.Database,
+  jobId: number,
+  state: ZoomJobState,
+  options: { leaseOwner?: string; leaseExpiresAt?: string; failureCode?: string; meetingLink?: string } = {},
+  at = new Date().toISOString(),
+): ZoomJob | null {
+  const assignments: string[] = ["state = ?", "updated_at = ?"];
+  const values: unknown[] = [state, at];
+
+  if (options.leaseOwner !== undefined) {
+    assignments.push("lease_owner = ?");
+    values.push(options.leaseOwner);
+  }
+  if (options.leaseExpiresAt !== undefined) {
+    assignments.push("lease_expires_at = ?");
+    values.push(options.leaseExpiresAt);
+  }
+  if (options.failureCode !== undefined) {
+    assignments.push("failure_code = ?");
+    values.push(options.failureCode);
+  }
+  if (options.meetingLink !== undefined) {
+    assignments.push("meeting_link = ?");
+    values.push(options.meetingLink);
+  }
+
+  values.push(jobId);
+  const result = db.prepare(`UPDATE zoom_jobs SET ${assignments.join(", ")} WHERE id = ?`).run(...values);
+  if (result.changes === 0) return null;
+  return getZoomJob(db, jobId);
+}
+
+export function expireZoomJobLeases(db: Database.Database, at = new Date().toISOString()): number {
+  const result = db.prepare(`
+    UPDATE zoom_jobs SET
+      state = 'expired',
+      lease_owner = NULL,
+      lease_expires_at = NULL,
+      updated_at = ?
+    WHERE state IN ('claimed', 'joining', 'waiting')
+      AND lease_expires_at IS NOT NULL
+      AND lease_expires_at <= ?
+  `).run(at, at);
+  return result.changes;
+}
+
+export function createRecordingMetadata(
+  db: Database.Database,
+  input: NewRecordingMetadata,
+  at = new Date().toISOString(),
+): number {
+  const result = db.prepare(`
+    INSERT INTO recording_metadata (job_id, relative_path, file_status, created_at, updated_at)
+    VALUES (?, ?, 'recording', ?, ?)
+  `).run(input.jobId, input.relativePath, at, at);
+  return Number(result.lastInsertRowid);
+}
+
+export function getRecordingMetadata(db: Database.Database, jobId: number): RecordingMetadata | null {
+  const row = db.prepare("SELECT * FROM recording_metadata WHERE job_id = ?").get(jobId) as RecordingMetadataRow | undefined;
+  return row ? toRecordingMetadata(row) : null;
+}
+
+export function updateRecordingMetadata(
+  db: Database.Database,
+  jobId: number,
+  updates: { startTime?: string; endTime?: string; fileStatus?: RecordingFileStatus; deletedAt?: string },
+  at = new Date().toISOString(),
+): RecordingMetadata | null {
+  const assignments: string[] = ["updated_at = ?"];
+  const values: unknown[] = [at];
+
+  if (updates.startTime !== undefined) {
+    assignments.push("start_time = ?");
+    values.push(updates.startTime);
+  }
+  if (updates.endTime !== undefined) {
+    assignments.push("end_time = ?");
+    values.push(updates.endTime);
+  }
+  if (updates.fileStatus !== undefined) {
+    assignments.push("file_status = ?");
+    values.push(updates.fileStatus);
+  }
+  if (updates.deletedAt !== undefined) {
+    assignments.push("deleted_at = ?");
+    values.push(updates.deletedAt);
+  }
+
+  values.push(jobId);
+  const result = db.prepare(`UPDATE recording_metadata SET ${assignments.join(", ")} WHERE job_id = ?`).run(...values);
+  if (result.changes === 0) return null;
+  return getRecordingMetadata(db, jobId);
+}
+
+function toZoomJob(row: ZoomJobRow): ZoomJob {
+  return {
+    id: row.id,
+    itemId: row.item_id,
+    leaseId: row.lease_id,
+    leaseOwner: row.lease_owner,
+    leaseExpiresAt: row.lease_expires_at,
+    state: row.state,
+    meetingLink: row.meeting_link,
+    scheduledStart: row.scheduled_start,
+    failureCode: row.failure_code,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+interface ZoomJobRow {
+  id: number;
+  item_id: number;
+  lease_id: string;
+  lease_owner: string | null;
+  lease_expires_at: string | null;
+  state: ZoomJobState;
+  meeting_link: string | null;
+  scheduled_start: string;
+  failure_code: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+function toRecordingMetadata(row: RecordingMetadataRow): RecordingMetadata {
+  return {
+    id: row.id,
+    jobId: row.job_id,
+    relativePath: row.relative_path,
+    startTime: row.start_time,
+    endTime: row.end_time,
+    fileStatus: row.file_status,
+    deletedAt: row.deleted_at,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+interface RecordingMetadataRow {
+  id: number;
+  job_id: number;
+  relative_path: string;
+  start_time: string | null;
+  end_time: string | null;
+  file_status: RecordingFileStatus;
+  deleted_at: string | null;
+  created_at: string;
+  updated_at: string;
 }

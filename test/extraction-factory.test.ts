@@ -10,6 +10,7 @@ const validEnv: NodeJS.ProcessEnv = {
   SMTP_HOST: "smtp.example.test",
   SMTP_FROM: "planner@example.test",
   WEBTOP_AGENT_TOKEN: "a-random-token-for-local-tests-0123456789",
+  ZOOM_ACCOUNT_EMAIL: "zoom@example.test",
 };
 
 test("returns no extractor while extraction is disabled", () => {
@@ -30,10 +31,22 @@ test("builds the configured NVIDIA extractor with the pinned model", () => {
 });
 
 test("rejects the OpenRouter provider until a model is configured", () => {
+  assert.throws(
+    () =>
+      loadConfig({
+        ...validEnv,
+        EXTRACTION_ENABLED: "true",
+        EXTRACTION_PROVIDER: "openrouter",
+      }),
+    /OPENROUTER_MODEL must be set to a free model ID/
+  );
   const config = loadConfig({
     ...validEnv,
     EXTRACTION_ENABLED: "true",
     EXTRACTION_PROVIDER: "openrouter",
+    OPENROUTER_API_KEY: "test-openrouter-api-key",
+    OPENROUTER_MODEL: "google/gemma-4-31b-it:free",
   });
-  assert.throws(() => createConfiguredExtraction(config), /OpenRouter extraction is not configured/);
+  const extractor = createConfiguredExtraction(config);
+  assert.equal(typeof extractor, "function");
 });
